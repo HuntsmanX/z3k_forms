@@ -35,9 +35,12 @@ gem 'omniauth-oauth2', '~> 1.3.1'
 
 gem 'pry'
 gem 'rack-mini-profiler'
+gem 'awesome_print'
 
 gem 'slim'
 gem 'foundation-rails'
+gem 'browserify-rails'
+gem 'react-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

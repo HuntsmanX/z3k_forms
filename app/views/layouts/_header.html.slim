@@ -2,10 +2,12 @@
   .row
     .col-lg-12
       .top-bar-left
-        ul.dropdown.menu data-dropdown-menu=''
-          li.menu-text.app-title Z3K Forms
+        ul.menu
+          li.menu-text.app-title = link_to 'Z3K Forms', dashboard_path
+          
+          li = link_to 'Tests', tests_path
+          
       .top-bar-right
-        
         - if current_user
           ul.menu
             li: .user-avatar style="background-image:url('#{current_user.avatar_url}')"
