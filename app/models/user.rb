@@ -5,13 +5,6 @@ class User < ApplicationRecord
   # :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:staff]
 
-  belongs_to :role
-  has_many   :notifications
-  has_many   :comments
-
-  validates :department_ids, presence: { message: "can't be blank for department managers" }, if: :department_manager?
-
-  scope :with_role, -> (role) { joins(:role).where("roles.name" => role) }
 
   def self.from_omniauth(auth)
     user = where(staff_uid: auth.uid).first_or_initialize

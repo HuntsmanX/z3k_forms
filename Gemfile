@@ -29,13 +29,13 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'pry'
 gem 'devise'
-gem 'devise_security_extension'
-gem 'devise_zxcvbn'
 gem 'omniauth'
-gem 'omniauth-oauth2'
+gem 'omniauth-oauth2', '~> 1.3.1'
+
+gem 'pry'
 gem 'rack-mini-profiler'
+
 gem 'slim'
 gem 'foundation-rails'
 

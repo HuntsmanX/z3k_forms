@@ -1,7 +1,7 @@
 module OmniAuth
   module Strategies
     class Staff < OmniAuth::Strategies::OAuth2
-      
+
       option :name, :staff
 
       option :client_options, {
@@ -16,8 +16,6 @@ module OmniAuth
       info do
         {
           email:          raw_info['email'],
-          super_user:     raw_info['super_user'],
-          department_ids: raw_info['department_ids'],
           city_id:        raw_info['city_id'],
           avatar:         raw_info['avatar'],
           user_id:        raw_info['user_id'],
@@ -28,7 +26,7 @@ module OmniAuth
       def raw_info
         @raw_info ||= access_token.get('/api/staff_auth.json').parsed
       end
-      
+
     end
   end
 end

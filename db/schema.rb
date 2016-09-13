@@ -15,6 +15,25 @@ ActiveRecord::Schema.define(version: 20160912124301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "form_type"
+    t.boolean  "time_limited", default: false
+    t.integer  "time_limit"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["form_type"], name: "index_forms_on_form_type", using: :btree
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer  "form_id"
+    t.jsonb    "content"
+    t.string   "question_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["question_type"], name: "index_questions_on_question_type", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
