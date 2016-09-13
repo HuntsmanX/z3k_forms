@@ -1,0 +1,40 @@
+$push-height: 3.5rem;
+
+html, body {
+  font-family:      'Libre Franklin', sans-serif;
+  background-color: $light-gray;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', sans-serif;
+  }
+
+  #wrap {
+    height:        auto !important;
+    min-height:    100%;
+    margin-bottom: -$push-height;
+
+    #page-title {
+      height:      $push-height;
+      padding-top: 0.5rem;
+    }
+
+    #content-wrapper {
+      background-color: $white;
+      padding:          1rem;
+      box-shadow:       1px 1px 2px 0 $medium-gray;
+      min-height:       calc(100vh - #{3 * $push-height} - 35px);
+    }
+  }
+
+  #push	{
+    height: $push-height;
+  }
+
+  #footer {
+    background-color: #333333;
+    height:           $push-height;
+    color:            $white;
+    padding:          1rem;
+    text-align:       center;
+  }
+}

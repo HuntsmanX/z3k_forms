@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   devise :omniauthable, omniauth_providers: [:staff]
+
   store :settings, accessors: [:avatar_path, :timezone]
 
   def self.from_omniauth(auth)
@@ -10,9 +11,16 @@ class User < ApplicationRecord
   end
 
   def update_staff_attributes(auth)
-    self.city_id     = auth.info.city_id
-    self.avatar_path = 'system/users/avatars/' + auth.info.user_id.to_s + '/large/' + auth.info.avatar if auth.info.user_id && auth.info.avatar
-    self.timezone    = auth.info.timezone
+    self.city_id  = auth.info.city_id
+    self.timezone = auth.info.timezone
+
+    if auth.info.user_id && auth.info.avatar
+      self.avatar_path = "system/users/avatars/#{auth.info.user_id}/large/#{auth.info.avatar}"
+    end
+  end
+
+  def avatar_url
+    Rails.application.secrets.staff_app_url + avatar_path
   end
 
 end

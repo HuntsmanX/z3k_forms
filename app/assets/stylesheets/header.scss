@@ -1,0 +1,32 @@
+#app-header {
+  background-color: #333333;
+
+  .app-title {
+    font-size:    22px;
+    font-family:  'Nunito', sans-serif;
+    padding-left: 0;
+  }
+
+  ul, a {
+    background-color: #333333;
+    color:            $white;
+  }
+
+  .menu li {
+    display: inline-block;
+    min-height: 38px;
+
+    a {
+      margin: 4.5px 0;
+    }
+  }
+
+  .user-avatar {
+    height:              38px;
+    width:               38px;
+    border-radius:       50%;
+    background-position: center center;
+    background-size:     cover;
+    border:              1px solid white;
+  }
+}

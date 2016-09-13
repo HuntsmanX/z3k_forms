@@ -45,7 +45,7 @@
 // 1. Global
 // ---------
 
-$global-font-size: 100%;
+$global-font-size: 85%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 $foundation-palette: (
@@ -116,12 +116,12 @@ $header-sizes: (
     'h6': 16,
   ),
   medium: (
-    'h1': 48,
-    'h2': 40,
-    'h3': 31,
-    'h4': 25,
-    'h5': 20,
-    'h6': 16,
+    'h1': 24, //48,
+    'h2': 20, //40,
+    'h3': 19, //31,
+    'h4': 18, //25,
+    'h5': 17, //20,
+    'h6': 16, //16,
   ),
 );
 $header-color: inherit;
@@ -564,4 +564,3 @@ $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 1rem;
 $topbar-input-width: 200px;
 $topbar-unstack-breakpoint: medium;
-

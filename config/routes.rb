@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root 'configuration#dashboard'
+
+  root 'dashboards#show'
 
   devise_for :users, controllers: { :omniauth_callbacks => "users/omniauth_callbacks" }
 
@@ -7,4 +8,6 @@ Rails.application.routes.draw do
     get 'sign_in' => redirect('users/auth/staff'), as: :new_user_session
     get 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
   end
+
+  resource :dashboard
 end
