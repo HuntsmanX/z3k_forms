@@ -10,45 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912124301) do
+ActiveRecord::Schema.define(version: 20160913133057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "forms", force: :cascade do |t|
-    t.string   "name"
-    t.string   "form_type"
-    t.boolean  "time_limited", default: false
-    t.integer  "time_limit"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.index ["form_type"], name: "index_forms_on_form_type", using: :btree
-  end
-
-  create_table "questions", force: :cascade do |t|
-    t.integer  "form_id"
-    t.jsonb    "content"
-    t.string   "question_type"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["question_type"], name: "index_questions_on_question_type", using: :btree
-  end
-
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "email",              default: "", null: false
+    t.integer  "sign_in_count",      default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.integer  "city_id"
+    t.jsonb    "settings"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
 end
