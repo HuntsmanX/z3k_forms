@@ -36,7 +36,8 @@ gem 'devise_zxcvbn'
 gem 'omniauth'
 gem 'omniauth-oauth2'
 gem 'rack-mini-profiler'
-gem 'haml'
+gem 'slim'
+gem 'foundation-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
