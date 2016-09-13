@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # :database_authenticatable, :registerable,
   # :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:staff]
-
+  
   def self.from_omniauth(auth)
     user = where(staff_uid: auth.uid).first_or_initialize
     user.update_staff_attributes(auth)
