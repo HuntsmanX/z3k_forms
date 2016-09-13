@@ -31,6 +31,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 gem 'pry'
 gem 'devise'
+gem 'devise_security_extension'
+gem 'devise_zxcvbn'
 gem 'omniauth'
 gem 'omniauth-oauth2'
 gem 'rack-mini-profiler'
