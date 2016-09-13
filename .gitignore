@@ -19,6 +19,3 @@
 
 /config/database.yml
 /config/secrets.yml
-
-/node_modules
-/public/webpack

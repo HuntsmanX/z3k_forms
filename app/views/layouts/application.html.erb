@@ -4,12 +4,11 @@
     <title>Z3K Forms</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_link_tag    'application', 'data-turbolinks-track': 'reload', media: 'all' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
     <%= yield %>
-    <%= javascript_include_tag *webpack_asset_paths("application") %>
   </body>
 </html>
