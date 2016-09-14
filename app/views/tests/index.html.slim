@@ -1,15 +1,16 @@
 - provide :title, 'Tests'
 
-- flash.each do |key, value|
-  .alert.fade.in class="alert-#{key}"
-    strong = value
+= render 'layouts/flash'
 
 | Tests list goes here
 
 a data-open="CreatetestModal"  Create Test
 
+- if @tests.present?
+  = render 'tests/shared/index_tests', locales: @tests
+
 #CreatetestModal.reveal data-reveal=""
-  = render 'shared/test_form'
+  = render 'tests/shared/test_form'
   button.close-button aria-label=("Close modal") data-close="" type="button"
     span aria-hidden="true"  ×
 

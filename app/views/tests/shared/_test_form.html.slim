@@ -1,0 +1,32 @@
+= form_for(Test.new) do |f|
+  .fieldset-wrapper style="display:block;"
+    fieldset
+      .fields
+        .form-field.row
+          .large-3.columns
+            label.text-right.middle
+              = f.label 'Name of test'
+          .large-9.columns
+            .large-9.columns
+              = f.text_field :name, placeholder: 'Please enter name of test', required: true
+        .form-field.row
+          .large-3.columns
+            label.text-right.middle
+              = f.label 'Will the test have time limit ?', id: 'field_for_time'
+          .large-9.columns
+            .large-9.columns.radiobuttons
+              = f.radio_button :time_limit, true, onClick: 'show_time_section();'
+              = f.label 'Yes'
+              = f.radio_button :time_limit, false, checked: true, onClick: 'show_time_section();'
+              = f.label 'No'
+        div.field#set_time_for_test
+          .large-3.columns
+            label.text-right.middle
+               = f.label :time_for_test
+          .large-9.columns
+            .large-9.columns
+              = f.text_field :time_for_test, placeholder: 'Please enter the duration of the test'
+  footer
+    .button-group.small.float-right
+      div.actions
+        = f.submit class: 'button'
