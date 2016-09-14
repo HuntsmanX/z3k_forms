@@ -2,14 +2,14 @@
   .fieldset-wrapper style="display:block;"
     fieldset
       .fields
-        #query_textarea.form-field.row
+        .form-field.row
           .large-3.columns
             label.text-right.middle
               = f.label 'Name of test'
           .large-9.columns
             .large-9.columns
               = f.text_field :name, placeholder: 'Please enter name of test', required: true
-        #keep_retrying_input.form-field.row
+        .form-field.row
           .large-3.columns
             label.text-right.middle
               = f.label 'Will the test have time limit ?', id: 'field_for_time'
