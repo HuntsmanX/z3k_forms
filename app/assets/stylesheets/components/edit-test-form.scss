@@ -1,0 +1,31 @@
+#edit-test-form {
+
+  ul.questions {
+    list-style-type: none;
+    margin:          1rem 0;
+
+    li.question {
+      border-top: 1px solid #777;
+      padding:    1rem 0;
+      position:   relative;
+
+      .on-hover {
+        display: none;
+      }
+    }
+
+    li.question:hover {
+      .on-hover {
+        display:  block;
+        position: absolute;
+        top:      1rem;
+        right:    0;
+      }
+    }
+
+    li.question:last-child {
+      border-bottom: 1px solid #777;
+    }
+  }
+
+}
