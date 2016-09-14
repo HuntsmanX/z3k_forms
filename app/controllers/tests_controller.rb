@@ -1,6 +1,7 @@
 class TestsController < ApplicationController
 
   def index
+    @tests = Test.all
   end
 
   def edit
@@ -25,6 +26,12 @@ class TestsController < ApplicationController
     else
       redirect_to :back , flash: { error: @test.errors.full_messages.first }
     end
+  end
+
+  def destroy
+    test = Test.find_by_id(params[:id])
+    test.destroy
+    redirect_to tests_path, flash: { notice: "Test Deleted Successfully" }
   end
 
   def test_params

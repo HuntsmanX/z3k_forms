@@ -6,6 +6,9 @@
 
 a data-open="CreatetestModal"  Create Test
 
+- if @tests.present?
+  = render 'tests/shared/index_tests', locales: @tests
+
 #CreatetestModal.reveal data-reveal=""
   = render 'tests/shared/test_form'
   button.close-button aria-label=("Close modal") data-close="" type="button"
