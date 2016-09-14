@@ -11,4 +11,5 @@ Rails.application.routes.draw do
 
   resource  :dashboard
   resources :tests
+  resources :questions
 end

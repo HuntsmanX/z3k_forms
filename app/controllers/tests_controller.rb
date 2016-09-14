@@ -4,18 +4,8 @@ class TestsController < ApplicationController
   end
 
   def edit
-    @test = OpenStruct.new({
-      id:   1,
-      name: 'English Test #1',
-      questions: [
-        {
-          id:             1,
-          test_id:        1,
-          question_type:  'short_answer',
-          content:        "What's your name?"
-        }
-      ]
-    })
+    @test           = Test.includes(:questions).find(params[:id])
+    @question_types = Question.question_types.keys.map { |k| { value: k, name: k.humanize } }
   end
 
   def create

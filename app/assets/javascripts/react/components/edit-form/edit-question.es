@@ -1,5 +1,9 @@
 import { observer } from "mobx-react";
 
+import LoadingWrapper         from "./../loading-wrapper.es"
+import SingleChoiceOptions    from "./single-choice-options.es";
+import MultipleChoiceOptions  from "./multiple-choice-options.es";
+
 @observer
 class EditQuestion extends React.Component {
 
@@ -15,10 +19,12 @@ class EditQuestion extends React.Component {
   }
 
   render() {
-    const { question } = this.props;
+    const { question, questionTypes } = this.props;
 
     return (
       <li className="question">
+        {question.isBeingSaved ? <LoadingWrapper /> : null}
+
         <form onSubmit={this.onSubmit.bind(this)}>
 
           <div className="row">
@@ -32,6 +38,38 @@ class EditQuestion extends React.Component {
 
             <div className="columns large-3" />
           </div>
+
+          <div className="row">
+            <div className="columns large-3">
+              <label className="text-right middle">Type</label>
+            </div>
+
+            <div className="columns large-6">
+              <select
+                onChange={this.onChange.bind(this, 'question_type')}
+                value={question.question_type}
+              >
+                {questionTypes.map(type => {
+                  return <option
+                    value={type.value}
+                    key={type.value}
+                  >
+                    {type.name}
+                  </option>
+                })}
+              </select>
+            </div>
+
+            <div className="columns large-3" />
+          </div>
+
+          {question.question_type === 'single_choice' ? (
+            <SingleChoiceOptions question={question} />
+          ) : null}
+
+          {question.question_type === 'multiple_choice' ? (
+            <MultipleChoiceOptions />
+          ) : null}
 
           <div className="row">
             <div className="columns large-9 large-offset-3">

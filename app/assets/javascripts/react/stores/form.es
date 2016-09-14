@@ -12,11 +12,13 @@ class Form {
         new Question(question)
       );
     });
+
+    this.test_id = form.id;
   }
 
   @action addQuestion() {
     this.questions.push(
-      new Question({ isBeingEdited: true })
+      new Question({ isBeingEdited: true, test_id: this.test_id })
     );
   }
 

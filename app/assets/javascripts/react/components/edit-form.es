@@ -8,7 +8,7 @@ import EditQuestion from "./edit-form/edit-question.es";
 class EditForm extends React.Component {
 
   constructor(props) {
-    super();
+    super(props);
     this.form = new Form(props.test);
   }
 
@@ -29,8 +29,8 @@ class EditForm extends React.Component {
         <ul className="questions">
           {this.form.questions.map((question, index) => {
             return question.isBeingEdited ?
-              <EditQuestion question={question} key={question.uuid} /> :
-              <ShowQuestion question={question} key={question.uuid} />
+              <EditQuestion question={question} questionTypes={this.props.question_types} key={question.uuid} /> :
+              <ShowQuestion question={question} questionTypes={this.props.question_types} key={question.uuid} />
           })}
         </ul>
 

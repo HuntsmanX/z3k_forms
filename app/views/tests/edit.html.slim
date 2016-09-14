@@ -1,3 +1,5 @@
 - provide :title, @test.name
 
-= react_component 'EditForm', test: @test.to_h
+= react_component 'EditForm',
+  test:           @test.as_json(include: :questions),
+  question_types: @question_types

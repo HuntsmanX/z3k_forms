@@ -246,6 +246,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 5.0.0, >= 5.0.0.1)
   react-rails
+  responders
   sass-rails (~> 5.0)
   slim
   spring
