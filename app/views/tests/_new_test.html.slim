@@ -1,0 +1,32 @@
+#new-test-modal.reveal data-reveal=""
+  h3 New Test
+  
+  = form_for Test.new do |f|
+    .row
+      .large-3.columns
+        = f.label :name, 'Name', class: 'text-right middle'
+      .large-9.columns
+        = f.text_field :name, placeholder: 'Test Name'
+        
+    .row
+      .large-3.columns
+        = f.label :time_limit, 'Time Limited', id: 'field_for_time', class: 'text-right middle'
+      .large-9.columns
+        = f.radio_button :time_limit, true, onClick: 'show_time_section();'
+        = f.label :time_limit_true, 'Yes'
+        = f.radio_button :time_limit, false, checked: true, onClick: 'show_time_section();'
+        = f.label :time_limit_false, 'No'
+    
+    .row#set_time_for_test
+      .large-3.columns
+        = f.label :time_for_test, 'Time Limit', class: 'text-right middle'
+      .large-9.columns
+        = f.text_field :time_for_test, placeholder: 'Test Duration'
+    
+    footer
+      .button-group.small.float-right
+        div.actions
+          = f.submit 'Save', class: 'button'
+  
+  button.close-button aria-label="Close modal" data-close="" type="button"
+    span aria-hidden="true" ×

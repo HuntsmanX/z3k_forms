@@ -1,0 +1,43 @@
+.entities-list-panel {
+  margin-bottom: 1rem;
+}
+
+.entities-list {
+  margin:     0;
+  list-style: none;
+
+  li {
+    border-top:  1px solid $medium-gray;
+    padding:     1rem 0;
+    transition:  background-color 0.25s ease-out;
+    font-size:   0.875rem;
+
+    .hash {
+
+      .key {
+        display:        inline-block;
+        width:          35%;
+        text-align:     right;
+        font-style:     italic;
+        color:          #666;
+        vertical-align: top;
+      }
+
+      .value {
+        display:       inline-block;
+        width:         65%;
+        word-wrap:     break-word;
+        padding-left:  0.5rem;
+        padding-right: 0.5rem;
+      }
+    }
+
+    .button-group {
+      margin: 0;
+    }
+  }
+
+  li:last-child {
+    border-bottom: 1px solid $medium-gray;
+  }
+}
