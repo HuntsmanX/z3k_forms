@@ -1,0 +1,15 @@
+= form_for(Test.new) do |f|
+  div.field
+    = f.label :name
+    br
+    = f.text_field :name, placeholder: 'Please enter name of test', required: true
+  div.field
+    = f.label 'Will the test have time limit ? (by default "No")'
+    br
+      = f.check_box :time_limit, onclick: 'show_time_for_test()'
+  div.field#set_time_for_test
+    = f.label :time_for_test
+    br
+      = f.text_field :time_for_test, placeholder: 'Please enter the duration of the test in minutes'
+  div.actions
+    = f.submit class: 'button'
