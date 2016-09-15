@@ -21,7 +21,7 @@
       .large-3.columns
         = f.label :time_for_test, 'Time Limit', class: 'text-right middle'
       .large-9.columns
-        = f.text_field :time_for_test, placeholder: 'Test Duration'
+        = f.select :time_for_test, options_for_select((0..60).step(5).to_a.map{|s| ["#{s} min", s]})
     
     footer
       .button-group.small.float-right
