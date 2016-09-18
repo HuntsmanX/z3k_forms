@@ -90,12 +90,12 @@ class HorizontalForm < ActionView::Helpers::FormBuilder
 
   def field_input_with_hint render_input, hint
     concat(
-      content_tag(:div, class: 'columns large-5') do
+      content_tag(:div, class: 'columns large-6') do
         render_input.call
       end
     )
     concat(
-      content_tag(:div, class: 'columns large-7') do
+      content_tag(:div, class: 'columns large-6') do
         content_tag :label, hint, class: 'middle hint'
       end
     )

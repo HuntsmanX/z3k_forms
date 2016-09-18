@@ -1,5 +1,7 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import uuid from "node-uuid";
+import { convertFromRaw } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 
 import Option from "./choice-option.es";
 
@@ -16,7 +18,21 @@ class Question {
 
   constructor(options) {
     Object.keys(options).forEach(key => {
-      this[key] = options[key];
+      if (key === 'content') {
+        this.content = JSON.parse(options[key]);
+      } else {
+        this[key] = options[key];
+      }
+    });
+  }
+
+  @computed get htmlContent() {
+    return stateToHTML(convertFromRaw(this.content), {
+      blockRenderers: {
+        unstyled: (block) => {
+          return `<div>${block.getText()}</div>`;
+        }
+      }
     });
   }
 
@@ -64,7 +80,7 @@ class Question {
       data:     {
         question: {
           test_id:       this.test_id,
-          content:       this.content,
+          content:       JSON.stringify(this.content),
           question_type: this.question_type
         }
       }

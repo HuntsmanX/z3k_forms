@@ -2,7 +2,9 @@ class MultipleChoiceOptions extends React.Component {
 
   render() {
     return (
-      <div>Multiple Choice Options</div>
+      <fieldset>
+        <legend>Multiple Choice Options</legend>
+      </fieldset>
     )
   }
 

@@ -1,5 +1,7 @@
 import { observer } from "mobx-react";
 
+import FormFieldWrapper from "./form-field-wrapper.es";
+
 @observer
 class SingleChoiceOptions extends React.Component {
 
@@ -15,29 +17,17 @@ class SingleChoiceOptions extends React.Component {
     const { question } = this.props;
 
     return (
-      <div>
-        <div className="row">
-          <div className="large-3 columns">
-            <label className="text-right middle">Options</label>
-          </div>
+      <fieldset>
+        <legend>Single Choice Options</legend>
 
-          <div className="columns large-6">
-            {question.options.map((option, index) => {
-              return <Option option={option} deleteOption={this.deleteOption.bind(this, index)} key={option.uuid} />
-            })}
+        {question.options.map((option, index) => {
+          return <Option option={option} deleteOption={this.deleteOption.bind(this, index)} key={option.uuid} index={index} />
+        })}
 
-            <button
-              type="button"
-              className="button small"
-              onClick={this.addOption.bind(this)}
-            >
-              Add Option
-            </button>
-          </div>
-
-          <div className="large-3 columns" />
-        </div>
-      </div>
+        <p>
+          <a onClick={this.addOption.bind(this)}>Add Option</a>
+        </p>
+      </fieldset>
     )
   }
 
@@ -53,13 +43,26 @@ class Option extends React.Component {
   }
 
   render() {
-    const { option, deleteOption } = this.props;
+    const { option, deleteOption, index } = this.props;
 
     return (
-      <div className="input-group">
-        <input type="text" className="input-group-field" value={option.content} onChange={this.onChange.bind(this, 'content')} />
-        <div className="input-group-button">
-          <input type="button" className="button alert" value="Delete" onClick={deleteOption}/>
+      <div className="row">
+        <div className="columns large-3">
+          <label className="middle text-right">{`Option ${index + 1}`}</label>
+        </div>
+        <div className="columns large-9">
+          <div className="columns large-6">
+            <input type="text" value={option.content} onChange={this.onChange.bind(this, 'content')} />
+          </div>
+          <div className="columns large-2">
+            <label className="middle">
+              <input type="checkbox" />
+              Correct
+            </label>
+          </div>
+          <div className="columns large-4">
+            <button className="button tiny alert" style={{ marginTop: '3.5px' }}>Delete</button>
+          </div>
         </div>
       </div>
     )

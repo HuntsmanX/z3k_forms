@@ -1,6 +1,8 @@
 import { observer } from "mobx-react";
 
-import LoadingWrapper         from "./../loading-wrapper.es"
+import LoadingWrapper         from "./../loading-wrapper.es";
+import Draft                  from "./../draft.es";
+import FormFieldWrapper       from "./form-field-wrapper.es";
 import SingleChoiceOptions    from "./single-choice-options.es";
 import MultipleChoiceOptions  from "./multiple-choice-options.es";
 
@@ -9,7 +11,7 @@ class EditQuestion extends React.Component {
 
   onChange(attr, event) {
     this.props.question.change(
-      attr, event.target.value
+      attr, event.target && event.target.value || event
     );
   }
 
@@ -25,64 +27,50 @@ class EditQuestion extends React.Component {
       <li className="question">
         {question.isBeingSaved ? <LoadingWrapper /> : null}
 
-        <form onSubmit={this.onSubmit.bind(this)}>
+        <div className="callout primary">
+          <form onSubmit={this.onSubmit.bind(this)}>
 
-          <div className="row">
-            <div className="columns large-3">
-              <label className="text-right middle">Content</label>
-            </div>
+            <fieldset>
+              <legend>Question</legend>
 
-            <div className="columns large-6">
-              <textarea value={question.content} onChange={this.onChange.bind(this, 'content')}/>
-            </div>
+              <FormFieldWrapper label="Content">
+                <Draft value={question.content} onChange={this.onChange.bind(this, 'content')}/>
+              </FormFieldWrapper>
 
-            <div className="columns large-3" />
-          </div>
+              <FormFieldWrapper label="Type">
+                <select
+                  onChange={this.onChange.bind(this, 'question_type')}
+                  value={question.question_type}
+                >
+                  {questionTypes.map(type => {
+                    return (
+                      <option value={type.value} key={type.value}>
+                        {type.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </FormFieldWrapper>
+            </fieldset>
 
-          <div className="row">
-            <div className="columns large-3">
-              <label className="text-right middle">Type</label>
-            </div>
+            {question.question_type === 'single_choice' ? (
+              <SingleChoiceOptions question={question} />
+            ) : null}
 
-            <div className="columns large-6">
-              <select
-                onChange={this.onChange.bind(this, 'question_type')}
-                value={question.question_type}
-              >
-                {questionTypes.map(type => {
-                  return <option
-                    value={type.value}
-                    key={type.value}
-                  >
-                    {type.name}
-                  </option>
-                })}
-              </select>
-            </div>
+            {question.question_type === 'multiple_choice' ? (
+              <MultipleChoiceOptions />
+            ) : null}
 
-            <div className="columns large-3" />
-          </div>
+            <footer className="clearfix">
+              <div className="float-right">
+                <button type="submit"className="button small">
+                  Save
+                </button>
+              </div>
+            </footer>
 
-          {question.question_type === 'single_choice' ? (
-            <SingleChoiceOptions question={question} />
-          ) : null}
-
-          {question.question_type === 'multiple_choice' ? (
-            <MultipleChoiceOptions />
-          ) : null}
-
-          <div className="row">
-            <div className="columns large-9 large-offset-3">
-              <button
-                type="submit"
-                className="button small"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-
-        </form>
+          </form>
+        </div>
       </li>
     );
   }

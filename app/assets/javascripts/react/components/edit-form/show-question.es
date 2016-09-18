@@ -9,9 +9,10 @@ class ShowQuestion extends React.Component {
 
     return (
       <li className="question">
-        <div className="content">
-          {question.content}
-        </div>
+        <div
+          className="content"
+          dangerouslySetInnerHTML={{ __html: question.htmlContent }}
+        />
         <div>
           {`Type: ${question.question_type}`}
         </div>

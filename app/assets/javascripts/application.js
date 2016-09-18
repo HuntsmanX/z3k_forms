@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require foundation
-//= require react-server
 //= require react_ujs
 //= require_tree .
 
@@ -21,6 +20,7 @@ $(function() {
     $(document).foundation();
 });
 
-var React = window.React = global.React = require('react');
+var React    = window.React    = global.React    = require('react');
+var ReactDOM = window.ReactDOM = global.ReactDOM = require('react-dom');
 
 require('./components.es');
