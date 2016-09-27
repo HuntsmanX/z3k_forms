@@ -21,13 +21,10 @@ class Draft extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      editorState: this.parseValue(nextProps.value)
-    });
-  }
-
   onChange(editorState) {
+    this.props.onChange(
+      convertToRaw(editorState.getCurrentContent())
+    );
     this.setState({ editorState });
   }
 
@@ -48,21 +45,12 @@ class Draft extends Component {
 
   handleBlur() {
     this.setState({ focused: false });
-    this.props.onChange(
-      convertToRaw(this.state.editorState.getCurrentContent())
-    );
-  }
-
-  toggleBlockType(blockType) {
-    this.onChange(
-      RichUtils.toggleBlockType(this.state.editorState, blockType)
-    );
   }
 
   toggleInlineStyle(inlineStyle) {
     this.onChange(
       RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
-    )
+    );
   }
 
   render() {
@@ -70,11 +58,6 @@ class Draft extends Component {
 
     return (
       <div className="draft-root" data-focused={focused}>
-        <BlockTypeControls
-          editorState={editorState}
-          onToggle={this.toggleBlockType.bind(this)}
-        />
-
         <InlineStyleControls
           editorState={editorState}
           onToggle={this.toggleInlineStyle.bind(this)}
@@ -85,6 +68,7 @@ class Draft extends Component {
         <div className="draft-editor">
           <Editor
             editorState={editorState}
+            customStyleMap={styleMap}
             onChange={this.onChange.bind(this)}
             handleKeyCommand={this.handleKeyCommand.bind(this)}
             spellCheck={true}
@@ -121,44 +105,20 @@ class StyleButton extends Component {
 
 }
 
-const BLOCK_TYPES = [
-  { label: 'H1',    style: 'header-one' },
-  { label: 'H2',    style: 'header-two' },
-  { label: 'H3',    style: 'header-three' },
-  { label: 'H4',    style: 'header-four' },
-  // { label: 'Quote', style: 'blockquote' },
-  { label: 'UL',    style: 'unordered-list-item' },
-  { label: 'OL',    style: 'ordered-list-item' },
-  { label: 'Code',  style: 'code-block' }
-];
+const styleMap = {
+  'CODE': {
+    fontFamily:      'Consolas, "Liberation Mono", Courier, monospace',
+    backgroundColor: '#e6e6e6',
+    border:          '1px solid #cacaca',
+    padding:         '0.14706rem 0.36765rem 0.07353rem'
+  },
+};
 
-const BlockTypeControls = (props) => {
-  const { editorState } = props;
-  const selection = editorState.getSelection();
-  const blockType = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
-
-  return (
-    <div className="draft-controls">
-      {BLOCK_TYPES.map(type =>
-        <StyleButton
-          key={type.label}
-          active={type.style === blockType}
-          label={type.label}
-          onToggle={props.onToggle}
-          style={type.style}
-        />
-      )}
-    </div>
-  )
-}
-
-var INLINE_STYLES = [
+const INLINE_STYLES = [
   { label: 'Bold',      style: 'BOLD' },
   { label: 'Italic',    style: 'ITALIC' },
-  { label: 'Underline', style: 'UNDERLINE' }
+  { label: 'Underline', style: 'UNDERLINE' },
+  { label: 'Code',      style: 'CODE' }
 ];
 
 const InlineStyleControls = (props) => {

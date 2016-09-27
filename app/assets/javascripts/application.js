@@ -20,7 +20,7 @@ $(function() {
     $(document).foundation();
 });
 
-var React    = window.React    = global.React    = require('react');
-var ReactDOM = window.ReactDOM = global.ReactDOM = require('react-dom');
+var React    = window.React    = require('react');
+var ReactDOM = window.ReactDOM = require('react-dom');
 
 require('./components.es');

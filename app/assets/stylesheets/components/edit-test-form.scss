@@ -1,30 +1,82 @@
-#edit-test-form {
+#test-show-edit {
 
-  ul.questions {
-    list-style-type: none;
-    margin:          1rem 0;
+  .question {
+    border-top:    1px solid $light-gray;
+    border-bottom: 1px solid $light-gray;
+    padding:       1rem;
 
-    li.question {
-      border-top: 1px solid #777;
-      padding:    1rem 0;
-      position:   relative;
+    .content {
 
-      .on-hover {
+      .question-content {
+        margin-bottom: 0.5rem;
+
+        p {
+          margin-bottom: 0;
+        }
+      }
+
+      .answer-fields {
+        margin-top: 0.5rem;
+
+        input, select, textarea {
+          margin-bottom: 0;
+        }
+
+        .graggable-option {
+          font-size: 12px;
+
+          .handle {
+            display:        inline-block;
+            color:          $dark-gray;
+            cursor:         move;
+            margin-right:   0.5rem;
+          }
+        }
+      }
+    }
+
+    i.action {
+      cursor:    pointer;
+      color:     $dark-gray;
+      font-size: 1.5rem;
+
+      &.margin {
+        margin-right: 1rem;
+      }
+    }
+
+    .question-edit {
+      margin: 1rem 0 0 0;
+
+      .drag-handle-container {
         display: none;
-      }
-    }
 
-    li.question:hover {
-      .on-hover {
-        display:  block;
-        position: absolute;
-        top:      1rem;
-        right:    0;
+        .drag-handle {
+          cursor: move;
+        }
       }
-    }
 
-    li.question:last-child {
-      border-bottom: 1px solid #777;
+      .option-row:hover {
+
+        .drag-handle-container {
+          display: block;
+        }
+
+        label.draggable {
+          display: none;
+        }
+      }
+
+      .switch.tiny {
+        margin-top: 0.6rem;
+      }
+
+      footer {
+
+        button {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 

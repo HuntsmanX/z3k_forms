@@ -14,9 +14,12 @@
  */
 
 @import 'foundation/foundation_and_overrides';
+@import "font-awesome-sprockets";
+@import "font-awesome";
 
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&subset=cyrillic';
 @import 'https://fonts.googleapis.com/css?family=Nunito:400,700';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
 @import 'global';
 
