@@ -19,7 +19,11 @@ class TestQuestion {
       }
     });
   }
-
+    
+  constructor(section) {
+    this.section = section;
+  }
+  
   @action toggle() {
     this.isExpanded = !this.isExpanded;
   }
