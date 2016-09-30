@@ -10,8 +10,11 @@ Rails.application.routes.draw do
   end
 
   resource  :dashboard
-  resources :tests
-  resources :questions
+  resources :tests do
+    resources :sections do
+      resources :questions
+    end
+  end
 
   get 'form', to: 'application#form'
 end
