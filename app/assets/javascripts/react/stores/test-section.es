@@ -24,8 +24,20 @@ class TestSection {
   @action showEdit() {
     this.isShown = !this.isShown;
   }
-
-
+  
+  @action handleClick(section) {
+    var testId = location.pathname.split('/')[2]
+    $.ajax({
+      url: '/tests/'+testId+'/sections',
+      type: 'POST',
+      data: { section: { name: section.title, time_for_test: section.time } },
+      success: (response) => {
+        console.log('it worked!', response);
+        section.showEdit()
+      }
+    })
+  }
+  
 }
 
 export default TestSection;

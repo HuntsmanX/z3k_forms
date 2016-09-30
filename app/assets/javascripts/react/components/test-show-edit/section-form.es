@@ -27,7 +27,7 @@ class SectionForm extends React.Component {
 
         <footer className="clearfix">
           <div className="float-right">
-            <button className="button tiny">Save</button>
+            <button className="button tiny" onClick={section.handleClick.bind(this, section)}>Save</button>
           </div>
         </footer>
       </form>

@@ -24,6 +24,7 @@ class TestsController < ApplicationController
     redirect_to tests_path, flash: { notice: "Test Deleted Successfully" }
   end
 
+  private
   def test_params
     params.require(:test).permit(:name, :time_for_test, :time_limit)
   end
