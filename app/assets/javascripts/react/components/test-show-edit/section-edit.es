@@ -1,8 +1,4 @@
-import { observer } from "mobx-react";
-
-import LabeledWrapper from "./labeled-wrapper.es";
-import Question from "./question.es";
-import SectionForm from "./section-form.es"
+import {observer} from "mobx-react";
 
 @observer
 class SectionEdit extends React.Component {
@@ -17,20 +13,19 @@ class SectionEdit extends React.Component {
 
 
   render() {
-    const { section } = this.props;
 
     return (
-      <div className="callout primary section-edit">
-        <a href="#" className="button tiny"
-          onClick={this.showEdit.bind(this)} >
-          Edit Section
+      <div className="section-edit float-right">
+        <a href="#" onClick={this.showEdit.bind(this)}>
+          <i className="material-icons">edit</i>
         </a>
-
-        {section.isShown ? (
-          <SectionForm section={section}/>
-        ) : null}
+        <a href="#" onClick={this.addQuestion.bind(this)}>
+          <i className="material-icons">add</i>
+        </a>
       </div>
-  );
+    );
+
   }
-  }
+
+}
 export default SectionEdit;
