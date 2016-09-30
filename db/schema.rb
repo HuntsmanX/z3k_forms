@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160918211048) do
+ActiveRecord::Schema.define(version: 20160930105042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,16 +20,23 @@ ActiveRecord::Schema.define(version: 20160918211048) do
     t.integer  "question_type", default: 1
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.integer  "section_id"
+    t.index ["section_id"], name: "index_questions_on_section_id", using: :btree
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "time_for_test"
     t.integer  "test_id"
-    t.index ["test_id"], name: "index_questions_on_test_id", using: :btree
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["test_id"], name: "index_sections_on_test_id", using: :btree
   end
 
   create_table "tests", force: :cascade do |t|
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "name"
-    t.boolean  "time_limit"
-    t.integer  "time_for_test"
   end
 
   create_table "users", force: :cascade do |t|
@@ -45,4 +52,5 @@ ActiveRecord::Schema.define(version: 20160918211048) do
     t.jsonb    "settings"
   end
 
+  add_foreign_key "questions", "sections"
 end

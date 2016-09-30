@@ -1,6 +1,7 @@
 module TestsHelper
-  def show_time_duration(test)
-    return 'N/A' unless test.time_limit
-    "#{test.time_for_test} min"
+
+  def show_questions_in_test(test)
+    nums = test.sections.map{|section| section.questions.size }.inject(:+)
+    nums ||= 0
   end
 end

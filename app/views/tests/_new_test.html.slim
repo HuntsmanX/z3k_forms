@@ -3,15 +3,6 @@
   = horizontal_form_for Test.new, hints: false do |f|
     = f.text_field :name
 
-    = f.fieldset 'Time for test' do
-
-      = f.collection_radio_buttons :time_limit,
-              [{val: true, name: 'Yes'}, {val: false, name: 'No'}],
-              :val, :name, layout: :horizontal, label: 'Time Limited'
-
-    #set_time_for_test
-      = f.select :time_for_test, options_for_select((0..60).step(5).to_a.map{|s| ["#{s} min", s]})
-    
     = f.footer do
       = f.submit 'Save'
   
