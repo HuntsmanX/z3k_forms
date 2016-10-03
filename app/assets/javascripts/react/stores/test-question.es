@@ -16,8 +16,12 @@ class TestQuestion {
     return stateToHTML(convertFromRaw(this.content), {
       inlineStyles: {
         CODE: { element: 'code' }
-      }
+      },
     });
+  }
+
+  @computed get gapsRequired() {
+    return this.type === 'gaps';
   }
 
   @action toggle() {

@@ -1,60 +1,13 @@
-.draft-root {
-  border:           $input-border;
-  margin:           0 0 $form-spacing;
-  padding:          $form-spacing / 2;
-  font-size:        $input-font-size;
-  color:            $input-color;
-  background-color: $input-background;
+.draft-editor {
 
-  &[data-focused='true'] {
-    border:           $input-border-focus;
-    background-color: $input-background-focus;
-    outline:          none;
-    box-shadow:       $input-shadow-focus;
+  div[data-block] {
+    display: inline-block;
   }
 
-  .draft-editor {
-
-    pre {
-      font-weight: $code-font-weight;
-      background:  $code-background;
-      border:      $code-border;
-      padding:     $code-padding;
-      margin:      0.5rem 0;
-    }
-
-    pre > pre {
-      border:  none;
-      padding: 0;
-      margin:  0;
-    }
+  input {
+    margin: 2px 0;
+    padding: 2px 4px;
+    height: 2rem;
   }
 
-  .draft-controls {
-    margin-bottom: 0.5rem;
-    display:       inline-block;
-
-    .style-button {
-      margin-right: 0.5rem;
-      cursor:       pointer;
-      color:        $dark-gray;
-
-      &.active {
-        font-weight: bold;
-      }
-    }
-  }
-
-  .draft-controls:not(:first-child) {
-    border-left: 1px solid $medium-gray;
-
-    .style-button:first-child {
-      margin-left: 0.5rem;
-    }
-  }
-
-  .draft-divider {
-    border-bottom: 1px solid $medium-gray;
-    margin-bottom: $form-spacing / 2;
-  }
 }

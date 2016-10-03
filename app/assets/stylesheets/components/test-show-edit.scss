@@ -1,0 +1,109 @@
+#test-show-edit {
+
+  i.action {
+    cursor:    pointer;
+    color:     $dark-gray;
+    font-size: 1.5rem;
+  }
+
+  .question {
+    border-top:    1px solid $light-gray;
+    border-bottom: 1px solid $light-gray;
+    padding:       1rem 0;
+    position:      relative;
+
+    &.edit-mode {
+      box-shadow: 0 0 5px 5px #ccc;
+    }
+
+    .actions-left {
+      position: absolute;
+      left:     1rem;
+      top:      1rem;
+    }
+
+    .actions-right {
+      position: absolute;
+      right:    1rem;
+      top:      1rem;
+    }
+
+    .main-content {
+      padding: 0 3rem;
+
+      .edit-answer-options {
+        margin-top: 1rem;
+
+        input, label, textarea {
+          margin-bottom: 0;
+        }
+
+        .graggable-option {
+          font-size: 12px;
+
+          .handle {
+            display:        inline-block;
+            color:          $dark-gray;
+            cursor:         move;
+            margin-right:   0.5rem;
+          }
+        }
+
+        .choice-option {
+
+          .drag-handle {
+            display: none;
+
+            i {
+              cursor: move;
+            }
+          }
+
+          &:hover {
+
+            .index-label {
+              display: none;
+            }
+
+            .drag-handle {
+              display: block;
+            }
+          }
+        }
+      }
+
+      .controls {
+        padding-top: 0.5rem;
+
+        .editor-control-group {
+          margin-right: 1rem;
+          color:        $secondary-color;
+          display:      inline-block;
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          .group-title {
+            vertical-align: top;
+            margin-right:   0.5rem;
+            font-style:     italic;
+            font-size:      0.9rem;
+          }
+
+          .style-button {
+            cursor:    pointer;
+
+            &.active {
+              color: $primary-color;
+            }
+
+            i {
+              font-size: 1.35rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

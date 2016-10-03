@@ -39,7 +39,11 @@ class QuestionEdit extends React.Component {
 
           <LabeledWrapper label="Question">
             <div className="large-6 columns">
-              <Draft value={question.content} onChange={this.change.bind(this, 'content')} />
+              <Draft
+                value={question.content}
+                onChange={this.change.bind(this, 'content')}
+                gapsEnabled={question.gapsRequired}
+              />
             </div>
           </LabeledWrapper>
 

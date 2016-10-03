@@ -1,6 +1,6 @@
-import Question from "./test-show-edit/question.es";
+import Question from "./_test-show-edit/question.es";
 
-import TestQuestion from "./../stores/test-question.es";
+import TestQuestion from "./../stores/_question.es";
 
 class TestShowEdit extends React.Component {
 
@@ -11,7 +11,7 @@ class TestShowEdit extends React.Component {
       <div id="test-show-edit">
         <Question question={question} />
       </div>
-    )
+    );
   }
 
 }

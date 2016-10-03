@@ -9,6 +9,9 @@ class ContentGaps extends React.Component {
     return (
       <div className="content">
         <div dangerouslySetInnerHTML={{ __html: question.htmlContent }} className="question-content" />
+        <div style={{ whiteSpace: 'pre-wrap' }}> 
+          {JSON.stringify(question.content, null, 2)}
+        </div>
       </div>
     );
   }
