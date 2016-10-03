@@ -1,15 +1,15 @@
-import Question from "./_test-show-edit/question.es";
+import Section from "./test-show-edit/section.es";
 
-import TestQuestion from "./../stores/_question.es";
+import TestSection from "./../stores/test-section.es";
 
 class TestShowEdit extends React.Component {
 
   render() {
-    const question = new TestQuestion();
+    const section = new TestSection();
 
     return (
       <div id="test-show-edit">
-        <Question question={question} />
+        <Section section={section}/>
       </div>
     );
   }

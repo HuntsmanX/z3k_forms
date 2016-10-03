@@ -1,22 +1,38 @@
-import { observable, action, computed } from "mobx";
-import { convertFromRaw } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
+import {observable, action, computed} from "mobx";
+import {convertFromRaw} from 'draft-js';
+import {stateToHTML} from 'draft-js-export-html';
 
 import QuestionOption from "./question-option.es";
 
 class TestQuestion {
 
-  @observable content    = {entityMap:{},blocks:[{key:"2psf7",text:"Untitled question",type:"unstyled",depth:0,inlineStyleRanges:[],entityRanges:[],data:{}}]};
+  @observable content = {
+    entityMap: {},
+    blocks: [{
+      key: "2psf7",
+      text: "Untitled question",
+      type: "unstyled",
+      depth: 0,
+      inlineStyleRanges: [],
+      entityRanges: [],
+      data: {}
+    }]
+  };
+
   @observable isExpanded = false;
-  @observable type       = 'single_choice';
-  @observable autoCheck  = false;
-  @observable options    = [new QuestionOption(this)];
+  @observable type = 'single_choice';
+  @observable autoCheck = false;
+  @observable options = [new QuestionOption(this)];
+
+  constructor(options) {
+    this.isExpanded = options.isExpanded || this.isExpanded
+  }
 
   @computed get htmlContent() {
     return stateToHTML(convertFromRaw(this.content), {
       inlineStyles: {
         CODE: { element: 'code' }
-      },
+      }
     });
   }
 
