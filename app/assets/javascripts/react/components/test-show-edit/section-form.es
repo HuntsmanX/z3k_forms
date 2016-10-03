@@ -7,6 +7,11 @@ class SectionForm extends React.Component {
   change(attr, event) {
     this.props.section.change(attr, event.target.value);
   }
+  
+  saveSection(attr, event) {
+    this.props.section.save();
+  }
+  
 
   render() {
     const section = this.props.section;
@@ -27,7 +32,7 @@ class SectionForm extends React.Component {
 
         <footer className="clearfix">
           <div className="float-right">
-            <button className="button tiny">Save</button>
+            <button className="button tiny" onClick={this.saveSection.bind(this)}>Save</button>
           </div>
         </footer>
       </form>
