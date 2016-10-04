@@ -114,12 +114,17 @@ class Section extends React.Component {
 
               <div className="row">
                 <div className="large-5 columns">
-              <span className="counter-item">
-                Questions: <em>{section.questions.length}</em>
-              </span>
                   <span className="counter-item">
-                Time limit: <em>{section.time}</em>
-              </span>
+                    Questions: <em>{section.questions.length}</em>
+                  </span>
+                  <span className="counter-item">
+                    Time limit: <em>{section.time}</em>
+                  </span>
+                  <div className="row large-12 columns">
+                    <span className="section-description">
+                      Description: <em>{section.paragraph}</em>
+                    </span>
+                  </div>
                 </div>
               </div>
 

@@ -32,9 +32,15 @@ class SectionForm extends React.Component {
                   </div>
                 </LabeledWrapper>
 
+                <LabeledWrapper label="Description">
+                  <div className="large-6 columns">
+                    <textarea value={section.paragraph} onChange={this.change.bind(this, "paragraph")}/>
+                  </div>
+                </LabeledWrapper>
+
                 <LabeledWrapper label="Time Limit">
                   <div className="large-6 columns">
-                    <input type="text" value={section.time} onChange={this.change.bind(this, "time")}/>
+                    <input type="number" value={section.time} onChange={this.change.bind(this, "time")}/>
                   </div>
                 </LabeledWrapper>
               </fieldset>

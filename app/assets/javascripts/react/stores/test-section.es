@@ -11,6 +11,7 @@ class TestSection {
   @observable questions     = [];
   @observable isExpanded    = false;
   @observable isBeingEdited = false;
+  @observable paragraph     = '';
 
   uuid = uuid.v4();
 
