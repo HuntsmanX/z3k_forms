@@ -6,100 +6,124 @@
     font-size: 1.5rem;
   }
 
-  .question {
-    border-top:    1px solid $light-gray;
-    border-bottom: 1px solid $light-gray;
-    padding:       1rem 0;
-    position:      relative;
+  .actions {
 
-    &.edit-mode {
-      box-shadow: 0 0 5px 5px #ccc;
+    .action {
+      margin-right: 0.5rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
 
-    .actions-left {
+    &.left {
       position: absolute;
       left:     1rem;
       top:      1rem;
     }
 
-    .actions-right {
+    &.right {
       position: absolute;
       right:    1rem;
       top:      1rem;
     }
+  }
 
-    .main-content {
-      padding: 0 3rem;
+  .drag-handle i, .drag-handle {
+    cursor: move !important;
+  }
 
-      .edit-answer-options {
-        margin-top: 1rem;
+  .section {
+    border-top: 1px solid $light-gray;
+    padding:    1rem;
 
-        input, label, textarea {
-          margin-bottom: 0;
-        }
+    &:last-child {
+      border-bottom: 1px solid $light-gray;
+    }
+  }
 
-        .graggable-option {
-          font-size: 12px;
+  .questions-list {
+    padding-left:  3rem;
+    margin-bottom: 1rem;
 
-          .handle {
-            display:        inline-block;
-            color:          $dark-gray;
-            cursor:         move;
-            margin-right:   0.5rem;
+    .question {
+      border-top:    1px solid $light-gray;
+      padding:       1rem 0;
+      position:      relative;
+
+      &:last-child {
+        border-bottom: 1px solid $light-gray;
+      }
+
+      .main-content {
+        padding: 0 3rem;
+
+        .edit-answer-options {
+          margin-top: 1rem;
+
+          input, label, textarea {
+            margin-bottom: 0;
           }
-        }
 
-        .choice-option {
+          .graggable-option {
+            font-size: 12px;
 
-          .drag-handle {
-            display: none;
-
-            i {
-              cursor: move;
+            .handle {
+              display:        inline-block;
+              color:          $dark-gray;
+              cursor:         move;
+              margin-right:   0.5rem;
             }
           }
 
-          &:hover {
+          .choice-option {
 
-            .index-label {
+            .drag-handle {
               display: none;
             }
 
-            .drag-handle {
-              display: block;
+            &:hover {
+
+              .index-label {
+                display: none;
+              }
+
+              .drag-handle {
+                display: block;
+              }
             }
           }
         }
-      }
 
-      .controls {
-        padding-top: 0.5rem;
+        .controls {
+          padding-top: 0.5rem;
 
-        .editor-control-group {
-          margin-right: 1rem;
-          color:        $secondary-color;
-          display:      inline-block;
+          .editor-control-group {
+            margin-right: 1rem;
+            color:        $secondary-color;
+            display:      inline-block;
 
-          &:last-child {
-            margin-right: 0;
-          }
-
-          .group-title {
-            vertical-align: top;
-            margin-right:   0.5rem;
-            font-style:     italic;
-            font-size:      0.9rem;
-          }
-
-          .style-button {
-            cursor:    pointer;
-
-            &.active {
-              color: $primary-color;
+            &:last-child {
+              margin-right: 0;
             }
 
-            i {
-              font-size: 1.35rem;
+            .group-title {
+              vertical-align: top;
+              margin-right:   0.5rem;
+              font-style:     italic;
+              font-size:      0.9rem;
+            }
+
+            .style-button {
+              cursor:    pointer;
+
+              &.active {
+                color: $primary-color;
+              }
+
+              i {
+                font-size: 1.35rem;
+              }
             }
           }
         }

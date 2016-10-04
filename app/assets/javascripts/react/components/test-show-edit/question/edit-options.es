@@ -1,10 +1,7 @@
 import { observer } from "mobx-react";
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 import Option from "./option.es";
 
-@DragDropContext(HTML5Backend)
 @observer
 class EditOptions extends React.Component {
 

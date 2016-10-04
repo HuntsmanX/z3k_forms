@@ -8,14 +8,7 @@ class QuestionOption {
 
   uuid = uuid.v4();
 
-  constructor(question) {
-    this.question = question;
-  }
-
   @action change(attr, val) {
-    if (attr === 'isCorrect') {
-      this.question.onOptionCorrectChange();
-    }
     this[attr] = val;
   }
 

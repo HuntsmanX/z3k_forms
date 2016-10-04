@@ -82,7 +82,7 @@ class Option extends React.Component {
         <div className="large-1 columns">
           <label className="middle text-right index-label">{`${index + 1}.`}</label>
           <label className="middle text-right drag-handle">
-            {connectDragSource(<i className="material-icons action">dehaze</i>)}
+            {connectDragSource(<i className="material-icons action drag-handle">dehaze</i>)}
           </label>
         </div>
 
