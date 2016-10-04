@@ -1,19 +1,23 @@
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import Section from "./test-show-edit/section.es";
-
-import TestSection from "./../stores/test-section.es";
+import Test from "./../stores/test.es";
+import SectionsList from "./test-show-edit/sections-list.es";
 
 @DragDropContext(HTML5Backend)
 class TestShowEdit extends React.Component {
 
+  constructor () {
+    super();
+    this.test = new Test();
+  }
+
   render() {
-    const section = new TestSection();
+    const test = new Test();
 
     return (
       <div id="test-show-edit">
-        <Section section={section}/>
+        <SectionsList test={test}/>
       </div>
     );
   }
