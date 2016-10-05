@@ -39,7 +39,6 @@ gem 'awesome_print'
 
 gem 'slim'
 gem 'foundation-rails'
-gem 'font-awesome-sass', '~> 4.6.2'
 gem 'browserify-rails'
 gem 'react-rails'
 

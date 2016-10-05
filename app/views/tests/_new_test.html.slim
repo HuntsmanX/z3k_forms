@@ -1,7 +1,9 @@
 #new-test-modal.reveal data-reveal=""
-  h3 Create New Test
+  h3 New Test
   = horizontal_form_for Test.new, hints: false do |f|
-    = f.text_field :name
+  
+    = f.fieldset 'New Test' do
+      = f.text_field :name
 
     = f.footer do
       = f.submit 'Save'
