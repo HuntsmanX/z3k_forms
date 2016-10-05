@@ -7,8 +7,7 @@ const ScoreControls = (props) => {
     boxShadow:     'initial',
     width:         '10rem',
     height:        '1.35rem',
-    lineHeight:    '1.35rem',
-    verticalAlign: 'top'
+    lineHeight:    '1.35rem'
   };
 
   const { value, onChange } = props;

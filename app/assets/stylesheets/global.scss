@@ -8,6 +8,11 @@ html, body {
     font-family: 'Nunito', sans-serif;
   }
 
+  i.material-icons {
+    line-height: 1rem;
+    vertical-align: middle;
+  }
+
   #wrap {
     height:        auto !important;
     min-height:    100%;
