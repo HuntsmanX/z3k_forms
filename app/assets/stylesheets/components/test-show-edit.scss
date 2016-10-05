@@ -6,6 +6,14 @@
     font-size: 1.5rem;
   }
 
+  i.action.primary {
+    color: $primary-color;
+  }
+
+  i.action.alert {
+    color: $alert-color;
+  }
+
   .actions {
 
     .action {
@@ -33,42 +41,59 @@
     cursor: move !important;
   }
 
-  .section {
-    border-top: 1px solid $light-gray;
-    padding:    1rem;
-
-    &:last-child {
-      border-bottom: 1px solid $light-gray;
-    }
-  }
-
   .sections-list {
 
     .section {
-      position: relative;
-    }
+      position:   relative;
+      border-top: 1px solid $light-gray;
 
-    .section-content {
-      padding: 0 3rem;
-
-      .counter-item {
-        margin: 0 1rem 0 0;
+      &:last-child {
+        border-bottom: 1px solid $light-gray;
       }
 
+      .edit-form {
+        margin-top:   1rem;
+        padding-left: 3rem;
+      }
+
+      .content {
+        padding:    1rem 3rem;
+        transition: background-color 0.25s ease-out;
+
+        &:hover {
+          background-color: #def0fc;
+        }
+
+        &.expanded {
+          background-color: #ebebeb;
+        }
+
+        .title {
+          margin-bottom: 0;
+        }
+
+        .description {
+          font-style:    italic;
+        }
+
+        .attributes {
+          margin-top: 0.5rem;
+        }
+      }
     }
   }
 
   .questions-list {
     padding-left:  3rem;
-    margin-bottom: 1rem;
+    margin:        1rem 0;
 
     .question {
-      border-top:    1px solid $light-gray;
+      border-bottom: 1px solid $light-gray;
       padding:       1rem 0;
       position:      relative;
 
-      &:last-child {
-        border-bottom: 1px solid $light-gray;
+      &:first-child {
+        border-top: 1px solid $light-gray;
       }
 
       .main-content {

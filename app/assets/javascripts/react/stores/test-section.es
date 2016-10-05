@@ -1,5 +1,4 @@
 import { observable, action, computed } from "mobx";
-
 import uuid from "node-uuid";
 
 import Question from "./test-question.es";
@@ -7,13 +6,26 @@ import Question from "./test-question.es";
 class TestSection {
 
   @observable title         = 'Untitled Section';
+  @observable description   = 'Section description';
   @observable time          = '';
+  @observable requiredScore = 0;
   @observable questions     = [];
   @observable isExpanded    = false;
   @observable isBeingEdited = false;
-  @observable paragraph     = '';
 
   uuid = uuid.v4();
+
+  @computed get timeLabel() {
+    return this.time.length ? this.time : 'None'
+  }
+
+  @computed get maxScore() {
+    return this.questions.map(question => {
+      return question.score;
+    }).reduce((prev, curr) => {
+      return (+curr || 0) + prev;
+    }, 0);
+  }
 
   @action toggle() {
     this.isExpanded = !this.isExpanded;

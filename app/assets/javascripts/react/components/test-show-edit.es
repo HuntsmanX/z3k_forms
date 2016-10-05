@@ -10,14 +10,13 @@ class TestShowEdit extends React.Component {
   constructor () {
     super();
     this.test = new Test();
+    this.test.addSection();
   }
 
   render() {
-    const test = new Test();
-
     return (
       <div id="test-show-edit">
-        <SectionsList test={test}/>
+        <SectionsList test={this.test}/>
       </div>
     );
   }

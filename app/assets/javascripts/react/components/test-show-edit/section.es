@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 
 import SectionForm from   "./section-form.es";
 import QuestionsList from "./questions-list.es";
+import Hash from "./hash.es";
 
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
@@ -59,13 +60,11 @@ const dragTarget = {
 @DropTarget('section', dragTarget, connect => ({
   connectDropTarget: connect.dropTarget()
 }))
-
 @DragSource('section', dragSource, (connect, monitor) => ({
   connectDragSource:  connect.dragSource(),
   connectDragPreview: connect.dragPreview(),
   isDragging:         monitor.isDragging()
 }))
-
 @observer
 class Section extends React.Component {
 
@@ -83,6 +82,8 @@ class Section extends React.Component {
     const { connectDragSource, connectDragPreview, isDragging, connectDropTarget } = this.props;
     const opacity = isDragging ? 0 : 1;
 
+    const expanded = section.isBeingEdited || section.isExpanded;
+
     return connectDropTarget(
       <div className="section" style={{ opacity }}>
         <div className="clearfix">
@@ -95,10 +96,10 @@ class Section extends React.Component {
 
           <div className="actions right">
             {section.isBeingEdited ? null : (
-              <i className="material-icons action" onClick={this.editSection.bind(this)}>edit</i>
+              <i className="material-icons action primary" onClick={this.editSection.bind(this)}>edit</i>
             )}
 
-            <i className="material-icons action" onClick={deleteSection}>delete</i>
+            <i className="material-icons action alert" onClick={deleteSection}>delete</i>
 
             {section.isExpanded ? (
               <i className="material-icons action" title="Collapse" onClick={this.toggle.bind(this)}>expand_less</i>
@@ -106,40 +107,37 @@ class Section extends React.Component {
               <i className="material-icons action" title="Expand" onClick={this.toggle.bind(this)}>expand_more</i>
             )}
           </div>
+        </div>
 
+        {connectDragPreview(
+          <div>
+            <div className={`content ${expanded ? 'expanded' : ''}`}>
+              <h2 className="title">{section.title}</h2>
 
-          {connectDragPreview(
-            <div className="section-content">
-              <h2>{section.title}</h2>
+              {section.description.length ? (
+                <div className="description">{section.description}</div>
+              ) : null}
 
-              <div className="row">
-                <div className="large-5 columns">
-                  <span className="counter-item">
-                    Questions: <em>{section.questions.length}</em>
-                  </span>
-                  <span className="counter-item">
-                    Time limit: <em>{section.time}</em>
-                  </span>
-                  <div className="row large-12 columns">
-                    <span className="section-description">
-                      Description: <em>{section.paragraph}</em>
-                    </span>
-                  </div>
+              <div className="attributes">
+                <div className="row">
+                  <Hash k='Questions' v={section.questions.length} />
+                  <Hash k='Time Limit' v={section.timeLabel} />
+                  <Hash k='Max Score' v={section.maxScore} />
+                  <Hash k='Required Score' v={section.requiredScore} />
                 </div>
               </div>
-
-              {section.isBeingEdited ? (
-                <SectionForm section={section}/>
-              ) : null}
-
-              {section.isExpanded ? (
-                <QuestionsList section={section}/>
-              ) : null}
             </div>
-          )}
-        </div>
-      </div>
 
+            {section.isBeingEdited ? (
+              <SectionForm section={section}/>
+            ) : null}
+
+            {section.isExpanded ? (
+              <QuestionsList section={section}/>
+            ) : null}
+          </div>
+        )}
+      </div>
     );
   }
 }

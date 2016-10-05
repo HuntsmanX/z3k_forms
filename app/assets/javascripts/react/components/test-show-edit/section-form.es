@@ -18,7 +18,7 @@ class SectionForm extends React.Component {
     const { section } = this.props;
 
     return (
-      <div className="row">
+      <div className="row edit-form">
         <div className="large-12 columns">
           <div className="callout primary">
             <form className="edit-section-form" onSubmit={this.saveSection.bind(this)}>
@@ -34,13 +34,19 @@ class SectionForm extends React.Component {
 
                 <LabeledWrapper label="Description">
                   <div className="large-6 columns">
-                    <textarea value={section.paragraph} onChange={this.change.bind(this, "paragraph")}/>
+                    <textarea value={section.description} onChange={this.change.bind(this, "description")}/>
                   </div>
                 </LabeledWrapper>
 
                 <LabeledWrapper label="Time Limit">
                   <div className="large-6 columns">
                     <input type="number" value={section.time} onChange={this.change.bind(this, "time")}/>
+                  </div>
+                </LabeledWrapper>
+
+                <LabeledWrapper label="Required Score">
+                  <div className="large-6 columns">
+                    <input type="number" value={section.requiredScore} onChange={this.change.bind(this, "requiredScore")}/>
                   </div>
                 </LabeledWrapper>
               </fieldset>

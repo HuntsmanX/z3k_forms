@@ -15,6 +15,8 @@ class TestQuestion {
   );
   @observable isBeingEdited = false;
   @observable type          = 'short_answer';
+  @observable autocheck     = true;
+  @observable score         = 1;
   @observable gapActive     = false;
   @observable options       = [new QuestionOption()];
   @observable gaps          = [];

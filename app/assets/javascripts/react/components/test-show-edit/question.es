@@ -15,6 +15,8 @@ import ShowSequence         from "./question/show-sequence.es"
 
 import InsertControls       from "./question/insert-controls.es";
 import QuestionTypeControls from "./question/question-type-controls.es";
+import AutocheckControls    from "./question/autocheck-controls.es";
+import ScoreControls        from "./question/score-controls.es";
 import BlockTypeControls    from "./question/block-type-controls.es";
 import InlineStyleControls  from "./question/inline-style-controls.es";
 
@@ -108,6 +110,18 @@ class Question extends React.Component {
     }
   }
 
+  toggleAutocheck() {
+    this.props.question.change(
+      'autocheck', !this.props.question.autocheck
+    );
+  }
+
+  changeScore(event) {
+    this.props.question.change(
+      'score', event.target.value
+    );
+  }
+
   blockRenderer(block) {
     if (block.getType() === 'atomic') {
       const entityType = Entity.get(block.getEntityAt(0)).getType();
@@ -181,19 +195,19 @@ class Question extends React.Component {
         <div className="actions right">
           {question.isBeingEdited ? (
             <i
-              className="material-icons action"
+              className="material-icons action primary"
               onClick={this.editQuestion.bind(this, false)}
               title="Save"
             >save</i>
           ) : (
             <i
-              className="material-icons action"
+              className="material-icons action primary"
               onClick={this.editQuestion.bind(this, true)}
               title="Edit"
             >mode_edit</i>
           )}
           <i
-            className="material-icons action"
+            className="material-icons action alert"
             onClick={deleteQuestion}
             title="Delete"
           >delete</i>
@@ -238,6 +252,16 @@ class Question extends React.Component {
                 <InsertControls
                   questionType={question.type}
                   onToggle={this.insertOption.bind(this)}
+                />
+
+                <AutocheckControls
+                  autocheck={question.autocheck}
+                  onToggle={this.toggleAutocheck.bind(this)}
+                />
+
+                <ScoreControls
+                  value={question.score}
+                  onChange={this.changeScore.bind(this)}
                 />
               </div>
 
