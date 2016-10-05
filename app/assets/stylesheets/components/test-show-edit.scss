@@ -109,11 +109,12 @@
           .graggable-option {
             font-size: 12px;
 
-            .handle {
+            .handle i {
               display:        inline-block;
               color:          $dark-gray;
               cursor:         move;
               margin-right:   0.5rem;
+              font-size:      1rem;
             }
           }
 

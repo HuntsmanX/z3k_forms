@@ -12,7 +12,7 @@ class ShowSequence extends React.Component {
             return (
               <div key={option.uuid} className="graggable-option">
                 <span className="handle">
-                  <i className="fa fa-bars" title="Drag"></i>
+                  <i className="material-icons" title="Drag">dehaze</i>
                 </span>
                 {option.content}
               </div>
