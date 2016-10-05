@@ -16,6 +16,13 @@ class Test {
     this.sections.splice(index, 1);
   }
 
+  @action moveSection(dragIndex, hoverIndex) {
+    const dragSection = this.sections[dragIndex];
+
+    this.sections.splice(dragIndex, 1);
+    this.sections.splice(hoverIndex, 0, dragSection);
+  }
+
 }
 
 export default Test;

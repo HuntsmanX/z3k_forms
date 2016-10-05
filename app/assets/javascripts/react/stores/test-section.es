@@ -1,5 +1,7 @@
 import { observable, action, computed } from "mobx";
 
+import uuid from "node-uuid";
+
 import Question from "./test-question.es";
 
 class TestSection {
@@ -9,6 +11,9 @@ class TestSection {
   @observable questions     = [];
   @observable isExpanded    = false;
   @observable isBeingEdited = false;
+  @observable paragraph     = '';
+
+  uuid = uuid.v4();
 
   @action toggle() {
     this.isExpanded = !this.isExpanded;

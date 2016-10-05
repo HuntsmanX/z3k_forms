@@ -42,6 +42,22 @@
     }
   }
 
+  .sections-list {
+
+    .section {
+      position: relative;
+    }
+
+    .section-content {
+      padding: 0 3rem;
+
+      .counter-item {
+        margin: 0 1rem 0 0;
+      }
+
+    }
+  }
+
   .questions-list {
     padding-left:  3rem;
     margin-bottom: 1rem;
