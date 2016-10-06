@@ -1,5 +1,5 @@
 import { observable, action, computed } from "mobx";
-import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, ContentState } from "draft-js";
+import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, ContentState, Modifier, SelectionState } from "draft-js";
 import { remove } from "lodash/array";
 import uuid from "node-uuid";
 
@@ -26,8 +26,35 @@ class TestQuestion {
   uuid = uuid.v4();
 
   @action change(attr, val) {
-    this[attr] = val;
-    if (attr = 'editorState') this._checkRemovedGaps();
+    if (attr === 'editorState') {
+      this._updateEditorState(val);
+      this._checkRemovedGaps();
+    } else {
+      this[attr] = val;
+    }
+  }
+
+  _updateEditorState(value) {
+    if (value.getLastChangeType() === 'backspace-character') {
+      const blockKey = value.getSelection().getFocusKey();
+      const block    = value.getCurrentContent().getBlockForKey(blockKey);
+
+      if (block.getType() === "atomic" && block.getText() === " ") {
+        const previousBlockKey = value.getCurrentContent().getKeyBefore(blockKey);
+        const previousBlock    = value.getCurrentContent().getBlockForKey(previousBlockKey);
+
+        let selection = value.getSelection()
+        selection     = selection.set('anchorKey', previousBlockKey);
+        selection     = selection.set('anchorOffset', previousBlock.getLength());
+
+        const modifiedContent = Modifier.removeRange(this.editorState.getCurrentContent(), selection, 'backward');
+        this.editorState = EditorState.push(this.editorState, modifiedContent, value.getLastChangeType());
+      } else {
+        this.editorState = value;
+      }
+    } else {
+      this.editorState = value;
+    }
   }
 
   @action handleKeyCommand(command) {
