@@ -14,6 +14,6 @@ class SectionsController < ApplicationController
 
   private
     def section_params
-      params.require(:section).permit(:name, :time_for_test)
+      params.require(:section).permit(:name, :description, :time_for_test, :required_score)
     end
 end
