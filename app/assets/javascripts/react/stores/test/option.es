@@ -1,7 +1,7 @@
 import { observable, action, computed } from "mobx";
 import uuid from "node-uuid";
 
-class QuestionOption {
+class Option {
 
   @observable content   = '';
   @observable isCorrect = false;
@@ -14,4 +14,4 @@ class QuestionOption {
 
 }
 
-export default QuestionOption;
+export default Option;

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010123143) do
+ActiveRecord::Schema.define(version: 20161010134550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,11 +36,11 @@ ActiveRecord::Schema.define(version: 20161010123143) do
   end
 
   create_table "response_sections", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "time_for_test"
+    t.string   "title"
+    t.integer  "time_limit"
     t.integer  "response_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.index ["response_id"], name: "index_response_sections_on_response_id", using: :btree
   end
 
@@ -69,13 +69,13 @@ ActiveRecord::Schema.define(version: 20161010123143) do
   end
 
   create_table "test_sections", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "time_for_test"
+    t.string   "title"
+    t.integer  "time_limit"
     t.integer  "test_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.text     "description"
     t.integer  "required_score"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
     t.index ["test_id"], name: "index_test_sections_on_test_id", using: :btree
   end
 

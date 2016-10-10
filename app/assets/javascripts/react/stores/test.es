@@ -1,27 +1,30 @@
 import { observable, action } from "mobx";
 
-import TestSection from "./test-section.es";
+import Section from "./test/section.es";
 
 class Test {
 
   @observable sections = [];
 
   constructor(params) {
+    this.id = params.id;
     params.sections.forEach(section => {
       this.sections.push(
-        new TestSection(section)
+        new Section(section)
       );
     });
   }
 
   @action addSection() {
     this.sections.push(
-      new TestSection()
+      new Section({ test_id: this.id, isBeingEdited: true })
     );
   }
 
   @action deleteSection(index) {
-    this.sections.splice(index, 1);
+    this.sections[index].destroy().then(
+      () => this.sections.splice(index, 1)
+    );
   }
 
   @action moveSection(dragIndex, hoverIndex) {
