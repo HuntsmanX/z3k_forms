@@ -10,29 +10,73 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010075032) do
+ActiveRecord::Schema.define(version: 20161010123143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "questions", force: :cascade do |t|
+  create_table "response_options", force: :cascade do |t|
+    t.string   "content"
+    t.boolean  "is_correct"
+    t.integer  "question_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["question_id"], name: "index_response_options_on_question_id", using: :btree
+  end
+
+  create_table "response_questions", force: :cascade do |t|
+    t.string   "content"
+    t.integer  "question_type", default: 1
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "response_id"
+    t.integer  "section_id"
+    t.index ["response_id"], name: "index_response_questions_on_response_id", using: :btree
+    t.index ["section_id"], name: "index_response_questions_on_section_id", using: :btree
+  end
+
+  create_table "response_sections", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "time_for_test"
+    t.integer  "response_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["response_id"], name: "index_response_sections_on_response_id", using: :btree
+  end
+
+  create_table "responses", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "test_options", force: :cascade do |t|
+    t.string   "content"
+    t.boolean  "is_correct"
+    t.integer  "question_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["question_id"], name: "index_test_options_on_question_id", using: :btree
+  end
+
+  create_table "test_questions", force: :cascade do |t|
     t.text     "content"
     t.integer  "question_type", default: 1
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "section_id"
-    t.index ["section_id"], name: "index_questions_on_section_id", using: :btree
+    t.index ["section_id"], name: "index_test_questions_on_section_id", using: :btree
   end
 
-  create_table "sections", force: :cascade do |t|
+  create_table "test_sections", force: :cascade do |t|
     t.string   "name"
     t.integer  "time_for_test"
     t.integer  "test_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
     t.text     "description"
     t.integer  "required_score"
-    t.index ["test_id"], name: "index_sections_on_test_id", using: :btree
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["test_id"], name: "index_test_sections_on_test_id", using: :btree
   end
 
   create_table "tests", force: :cascade do |t|
@@ -54,5 +98,5 @@ ActiveRecord::Schema.define(version: 20161010075032) do
     t.jsonb    "settings"
   end
 
-  add_foreign_key "questions", "sections"
+  add_foreign_key "test_questions", "test_sections", column: "section_id"
 end
