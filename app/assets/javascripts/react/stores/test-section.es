@@ -7,7 +7,7 @@ class TestSection {
 
   @observable title         = 'Untitled Section';
   @observable description   = 'Section description';
-  @observable time          = '';
+  @observable time          = 0;
   @observable requiredScore = 0;
   @observable questions     = [];
   @observable isExpanded    = false;
@@ -58,16 +58,24 @@ class TestSection {
 
   @action save() {
     this.isBeingEdited = false;
-    // var testId = location.pathname.split('/')[2]
-    // $.ajax({
-    //   url: '/tests/'+testId+'/sections',
-    //   type: 'POST',
-    //   data: { section: { name: this.title, time_for_test: this.time } },
-    //   success: (response) => {
-    //     console.log('it worked!', response);
-    //     section.showEdit()
-    //   }
-    // })
+    var testId = location.pathname.split('/')[2];
+    $.ajax({
+      url: '/tests/'+testId+'/sections',
+      type: 'POST',
+      data: { section: {
+        name: this.title,
+        description: this.description,
+        time_for_test: this.time,
+        required_score: this.requiredScore }
+      },
+      success: (response) => {
+        console.log('it worked!', response);
+
+      },
+      error: (response) => {
+        console.log(response)
+      }
+    })
   }
 
 }
