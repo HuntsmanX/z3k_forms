@@ -20,13 +20,9 @@ Rails.application.routes.draw do
 
   resources :responses
 
-  namespace :responses do
+  namespace :response do
     resources :sections
     resources :questions
   end
 
-  resources :responses
-
-
-  get 'form', to: 'application#form'
 end

@@ -1,19 +1,35 @@
 class Test::SectionsController < ApplicationController
+  respond_to :json
 
   def create
-    test = Test.find_by_id(params[:test_id])
-    section = test.sections.new section_params
-    respond_to do |format|
-      if section.save
-        format.json { render json: section, status: :created }
-      else
-        format.json { render json: section.errors, status: :unprocessable_entity }
-      end
+    @section = Test::Section.new section_params
+    if @section.save
+      render json: { id: @section.id }
+    else
+      respond_with @section
     end
   end
 
-  private
-    def section_params
-      params.require(:section).permit(:name, :description, :time_for_test, :required_score)
+  def update
+    @section = Test::Section.find params[:id]
+
+    if @section.update_attributes section_params
+      render json: { id: @section.id }
+    else
+      respond_with @section
     end
+  end
+
+  def destroy
+    @section = Test::Section.find params[:id]
+    @section.destroy
+    render json: {}
+  end
+
+  private
+
+  def section_params
+    params.require(:section).permit(:title, :description, :time_limit, :required_score, :test_id)
+  end
+
 end

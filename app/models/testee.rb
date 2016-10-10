@@ -1,5 +1,7 @@
 class Testee < ApplicationRecord
-  enum source_type: [:staff, :recrutment, :new]
 
-  has_many: responses
+  has_many :responses
+
+  enum source_type: [:staff, :recrutment, :local]
+
 end
