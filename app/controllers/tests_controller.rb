@@ -5,8 +5,7 @@ class TestsController < ApplicationController
   end
 
   def edit
-    @test           = Test.includes(:questions).find(params[:id])
-    @question_types = Question.question_types.keys.map { |k| { value: k, name: k.humanize } }
+    @test = Test.includes(:questions).find(params[:id])
   end
 
   def create

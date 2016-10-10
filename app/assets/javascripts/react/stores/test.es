@@ -6,6 +6,14 @@ class Test {
 
   @observable sections = [];
 
+  constructor(params) {
+    params.sections.forEach(section => {
+      this.sections.push(
+        new TestSection(section)
+      );
+    });
+  }
+
   @action addSection() {
     this.sections.push(
       new TestSection()

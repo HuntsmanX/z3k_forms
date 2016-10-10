@@ -7,10 +7,9 @@ import SectionsList from "./test-show-edit/sections-list.es";
 @DragDropContext(HTML5Backend)
 class TestShowEdit extends React.Component {
 
-  constructor () {
-    super();
-    this.test = new Test();
-    this.test.addSection();
+  constructor(props) {
+    super(props);
+    this.test = new Test(props.test);
   }
 
   render() {

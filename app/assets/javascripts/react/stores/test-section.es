@@ -15,6 +15,14 @@ class TestSection {
 
   uuid = uuid.v4();
 
+  constructor(params) {
+    this.id            = params.id;
+    this.title         = params.name;
+    this.description   = params.description;
+    this.time          = params.time_for_test.toString();
+    this.requiredScore = params.required_score;
+  }
+
   @computed get timeLabel() {
     return this.time.length ? this.time : 'None'
   }
