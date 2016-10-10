@@ -10,11 +10,23 @@ Rails.application.routes.draw do
   end
 
   resource  :dashboard
-  resources :tests do
-    resources :sections do
-      resources :questions
-    end
+
+  resources :tests
+
+  namespace :test do
+    resources :sections
+    resources :questions
   end
+
+  resources :responses
+
+  namespace :responses do
+    resources :sections
+    resources :questions
+  end
+
+  resources :responses
+
 
   get 'form', to: 'application#form'
 end

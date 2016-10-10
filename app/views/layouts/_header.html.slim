@@ -4,16 +4,16 @@
       .top-bar-left
         ul.menu
           li.menu-text.app-title = link_to 'Z3K Forms', dashboard_path
-          
+
           li = link_to 'Tests', tests_path
-          
+          li = link_to 'Responses', responses_path
+
       .top-bar-right
         - if current_user
           ul.menu
             li: .user-avatar style="background-image:url('#{current_user.avatar_url}')"
             li = link_to 'Sign out', destroy_user_session_path
-        
+
         - else
           ul.menu
             li = link_to 'Sign in', user_staff_omniauth_authorize_path
-            
