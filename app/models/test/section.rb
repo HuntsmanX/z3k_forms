@@ -1,4 +1,4 @@
-class Section < ApplicationRecord
+class Test::Section < ApplicationRecord
 belongs_to :test
 has_many :questions
 
