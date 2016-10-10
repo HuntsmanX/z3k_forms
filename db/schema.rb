@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010123143) do
+ActiveRecord::Schema.define(version: 20161010134245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 20161010123143) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "testee_id"
+    t.index ["testee_id"], name: "index_responses_on_testee_id", using: :btree
   end
 
   create_table "test_options", force: :cascade do |t|
@@ -72,11 +74,21 @@ ActiveRecord::Schema.define(version: 20161010123143) do
     t.string   "name"
     t.integer  "time_for_test"
     t.integer  "test_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.text     "description"
     t.integer  "required_score"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
     t.index ["test_id"], name: "index_test_sections_on_test_id", using: :btree
+  end
+
+  create_table "testees", force: :cascade do |t|
+    t.integer  "source_type", default: 1
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "tests", force: :cascade do |t|
@@ -98,5 +110,6 @@ ActiveRecord::Schema.define(version: 20161010123143) do
     t.jsonb    "settings"
   end
 
+  add_foreign_key "responses", "testees"
   add_foreign_key "test_questions", "test_sections", column: "section_id"
 end

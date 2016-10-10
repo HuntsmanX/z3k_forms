@@ -1,4 +1,4 @@
-class SectionsController < ApplicationController
+class Test::SectionsController < ApplicationController
 
   def create
     test = Test.find_by_id(params[:test_id])
