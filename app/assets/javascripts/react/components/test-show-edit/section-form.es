@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 
 import LabeledWrapper from "./labeled-wrapper.es";
+import Loader         from "./loader.es";
 
 @observer
 class SectionForm extends React.Component {
@@ -20,7 +21,9 @@ class SectionForm extends React.Component {
     return (
       <div className="row edit-form">
         <div className="large-12 columns">
-          <div className="callout primary">
+          <div className="callout primary" style={{ position: 'relative' }}>
+            {section.isBeingSaved ? <Loader /> : null}
+
             <form className="edit-section-form" onSubmit={this.saveSection.bind(this)}>
 
               <fieldset>
@@ -40,13 +43,13 @@ class SectionForm extends React.Component {
 
                 <LabeledWrapper label="Time Limit">
                   <div className="large-6 columns">
-                    <input type="number" value={section.time} onChange={this.change.bind(this, "time")}/>
+                    <input type="number" value={section.time_limit} onChange={this.change.bind(this, "time_limit")}/>
                   </div>
                 </LabeledWrapper>
 
                 <LabeledWrapper label="Required Score">
                   <div className="large-6 columns">
-                    <input type="number" value={section.requiredScore} onChange={this.change.bind(this, "requiredScore")}/>
+                    <input type="number" value={section.required_score} onChange={this.change.bind(this, "required_score")}/>
                   </div>
                 </LabeledWrapper>
               </fieldset>

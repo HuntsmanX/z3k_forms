@@ -3,10 +3,10 @@ import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, Content
 import { remove } from "lodash/array";
 import uuid from "node-uuid";
 
-import QuestionOption from "./question-option.es";
-import GapOption      from "./gap-option.es";
+import Option    from "./option.es";
+import GapOption from "./gap-option.es";
 
-class TestQuestion {
+class Question {
 
   @observable editorState = EditorState.moveSelectionToEnd(
     EditorState.createWithContent(
@@ -18,7 +18,7 @@ class TestQuestion {
   @observable autocheck     = true;
   @observable score         = 1;
   @observable gapActive     = false;
-  @observable options       = [new QuestionOption()];
+  @observable options       = [new Option()];
   @observable gaps          = [];
   @observable shortAnswer   = '';
   @observable paragraph     = '';
@@ -110,7 +110,7 @@ class TestQuestion {
 
   @action addOption() {
     this.options.push(
-      new QuestionOption()
+      new Option()
     );
   }
 
@@ -131,4 +131,4 @@ class TestQuestion {
 
 }
 
-export default TestQuestion;
+export default Question;

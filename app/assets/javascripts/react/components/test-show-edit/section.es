@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import SectionForm from   "./section-form.es";
 import QuestionsList from "./questions-list.es";
 import Hash from "./hash.es";
+import Loader from "./loader.es";
 
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
@@ -85,7 +86,9 @@ class Section extends React.Component {
     const expanded = section.isBeingEdited || section.isExpanded;
 
     return connectDropTarget(
-      <div className="section" style={{ opacity }}>
+      <div className="section" style={{ opacity, position: 'relative' }}>
+        {section.isBeingDeleted ? <Loader /> : null}
+
         <div className="clearfix">
 
           <div className="actions left">
@@ -101,11 +104,13 @@ class Section extends React.Component {
 
             <i className="material-icons action alert" onClick={deleteSection}>delete</i>
 
-            {section.isExpanded ? (
-              <i className="material-icons action" title="Collapse" onClick={this.toggle.bind(this)}>expand_less</i>
-            ) : (
-              <i className="material-icons action" title="Expand" onClick={this.toggle.bind(this)}>expand_more</i>
-            )}
+            {section.persisted ? (
+              section.isExpanded ? (
+                <i className="material-icons action" title="Collapse" onClick={this.toggle.bind(this)}>expand_less</i>
+              ) : (
+                <i className="material-icons action" title="Expand" onClick={this.toggle.bind(this)}>expand_more</i>
+              )
+            ) : null}
           </div>
         </div>
 
@@ -123,7 +128,7 @@ class Section extends React.Component {
                   <Hash k='Questions' v={section.questions.length} />
                   <Hash k='Time Limit' v={section.timeLabel} />
                   <Hash k='Max Score' v={section.maxScore} />
-                  <Hash k='Required Score' v={section.requiredScore} />
+                  <Hash k='Required Score' v={section.required_score} />
                 </div>
               </div>
             </div>
