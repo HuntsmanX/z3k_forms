@@ -1,4 +1,4 @@
-class QuestionsController < ApplicationController
+class Test::QuestionsController < ApplicationController
   respond_to :json
 
   def create
