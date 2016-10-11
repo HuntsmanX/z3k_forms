@@ -4,4 +4,10 @@
   .float-right
     button.button.small data-open="new-response-modal" New Response
 
+- if @responses.present?
+  ul.entities-list
+    = render @responses
+- else
+  p No enties found
+
 = render 'new_response'
