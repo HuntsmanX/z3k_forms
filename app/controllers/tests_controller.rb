@@ -5,7 +5,7 @@ class TestsController < ApplicationController
   end
 
   def edit
-    @test = Test.includes(:questions).find(params[:id])
+    @test = Test.includes(sections: :questions).find(params[:id])
   end
 
   def create
