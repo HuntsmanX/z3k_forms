@@ -45,6 +45,8 @@ html, body {
   }
 
   #content {
-    display: none;
+    .staff-testee, .recruitment-testee, .local-testee {
+      display: none;
+    }
   }
 }

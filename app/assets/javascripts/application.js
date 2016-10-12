@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require foundation
 //= require react_ujs
+//= require select2.full
 //= require_tree .
 
 $(function() {
