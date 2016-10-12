@@ -8,7 +8,7 @@ class ResponsesController < ApplicationController
     testee = Testee.new response_params[:testee]
     if testee.save
         response = testee.responses.new
-        response.dublicate_test(response_params[:test_id])
+        response.duplicate_test(response_params[:test_id])
     end
   end
 

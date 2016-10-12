@@ -13,15 +13,17 @@ class Question {
       ContentState.createFromText('Untitled question')
     )
   );
-  @observable isBeingEdited = false;
-  @observable type          = 'short_answer';
-  @observable autocheck     = true;
-  @observable score         = 1;
-  @observable gapActive     = false;
-  @observable options       = [new Option()];
-  @observable gaps          = [];
-  @observable shortAnswer   = '';
-  @observable paragraph     = '';
+  @observable isBeingEdited  = false;
+  @observable type           = 'short_answer';
+  @observable autocheck      = true;
+  @observable score          = 1;
+  @observable gapActive      = false;
+  @observable options        = [new Option()];
+  @observable gaps           = [];
+  @observable shortAnswer    = '';
+  @observable paragraph      = '';
+  @observable isBeingSaved   = false;
+    
 
   uuid = uuid.v4();
 
@@ -32,6 +34,15 @@ class Question {
     } else {
       this[attr] = val;
     }
+  }
+
+  constructor(params = {}) {
+    this.fromJSON(params);
+  }
+
+  fromJSON(params) {
+    if (params.id) this.id = params.id;
+    this.section_id = params.section_id;
   }
 
   _updateEditorState(value) {
@@ -77,6 +88,31 @@ class Question {
 
   @action edit(value = true) {
     this.isBeingEdited = value;
+  }
+
+  @action save() {
+    console.log(this)
+    this.isBeingSaved = true;
+    const url  = this.id ? `/test/questions/${this.id}` : '/test/questions';
+    const type = this.id ? 'PATCH' : 'POST';
+    var content = JSON.stringify(convertToRaw(this.editorState.getCurrentContent()))
+    $.ajax({
+      url:  url,
+      type: type,
+      data: {
+        question: {
+          options:     this.options.toJS(),
+          section_id:  this.section_id,
+          type:        this.type,
+          autocheck:   this.autocheck,
+          score:       this.score,
+          paragraph:   this.paragraph,
+          shortAnswer: this.shortAnswer,
+          gapActive:   this.gapActive,
+          content:     content
+        }
+    }
+    })
   }
 
   @computed get readOnly() {
