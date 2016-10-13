@@ -43,6 +43,7 @@ gem 'browserify-rails'
 gem 'react-rails'
 
 gem 'responders'
+gem 'rest-client', '~> 2.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri

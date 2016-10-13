@@ -4,14 +4,20 @@
     = f.fieldset 'Select Test' do
       = f.collection_select :test_id, Test.all, :id, :name
     = f.fieldset 'Select User' do
-      = radio_button_tag 'testee_type', 'staff'
-      = f.label :testee_id, 'Staff User'
-      = radio_button_tag 'testee_type', 'recrutment', checked: true
-      = f.label :testee_id, 'Recrutment User'
-      = radio_button_tag 'testee_type', 'local'
-      = f.label :testee_id, 'New User'
+      .select-user-source
+        = radio_button_tag 'testee_type', 'staff'
+        = f.label :testee_id, 'Staff User'
+        = radio_button_tag 'testee_type', 'recruitment', checked: true
+        = f.label :testee_id, 'Recrutment User'
+        = radio_button_tag 'testee_type', 'local'
+        = f.label :testee_id, 'New User'
       #content
-        = render 'new_testee', response: f
+        .staff-testee.testee-block
+
+        .recruitment-testee.testee-block
+          = f.select :testee, [], include_blank: true
+        .local-testee.testee-block
+          = render 'new_testee', response: f
     = f.footer do
       = f.submit 'Save'
 
