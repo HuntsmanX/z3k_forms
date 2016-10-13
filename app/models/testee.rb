@@ -5,19 +5,26 @@ class Testee < ApplicationRecord
   has_many :responses
   validates :email, uniqueness: true
 
-  enum source_type: [:staff, :recrutment, :local]
+  enum source_type: [:staff, :recruitment, :local]
 
   def self.index(resource, limit=1000)
     return unless RESOURCES.include?(resource.to_s)
     credentials = get_credentials(resource)
-    response = RestClient.get(credentials[:url], { params: {limit: limit, auth_token: credentials[:auth_token]}})
+    response = RestClient.get(credentials[:url], { params: { limit: limit, auth_token: credentials[:auth_token] } })
+    JSON.parse(response.body)
+  end
+
+  def self.show(id, resource)
+    return unless RESOURCES.include?(resource.to_s)
+    credentials = get_credentials(resource)
+    response = RestClient.get(credentials[:url] + '/' + id, { params: { auth_token: credentials[:auth_token] } })
     JSON.parse(response.body)
   end
 
   def self.by_name(name, resource)
     return unless RESOURCES.include?(resource.to_s)
     credentials = get_credentials(resource)
-    response = RestClient.post(credentials[:url], {name: name, auth_token: credentials[:auth_token]})
+    response = RestClient.post(credentials[:url], { name: name, auth_token: credentials[:auth_token] })
     JSON.parse(response.body)
   end
 

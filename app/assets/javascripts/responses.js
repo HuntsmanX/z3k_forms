@@ -1,14 +1,14 @@
 $(function() {
 
-  $('#response_testee').select2({
+  $('#response_testee_id').select2({
     ajax: {
       url: "http://localhost:3000/testees/by_name",
       method: 'POST',
       dataType: 'json',
-      delay: 250,
+      delay: 1000,
       data: function (params) {
         return {
-          name: params.term, // search term
+          name: params.term,
         };
       },
       processResults: function (data, params) {
@@ -46,7 +46,7 @@ $(function() {
     var active = $('input:radio:checked', '#new_response').val();
 
     $('.testee-block').hide();
-
+    $('#response_testee_id').val('');
     $('.' + active + '-testee').show();
   }
 
