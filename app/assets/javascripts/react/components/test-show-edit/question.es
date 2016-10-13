@@ -79,6 +79,12 @@ class Question extends React.Component {
     if (value) this.refs.editor.focus();
   }
 
+  saveQuestion() {
+    console.log(this.props.question);
+    event.preventDefault();
+    this.props.question.save();
+  }
+
   render() {
     const { question, deleteQuestion } = this.props;
 
@@ -97,7 +103,7 @@ class Question extends React.Component {
           {question.isBeingEdited ? (
             <i
               className="material-icons action primary"
-              onClick={this.editQuestion.bind(this, false)}
+              onClick={this.saveQuestion.bind(this)}
               title="Save"
             >save</i>
           ) : (

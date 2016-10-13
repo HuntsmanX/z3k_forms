@@ -11,7 +11,7 @@ class Test::SectionsController < ApplicationController
   end
 
   def update
-    @section = Test::Section.find params[:id]
+    @section = Test::Section.find_by_id params[:id]
 
     if @section.update_attributes section_params
       render json: { id: @section.id }
@@ -21,7 +21,7 @@ class Test::SectionsController < ApplicationController
   end
 
   def destroy
-    @section = Test::Section.find params[:id]
+    @section = Test::Section.find_by_id params[:id]
     @section.destroy
     render json: {}
   end
