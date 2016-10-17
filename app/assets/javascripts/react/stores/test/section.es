@@ -16,12 +16,11 @@ class Section {
   @observable isBeingEdited  = false;
   @observable isBeingSaved   = false;
   @observable isBeingDeleted = false;
-  @observable questions      = [];
 
   uuid = uuid.v4();
 
   constructor(params = {}) {
-    params.questions.forEach(question => {
+    (params.questions || []).forEach(question => {
       this.questions.push( new Question(question))
     });
     this.fromJSON(params);

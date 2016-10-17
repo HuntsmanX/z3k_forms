@@ -16,7 +16,7 @@ class Test::QuestionsController < ApplicationController
 
   private
   def question_params
-    params.require(:question).permit(:section_id, :type, :autocheck, :shortAnswer, :gapActive, :score, :paragraph,
+    params.require(:question).permit(:section_id, :type, :autocheck, :shortAnswer, :fieldActive, :score, :paragraph,
                                      :content, options: [:content, :isCorrect])
   end
 end

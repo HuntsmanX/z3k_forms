@@ -3,8 +3,7 @@ import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, Content
 import { remove } from "lodash/array";
 import uuid from "node-uuid";
 
-import Option    from "./option.es";
-import GapOption from "./gap-option.es";
+import Field from "./field.es";
 
 class Question {
 
@@ -14,23 +13,16 @@ class Question {
     )
   );
   @observable isBeingEdited  = false;
-  @observable type           = 'short_answer';
-  @observable autocheck      = true;
-  @observable score          = 1;
-  @observable gapActive      = false;
-  @observable options        = [new Option()];
-  @observable gaps           = [];
-  @observable shortAnswer    = '';
-  @observable paragraph      = '';
+  @observable fieldActive    = false;
   @observable isBeingSaved   = false;
-    
+  @observable fields         = [];
 
   uuid = uuid.v4();
 
   @action change(attr, val) {
     if (attr === 'editorState') {
       this._updateEditorState(val);
-      this._checkRemovedGaps();
+      this._checkRemovedFields();
     } else {
       this[attr] = val;
     }
@@ -91,78 +83,58 @@ class Question {
   }
 
   @action save() {
-    console.log(this)
-    this.isBeingSaved = true;
-    const url  = this.id ? `/test/questions/${this.id}` : '/test/questions';
-    const type = this.id ? 'PATCH' : 'POST';
-    var content = JSON.stringify(convertToRaw(this.editorState.getCurrentContent()))
-    $.ajax({
-      url:  url,
-      type: type,
-      data: {
-        question: {
-          options:     this.options.toJS(),
-          section_id:  this.section_id,
-          type:        this.type,
-          autocheck:   this.autocheck,
-          score:       this.score,
-          paragraph:   this.paragraph,
-          shortAnswer: this.shortAnswer,
-          gapActive:   this.gapActive,
-          content:     content
-        }
-    }
-    })
+    // console.log(this)
+    // this.isBeingSaved = true;
+    // const url  = this.id ? `/test/questions/${this.id}` : '/test/questions';
+    // const type = this.id ? 'PATCH' : 'POST';
+    // var content = JSON.stringify(convertToRaw(this.editorState.getCurrentContent()))
+    // $.ajax({
+    //   url:  url,
+    //   type: type,
+    //   data: {
+    //     question: {
+    //       options:     this.options.toJS(),
+    //       section_id:  this.section_id,
+    //       type:        this.type,
+    //       autocheck:   this.autocheck,
+    //       score:       this.score,
+    //       paragraph:   this.paragraph,
+    //       shortAnswer: this.shortAnswer,
+    //       fieldActive:   this.fieldActive,
+    //       content:     content
+    //     }
+    // }
+    // })
+    this.isBeingEdited = false;
   }
 
   @computed get readOnly() {
-    return !this.isBeingEdited || this.gapActive;
+    return !this.isBeingEdited || this.fieldActive;
   }
 
-  @action insertGapBlock() {
-    const entityKey = Entity.create('gap-block', 'IMMUTABLE');
-    const newState  = AtomicBlockUtils.insertAtomicBlock(this.editorState, entityKey, ' ');
+   @action insertField(type) {
+     const entityKey = Entity.create(type, 'IMMUTABLE');
+     const newState  = AtomicBlockUtils.insertAtomicBlock(this.editorState, entityKey, ' ');
 
-    const activeBlockKey = newState.getSelection().getFocusKey();
-    const gapBlockKey    = newState.getCurrentContent().getKeyBefore(activeBlockKey);
+     const activeBlockKey = newState.getSelection().getFocusKey();
+     const fieldBlockKey  = newState.getCurrentContent().getKeyBefore(activeBlockKey);
 
-    this.gaps.push(
-      new GapOption({ blockKey: gapBlockKey })
-    );
+     this.fields.push(
+       new Field({ type: type, blockKey: fieldBlockKey })
+     );
 
-    this.editorState = newState;
-  }
+     this.editorState = newState;
+   }
 
   @action insertEolBlock() {
     const entityKey  = Entity.create('eol-block', 'IMMUTABLE');
     this.editorState = AtomicBlockUtils.insertAtomicBlock(this.editorState, entityKey, ' ');
   }
 
-  @action _checkRemovedGaps() {
-    remove(this.gaps, gap => {
-      return !this.editorState.getCurrentContent().getBlockForKey(gap.blockKey);
+  @action _checkRemovedFields() {
+    remove(this.fields, field => {
+      return !this.editorState.getCurrentContent().getBlockForKey(field.blockKey);
     });
-  }
-
-  @action addOption() {
-    this.options.push(
-      new Option()
-    );
-  }
-
-  @action deleteOption(index) {
-    this.options.splice(index, 1);
-  }
-
-  @action moveOption(dragIndex, hoverIndex) {
-    const dragOption = this.options[dragIndex];
-
-    this.options.splice(dragIndex, 1);
-    this.options.splice(hoverIndex, 0, dragOption);
-  }
-
-  @computed get hasCorrectOptions() {
-    return this.type === 'single_choice' || this.type === 'multiple_choice';
   }
 
 }

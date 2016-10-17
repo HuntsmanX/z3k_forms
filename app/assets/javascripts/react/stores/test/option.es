@@ -3,8 +3,8 @@ import uuid from "node-uuid";
 
 class Option {
 
-  @observable content   = '';
-  @observable isCorrect = false;
+  @observable content    = '';
+  @observable is_correct = false;
 
   uuid = uuid.v4();
 

@@ -66,13 +66,8 @@ class Option extends React.Component {
     this.props.option.change(attr, event.target.value);
   }
 
-  toggleCorrect() {
-    const option = this.props.option;
-    option.change('isCorrect', !option.isCorrect);
-  }
-
   render() {
-    const { option, deleteOption, index, hasCorrectOptions } = this.props;
+    const { option, deleteOption, index } = this.props;
     const { connectDragSource, connectDragPreview, isDragging, connectDropTarget } = this.props;
     const opacity = isDragging ? 0 : 1;
 
@@ -80,7 +75,6 @@ class Option extends React.Component {
       <div className="row choice-option" style={{ opacity }}>
 
         <div className="large-1 columns">
-          <label className="middle text-right index-label">{`${index + 1}.`}</label>
           <label className="middle text-right drag-handle">
             {connectDragSource(<i className="material-icons action drag-handle">dehaze</i>)}
           </label>
@@ -99,13 +93,6 @@ class Option extends React.Component {
 
         <div className="large-3 columns">
           <label className="middle">
-            {hasCorrectOptions ? (
-              option.isCorrect ? (
-                <i className="material-icons action" title="Correct" onClick={this.toggleCorrect.bind(this)}>done</i>
-              ) : (
-                <i className="material-icons action" title="Incorrect" onClick={this.toggleCorrect.bind(this)}>block</i>
-              )
-            ) : null}
             <i className="material-icons action" onClick={deleteOption}>delete</i>
           </label>
         </div>

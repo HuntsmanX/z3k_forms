@@ -5,14 +5,7 @@ import { findDOMNode } from 'react-dom';
 
 import QuestionEditor       from "./question/question-editor.es";
 import Controls             from "./question/controls.es";
-
-import EditShortAnswer      from "./question/edit-short-answer.es";
-import EditParagraph        from "./question/edit-paragraph.es";
-import EditOptions          from "./question/edit-options.es";
-
-import ShowSingleChoice     from "./question/show-single-choice.es";
-import ShowMultipleChoice   from "./question/show-multiple-choice.es";
-import ShowSequence         from "./question/show-sequence.es"
+import FieldsControls       from "./question/fields-controls.es";
 
 const dragSource = {
   beginDrag(props) {
@@ -80,7 +73,6 @@ class Question extends React.Component {
   }
 
   saveQuestion() {
-    console.log(this.props.question);
     event.preventDefault();
     this.props.question.save();
   }
@@ -120,53 +112,15 @@ class Question extends React.Component {
           >delete</i>
         </div>
 
-        {connectDragPreview(<div className="main-content">
-          <div className="draft-editor">
+        {connectDragPreview(
+          <div className="main-content">
             <QuestionEditor question={question} ref="editor" />
+
+            {question.isBeingEdited ? <Controls question={question} /> : null}
+
+            {question.isBeingEdited && question.fields.length ? <FieldsControls question={question} /> : null}
           </div>
-
-          {question.isBeingEdited ? (
-            <div className="clearfix">
-              <div className="edit-answer-options">
-                {question.type === 'short_answer' ? (
-                  <EditShortAnswer question={question} />
-                ) : null}
-
-                {question.type === 'paragraph' ? (
-                  <EditParagraph question={question} />
-                ) : null}
-
-                {['single_choice', 'multiple_choice', 'sequence'].indexOf(question.type) + 1 ? (
-                  <EditOptions question={question} />
-                ) : null}
-              </div>
-
-              <Controls question={question} />
-            </div>
-          ) : (
-            <div className="edit-answer-options">
-              {question.type === 'short_answer' ? (
-                <EditShortAnswer question={question} />
-              ) : null}
-
-              {question.type === 'paragraph' ? (
-                <EditParagraph question={question} />
-              ) : null}
-
-              {question.type === 'single_choice' ? (
-                <ShowSingleChoice question={question} />
-              ) : null}
-
-              {question.type === 'multiple_choice' ? (
-                <ShowMultipleChoice question={question} />
-              ) : null}
-
-              {question.type === 'sequence' ? (
-                <ShowSequence question={question} />
-              ) : null}
-            </div>
-          )}
-        </div>)}
+        )}
       </div>
     );
   }
