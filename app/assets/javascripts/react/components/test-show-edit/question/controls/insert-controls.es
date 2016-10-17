@@ -1,45 +1,42 @@
 import StyleButton from "./style-button.es";
 
-const INSERT_TYPES = {
-  single_choice: [
-    {
-      icon:  'radio_button_unchecked',
-      value: 'option',
-      title: 'Single Choice Option'
-    }
-  ],
-  multiple_choice: [
-    {
-      icon:  'check_box_outline_blank',
-      value: 'option',
-      title: 'Multiple Choice Option'
-    }
-  ],
-  sequence: [
-    {
-      icon:  'dehaze',
-      value: 'option',
-      title: 'Sequence Option'
-    }
-  ],
-  gaps: [
-    {
-      icon:  'space_bar',
-      value: 'gap',
-      title: 'Gap'
-    }
-  ]
-}
+const INSERT_TYPES = [
+  {
+    icon:  'short_text',
+    value: 'text_input',
+    title: 'Text Input'
+  }, {
+    icon:  'subject',
+    value: 'text_area',
+    title: 'Text Area'
+  }, {
+    icon:  'arrow_drop_down_circle',
+    value: 'dropdown',
+    title: 'Dropdown'
+  }, {
+    icon:  'check_box',
+    value: 'checkboxes',
+    title: 'Checkboxes'
+  }, {
+    icon:  'radio_button_checked',
+    value: 'radio_buttons',
+    title: 'Radio Buttons'
+  }, {
+    icon:  'sort',
+    value: 'sequence',
+    title: 'Sequence'
+  }, {
+    icon:  'format_color_text',
+    value: 'text_editor',
+    title: 'Text Editor'
+  }
+]
 
 const InsertControls = (props) => {
-  const types = INSERT_TYPES[props.questionType];
-
-  if (!types) return null;
-
   return (
     <div className="editor-control-group">
       <span className="group-title">Insert</span>
-      {types.map(type =>
+      {INSERT_TYPES.map(type =>
         <StyleButton
           key={type.icon}
           icon={type.icon}
