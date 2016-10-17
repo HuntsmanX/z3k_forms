@@ -1,5 +1,5 @@
 class Test::Option < ApplicationRecord
 
-  belongs_to :question
-  
+  belongs_to :field, class_name: 'Test::Field', inverse_of: :options
+
 end

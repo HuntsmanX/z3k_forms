@@ -218,17 +218,20 @@ class DropdownBlock extends React.Component {
 
   onChange(event) {
     if (this.props.blockProps.question.isBeingEdited) {
-      this.props.blockProps.field.change(
-        'content', event.target.value
-      );
+      const { field } = this.props.blockProps;
+      field.options.forEach(option => option.change('is_correct', false));
+      const selected = field.options.find(option => option.content === event.target.value);
+      selected.change('is_correct', true);
     }
   }
 
   render() {
     const { field } = this.props.blockProps;
+    const correctOption = field.options.find(option => option.is_correct);
+    const value = correctOption ? correctOption.content : "";
     return (
       <select
-        value={field.content}
+        value={value}
         onChange={this.onChange.bind(this)}
         onFocus={this.onFocus.bind(this)}
         onBlur={this.onBlur.bind(this)}
