@@ -25,6 +25,16 @@ class Option {
     this[attr] = val;
   }
 
+  @action assignInputRef(ref) {
+    this.inputRef = ref;
+  }
+
+  @action focus() {
+    setTimeout(() => {
+      this.inputRef && this.inputRef.focus();
+    }, 0);
+  }
+
 }
 
 export default Option;

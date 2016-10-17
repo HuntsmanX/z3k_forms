@@ -68,8 +68,9 @@ class Section {
 
   @action addQuestion() {
     this.questions.push(
-      new Question({section_id: this.id})
+      new Question({ section_id: this.id, isBeingEdited: true })
     );
+    this.questions[this.questions.length - 1].focus();
   }
 
   @action deleteQuestion(index) {

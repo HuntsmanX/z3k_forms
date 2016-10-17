@@ -1,7 +1,7 @@
 class LabeledWrapper extends React.Component {
 
   render() {
-    const { label, children } = this.props;
+    const { label, children, hint } = this.props;
 
     return (
       <div className="row">
@@ -10,13 +10,22 @@ class LabeledWrapper extends React.Component {
         </div>
         <div className="large-9 columns">
           <div className="row">
-            {children}
+            <div className="large-6 columns">
+              {children}
+            </div>
+            <div className="large-6 columns">
+              <label className="hint middle">{hint}</label>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
+}
+
+LabeledWrapper.defaultProps = {
+  hint: ""
 }
 
 export default LabeledWrapper;

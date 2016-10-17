@@ -1,5 +1,6 @@
 import { observable, action, computed } from "mobx";
 import uuid from "node-uuid";
+import { findIndex } from "lodash/array";
 
 import Option from "./option.es";
 
@@ -66,14 +67,19 @@ class Field {
     this._options.push(
       new Option()
     );
+    this._options[this._options.length - 1].focus();
   }
 
-  @action deleteOption(index) {
-    this._options[index].change('_destroy', true);
+  @action deleteOption(uuid) {
+    const deleted = this._options.find(option => option.uuid === uuid);
+    deleted.change('_destroy', true);
   }
 
-  @action moveOption(dragIndex, hoverIndex) {
-    const dragOption = this._options[dragIndex];
+  @action moveOption(dragId, hoverId) {
+    const dragOption = this._options.find(option => option.uuid === dragId);
+
+    const dragIndex  = findIndex(this._options, option => option.uuid === dragId);
+    const hoverIndex = findIndex(this._options, option => option.uuid === hoverId);
 
     this._options.splice(dragIndex, 1);
     this._options.splice(hoverIndex, 0, dragOption);

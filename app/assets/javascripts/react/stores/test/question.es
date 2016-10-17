@@ -1,6 +1,5 @@
 import { observable, action, computed } from "mobx";
 import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, convertFromRaw, ContentState, Modifier, SelectionState } from "draft-js";
-import { remove } from "lodash/array";
 import uuid from "node-uuid";
 
 import Field from "./field.es";
@@ -19,6 +18,14 @@ class Question {
 
   @computed get fields() {
     return this._fields.filter(field => !field._destroy)
+  }
+
+  @computed get score() {
+    return this.fields.map(field => {
+      return field.score;
+    }).reduce((prev, curr) => {
+      return (+curr || 0) + prev;
+    }, 0);
   }
 
   @action change(attr, val) {
@@ -42,6 +49,8 @@ class Question {
     this._fields = (params.fields || []).map(field => {
       return new Field(field)
     });
+
+    this.isBeingEdited = params.isBeingEdited || this.isBeingEdited;
   }
 
   _parseRawContent(content) {
@@ -104,6 +113,7 @@ class Question {
 
   @action edit(value = true) {
     this.isBeingEdited = value;
+    this.focus();
   }
 
   @action save() {
@@ -201,6 +211,16 @@ class Question {
     } else {
       return Promise.resolve();
     }
+  }
+
+  @action assignEditorRef(ref) {
+    this.editorRef = ref;
+  }
+
+  @action focus() {
+    setTimeout(() => {
+      this.editorRef && this.editorRef.focus();
+    }, 0);
   }
 
 }

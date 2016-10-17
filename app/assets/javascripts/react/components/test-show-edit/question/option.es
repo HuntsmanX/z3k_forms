@@ -5,7 +5,8 @@ import { findDOMNode } from 'react-dom';
 const dragSource = {
   beginDrag(props) {
     return {
-      index: props.index
+      index: props.index,
+      uuid:  props.option.uuid
     };
   }
 };
@@ -41,7 +42,10 @@ const dragTarget = {
     if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
     // Time to actually perform the action
-    props.move(dragIndex, hoverIndex);
+    const dragId  = monitor.getItem().uuid;
+    const hoverId = props.option.uuid;
+
+    props.move(dragId, hoverId);
 
     // Note: we're mutating the monitor item here!
     // Generally it's better to avoid mutations,
@@ -66,6 +70,16 @@ class Option extends React.Component {
     this.props.option.change(attr, event.target.value);
   }
 
+  handleKeyDown(event) {
+    if (event.which === 13 || event.keyCode === 13) {
+      this.props.onEnterPress();
+    }
+  }
+
+  assignInputRef(input) {
+    this.props.option.assignInputRef(input);
+  }
+
   render() {
     const { option, deleteOption, index } = this.props;
     const { connectDragSource, connectDragPreview, isDragging, connectDropTarget } = this.props;
@@ -86,7 +100,9 @@ class Option extends React.Component {
               type="text"
               value={option.content}
               onChange={this.onChange.bind(this, 'content')}
+              onKeyDown={this.handleKeyDown.bind(this)}
               placeholder={`Option ${index + 1}`}
+              ref={(input) => this.assignInputRef(input)}
             />
           </div>
         )}

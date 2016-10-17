@@ -67,7 +67,7 @@ class FieldControls extends React.Component {
 class OptionsList extends React.Component {
 
   addOption(event) {
-    event.preventDefault();
+    event && event.preventDefault();
     this.props.field.addOption();
   }
 
@@ -81,8 +81,9 @@ class OptionsList extends React.Component {
             key={option.uuid}
             option={option}
             index={index}
-            deleteOption={field.deleteOption.bind(field, index)}
+            deleteOption={field.deleteOption.bind(field, option.uuid)}
             move={field.moveOption.bind(field)}
+            onEnterPress={this.addOption.bind(this)}
           />
         })}
         <a href="#" onClick={this.addOption.bind(this)}>Add Option</a>

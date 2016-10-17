@@ -1,8 +1,7 @@
 import { observer } from "mobx-react";
 
-import InsertControls       from "./controls/insert-controls.es";
-import BlockTypeControls    from "./controls/block-type-controls.es";
-import InlineStyleControls  from "./controls/inline-style-controls.es";
+import InsertControls from "./controls/insert-controls.es";
+import StyleControls  from "./controls/style-controls.es";
 
 @observer
 class Controls extends React.Component {
@@ -32,14 +31,10 @@ class Controls extends React.Component {
         </div>
 
         <div className="controls float-right">
-          <BlockTypeControls
+          <StyleControls
             editorState={question.editorState}
-            onToggle={this.toggleBlockType.bind(this)}
-          />
-
-          <InlineStyleControls
-            editorState={question.editorState}
-            onToggle={this.toggleInlineStyle.bind(this)}
+            onBlockToggle={this.toggleBlockType.bind(this)}
+            onInlineToggle={this.toggleInlineStyle.bind(this)}
           />
         </div>
       </div>

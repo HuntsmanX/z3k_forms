@@ -30,27 +30,19 @@ class SectionForm extends React.Component {
                 <legend>Edit Section</legend>
 
                 <LabeledWrapper label="Title">
-                  <div className="large-6 columns">
-                    <input type="text" value={section.title} onChange={this.change.bind(this, "title")}/>
-                  </div>
+                  <input type="text" value={section.title} onChange={this.change.bind(this, "title")}/>
                 </LabeledWrapper>
 
                 <LabeledWrapper label="Description">
-                  <div className="large-6 columns">
-                    <textarea value={section.description} onChange={this.change.bind(this, "description")}/>
-                  </div>
+                  <textarea value={section.description} onChange={this.change.bind(this, "description")}/>
                 </LabeledWrapper>
 
-                <LabeledWrapper label="Time Limit">
-                  <div className="large-6 columns">
-                    <input type="number" value={section.time_limit} onChange={this.change.bind(this, "time_limit")}/>
-                  </div>
+                <LabeledWrapper label="Time Limit" hint="minutes">
+                  <input type="number" value={section.time_limit} onChange={this.change.bind(this, "time_limit")}/>
                 </LabeledWrapper>
 
                 <LabeledWrapper label="Required Score">
-                  <div className="large-6 columns">
-                    <input type="number" value={section.required_score} onChange={this.change.bind(this, "required_score")}/>
-                  </div>
+                  <input type="number" value={section.required_score} onChange={this.change.bind(this, "required_score")}/>
                 </LabeledWrapper>
               </fieldset>
 

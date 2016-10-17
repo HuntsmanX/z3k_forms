@@ -69,9 +69,12 @@ const dragTarget = {
 @observer
 class Question extends React.Component {
 
+  assignEditorRef(ref) {
+    this.props.question.assignEditorRef(ref);
+  }
+
   editQuestion(value) {
     this.props.question.edit(value);
-    if (value) this.refs.editor.focus();
   }
 
   saveQuestion() {
@@ -118,7 +121,7 @@ class Question extends React.Component {
 
         {connectDragPreview(
           <div className="main-content">
-            <QuestionEditor question={question} ref="editor" />
+            <QuestionEditor question={question} ref={(ref) => this.assignEditorRef(ref)} />
 
             {question.isBeingEdited ? <Controls question={question} /> : null}
 
