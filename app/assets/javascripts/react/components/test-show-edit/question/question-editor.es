@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { Editor, DefaultDraftBlockRenderMap, Entity } from "draft-js";
 import { Map } from 'immutable';
 
-import AtomicBlockWrapper from "./editor/atomic-clock-wrapper.es";
+import AtomicBlockWrapper from "./editor/atomic-block-wrapper.es";
 import TextInputBlock     from "./editor/text-input-block.es";
 import TextAreaBlock      from "./editor/text-area-block.es";
 import DropdownBlock      from "./editor/dropdown-block.es";
