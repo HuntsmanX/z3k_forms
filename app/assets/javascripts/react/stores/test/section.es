@@ -20,9 +20,6 @@ class Section {
   uuid = uuid.v4();
 
   constructor(params = {}) {
-    (params.questions || []).forEach(question => {
-      this.questions.push( new Question(question))
-    });
     this.fromJSON(params);
   }
 
@@ -35,6 +32,10 @@ class Section {
     this.description    = params.description    || this.description;
     this.time_limit     = params.time_limit     || this.time_limit;
     this.required_score = params.required_score || this.required_score;
+
+    (params.questions || []).forEach(question => {
+      this.questions.push(new Question(question));
+    });
 
     this.isBeingEdited  = params.isBeingEdited  || this.isBeingEdited;
   }
@@ -72,7 +73,9 @@ class Section {
   }
 
   @action deleteQuestion(index) {
-    this.questions.splice(index, 1);
+    this.questions[index].destroy().then(
+      () => this.questions.splice(index, 1)
+    );
   }
 
   @action moveQuestion(dragIndex, hoverIndex) {

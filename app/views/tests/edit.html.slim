@@ -1,4 +1,4 @@
 - provide :title, @test.name
 
 = react_component 'TestShowEdit',
-  test: @test.as_json(include: [sections: { include: :questions }])
+  test: @test.as_json(include: { sections: { include: { questions: { include: { fields: { include: :options } } } } } })

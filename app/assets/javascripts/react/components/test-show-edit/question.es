@@ -7,6 +7,8 @@ import QuestionEditor       from "./question/question-editor.es";
 import Controls             from "./question/controls.es";
 import FieldsControls       from "./question/fields-controls.es";
 
+import Loader               from "./loader.es";
+
 const dragSource = {
   beginDrag(props) {
     return {
@@ -84,7 +86,9 @@ class Question extends React.Component {
     const opacity = isDragging ? 0 : 1;
 
     return connectDropTarget(
-      <div className="question" style={{ opacity }}>
+      <div className="question" style={{ opacity, position: 'relative' }}>
+        {question.isBeingSaved ? <Loader /> : null}
+
         <div className="actions left">
           {connectDragSource(
             <i className="material-icons action drag-handle">dehaze</i>

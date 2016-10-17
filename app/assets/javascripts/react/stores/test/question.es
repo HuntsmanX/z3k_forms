@@ -1,5 +1,5 @@
 import { observable, action, computed } from "mobx";
-import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, ContentState, Modifier, SelectionState } from "draft-js";
+import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, convertFromRaw, ContentState, Modifier, SelectionState } from "draft-js";
 import { remove } from "lodash/array";
 import uuid from "node-uuid";
 
@@ -7,17 +7,19 @@ import Field from "./field.es";
 
 class Question {
 
-  @observable editorState = EditorState.moveSelectionToEnd(
-    EditorState.createWithContent(
-      ContentState.createFromText('Untitled question')
-    )
-  );
-  @observable isBeingEdited  = false;
+  @observable id             = null;
+  @observable _fields        = [];
+  @observable editorState    = null;
+
   @observable fieldActive    = false;
+  @observable isBeingEdited  = false;
   @observable isBeingSaved   = false;
-  @observable fields         = [];
 
   uuid = uuid.v4();
+
+  @computed get fields() {
+    return this._fields.filter(field => !field._destroy)
+  }
 
   @action change(attr, val) {
     if (attr === 'editorState') {
@@ -34,7 +36,29 @@ class Question {
 
   fromJSON(params) {
     if (params.id) this.id = params.id;
+
     this.section_id = params.section_id;
+    this.editorState = this._parseRawContent(params.content);
+    this._fields = (params.fields || []).map(field => {
+      return new Field(field)
+    });
+  }
+
+  _parseRawContent(content) {
+    try {
+      return EditorState.moveSelectionToEnd(
+        EditorState.createWithContent(
+          convertFromRaw(JSON.parse(content))
+        )
+      );
+    }
+    catch(error) {
+      return EditorState.moveSelectionToEnd(
+        EditorState.createWithContent(
+          ContentState.createFromText('Untitled question')
+        )
+      );
+    }
   }
 
   _updateEditorState(value) {
@@ -83,29 +107,57 @@ class Question {
   }
 
   @action save() {
-    // console.log(this)
-    // this.isBeingSaved = true;
-    // const url  = this.id ? `/test/questions/${this.id}` : '/test/questions';
-    // const type = this.id ? 'PATCH' : 'POST';
-    // var content = JSON.stringify(convertToRaw(this.editorState.getCurrentContent()))
-    // $.ajax({
-    //   url:  url,
-    //   type: type,
-    //   data: {
-    //     question: {
-    //       options:     this.options.toJS(),
-    //       section_id:  this.section_id,
-    //       type:        this.type,
-    //       autocheck:   this.autocheck,
-    //       score:       this.score,
-    //       paragraph:   this.paragraph,
-    //       shortAnswer: this.shortAnswer,
-    //       fieldActive:   this.fieldActive,
-    //       content:     content
-    //     }
-    // }
-    // })
-    this.isBeingEdited = false;
+    this.isBeingSaved = true;
+
+    const url  = this.id ? `/test/questions/${this.id}` : '/test/questions';
+    const type = this.id ? 'PATCH' : 'POST';
+
+    $.ajax({
+      url:         url,
+      type:        type,
+      dataType:    'json',
+      contentType: 'application/json',
+      data:        JSON.stringify(this.serialize())
+    }).then(
+      data => {
+        this.fromJSON(data);
+        this.isBeingSaved  = false;
+        this.isBeingEdited = false;
+      },
+      data => console.log(data)
+    );
+  }
+
+  serialize() {
+    const serializeOption = (option, index) => {
+      return {
+        id:         option.id,
+        content:    option.content,
+        is_correct: option.is_correct,
+        _destroy:   option._destroy
+      };
+    }
+
+    const serializeField = (field, index) => {
+      return {
+        id:                 field.id,
+        block_key:          field.blockKey,
+        content:            field.content,
+        score:              field.score,
+        autocheck:          field.autocheck,
+        field_type:         field.type,
+        _destroy:           field._destroy,
+        options_attributes: field._options.map(serializeOption)
+      };
+    }
+
+    return {
+      question: {
+        section_id:        this.section_id,
+        content:           JSON.stringify(convertToRaw(this.editorState.getCurrentContent())),
+        fields_attributes: this._fields.map(serializeField)
+      }
+    }
   }
 
   @computed get readOnly() {
@@ -119,7 +171,7 @@ class Question {
      const activeBlockKey = newState.getSelection().getFocusKey();
      const fieldBlockKey  = newState.getCurrentContent().getKeyBefore(activeBlockKey);
 
-     this.fields.push(
+     this._fields.push(
        new Field({ type: type, blockKey: fieldBlockKey })
      );
 
@@ -132,9 +184,23 @@ class Question {
   }
 
   @action _checkRemovedFields() {
-    remove(this.fields, field => {
-      return !this.editorState.getCurrentContent().getBlockForKey(field.blockKey);
+    this._fields.forEach(field => {
+      const editorBlock = this.editorState.getCurrentContent().getBlockForKey(field.blockKey);
+      if (!editorBlock) field.change('_destroy', true);
     });
+  }
+
+  @action destroy() {
+    if (this.id) {
+      this.isBeingSaved = true;
+
+      return $.ajax({
+        url:  `/test/questions/${this.id}`,
+        type: 'DELETE'
+      });
+    } else {
+      return Promise.resolve();
+    }
   }
 
 }

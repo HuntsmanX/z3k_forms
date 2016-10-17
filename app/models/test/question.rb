@@ -1,11 +1,8 @@
 class Test::Question < ApplicationRecord
 
-  belongs_to :section
-  has_many   :options
-  accepts_nested_attributes_for :options
+  belongs_to :section, class_name: 'Test::Section', inverse_of: :questions
+  has_many   :fields,  class_name: 'Test::Field',   inverse_of: :question,  dependent: :destroy
 
-  enum question_type: [:short_answer, :paragraph, :single_choice, :multiple_choice, :empty_spaces, :sequence]
+  accepts_nested_attributes_for :fields, allow_destroy: true
 
-  validates_presence_of :content
-  
 end
