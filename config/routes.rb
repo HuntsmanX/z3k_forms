@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     resources :questions
   end
 
+  get 'start/:id', to: 'responses#start', as: :start
+
   resources :testees do
     post '/by_name', to: 'testees#by_name', on: :collection
   end
