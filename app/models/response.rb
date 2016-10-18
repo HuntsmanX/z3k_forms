@@ -1,6 +1,6 @@
 class Response < ApplicationRecord
 
-  has_many   :sections,  class_name: 'Response::Section'
+  has_many   :sections, class_name: 'Response::Section', inverse_of: :response, dependent: :destroy
   belongs_to :testee
 
   validates :name, presence: true
@@ -21,16 +21,29 @@ class Response < ApplicationRecord
                                             time_limit:     section.time_limit,
                                             description:    section.description,
                                             required_score: section.required_score)
-      duplicate_questions_and_options(response_section, section.questions) if section.questions.any?
+    duplicate_questions(response_section, section.questions) if section.questions.any?
     end
 
   end
 
-  def duplicate_questions_and_options(response_section, questions)
-      questions.each do |question|
-        response_question = response_section.questions.create(question.attributes)
-        question.options.each {|option| response_question.options.create(option.attributes)} if question.options.any?
-      end
+  def duplicate_questions(response_section, questions)
+    questions.each do |question|
+      response_question = response_section.questions.create(question.attributes.except!('id'))
+      duplicate_fields(response_question, question.fields) if question.fields.any?
+    end
+  end
+
+  def duplicate_fields(response_question, fields)
+    fields.each do |field|
+      response_field = response_question.fields.create(field.attributes.except!('id'))
+      duplicate_options(response_field, field.options) if field.options.any?
+    end
+  end
+
+  def duplicate_options(field, options)
+    options.each do |option|
+      field.options.create(option.attributes.except!('id'))
+    end
   end
 
 end
