@@ -5,7 +5,6 @@ class ResponsesController < ApplicationController
   end
 
   def create
-
     if response_params[:testee_id] && params[:testee_type] != 'local'
       testee_params = Testee.show(response_params[:testee_id], params[:testee_type])
       testee_params = { name: testee_params['full_name'], email: testee_params['email'], phone: testee_params['phone'] }
@@ -19,6 +18,7 @@ class ResponsesController < ApplicationController
       response = testee.responses.new
       response.duplicate_test(response_params[:test_id])
     end
+    redirect_to responses_path
   end
 
   private
