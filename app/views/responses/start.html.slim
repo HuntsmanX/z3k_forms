@@ -1,27 +1,41 @@
-ul.entities-list
-  li: .row
-    .large-3.columns
-      .row.hash
-        .key Name
-        .value = Testee.find_by_id(@response.testee_id).name
-        .key Email
-        .value = Testee.find_by_id(@response.testee_id).email
-
-    .large-3.columns
-      .row.hash
-        .key Sections count
-        .value = @response.sections.count
-
-    .large-4.columns
-      .row.hash
-        .key Total Questions count
-        .value = show_questions_in_test(@response)
-
-    .large-2.columns
-      .row.hash
-        .key Total Time
-        .value = show_total_time(@response)
-
-    .large-2.columns
-      .button-group.small.float-right
+.callout.primary
+  .row
+    .small-6.large-centered.columns
+      h3.center
+       | Hello,  
+       = Testee.find_by_id(@response.testee_id).name
+       |. Your email is
+       = Testee.find_by_id(@response.testee_id).email
+  .row
+    .small-3.small-centered.columns
+      h3.center
+        | You have to pass test
+  .row
+    .small-8.large-centered.columns
+      .small-4.columns.right
+        h3 Title:
+      .small-4.columns
+        h3 = @response.name
+  .row
+    .small-8.large-centered.columns
+      .small-4.columns.right
+        h3 Sections count:
+      .small-4.columns
+        h3 = @response.sections.count
+  .row
+    .small-8.large-centered.columns
+      .small-4.columns.right
+        h3 Total Questions count:
+      .small-4.columns
+        h3 = show_questions_in_test(@response)
+  .row
+    .small-8.large-centered.columns
+      .small-4.columns.right
+        h3 Total Time:
+      .small-4.columns
+        h3 = show_total_time(@response)
+          minutes
+  .row
+    .small-3.large-centered.columns
+      .button-group.large.center
         = link_to 'Start', edit_response_section_path(@response.sections.first), class: 'button'
