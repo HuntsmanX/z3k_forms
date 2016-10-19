@@ -9,6 +9,7 @@ class Response < ApplicationRecord
   def duplicate_test(test_id)
     test = Test.find_by_id(test_id)
     self.name = test.name
+    self.test_id = test.id
     self.save
     duplicate_sections(test.sections) if test.sections.any?
   end
@@ -23,7 +24,6 @@ class Response < ApplicationRecord
                                             required_score: section.required_score)
     duplicate_questions(response_section, section.questions) if section.questions.any?
     end
-
   end
 
   def duplicate_questions(response_section, questions)
