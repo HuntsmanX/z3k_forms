@@ -43,6 +43,10 @@ class Question {
       .reduce((prev, curr) => (+curr || 0) + prev, 0);
   }
 
+  @computed get persisted() {
+    return !!this.id;
+  }
+
   @action change(attr, val) {
     if (attr === 'editorState') {
       this._updateEditorState(val);
@@ -59,7 +63,9 @@ class Question {
   fromJSON(params) {
     if (params.id) this.id = params.id;
 
-    this.section_id = params.section_id;
+    this.section_id  = params.section_id;
+    this.order_index = params.order_index;
+
     this.editorState = this._parseRawContent(params.content);
     this._fields = (params.fields || []).map(field => {
       return new Field(field)
@@ -183,10 +189,11 @@ class Question {
   serialize() {
     const serializeOption = (option, index) => {
       return {
-        id:         option.id,
-        content:    option.content,
-        is_correct: option.is_correct,
-        _destroy:   option._destroy
+        id:          option.id,
+        content:     option.content,
+        is_correct:  option.is_correct,
+        _destroy:    option._destroy,
+        order_index: index
       };
     }
 
@@ -207,6 +214,7 @@ class Question {
       question: {
         section_id:        this.section_id,
         content:           JSON.stringify(convertToRaw(this.editorState.getCurrentContent())),
+        order_index:       this.order_index,
         fields_attributes: this._fields.map(serializeField)
       }
     }

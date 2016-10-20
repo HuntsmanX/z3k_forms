@@ -10,6 +10,8 @@ class Test::Section < ApplicationRecord
   validates :time_limit, :required_score, numericality: true, allow_blank: true
   validate  :max_required_score
 
+  default_scope -> { order(:order_index) }
+
   def max_required_score
     self.class.score_units.keys.each do |key|
       self.send("validate_#{key}_required_score") if self.score_units == key

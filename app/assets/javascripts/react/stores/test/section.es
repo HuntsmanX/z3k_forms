@@ -28,7 +28,8 @@ class Section {
   fromJSON(params) {
     if (params.id) this.id = params.id;
 
-    this.test_id = params.test_id;
+    this.test_id     = params.test_id;
+    this.order_index = params.order_index;
 
     this.title          = params.title          || this.title;
     this.description    = params.description    || this.description;
@@ -91,7 +92,7 @@ class Section {
 
   @action addQuestion() {
     this.questions.push(
-      new Question({ section_id: this.id, isBeingEdited: true })
+      new Question({ section_id: this.id, isBeingEdited: true, order_index: this.questions.length })
     );
     this.questions[this.questions.length - 1].focus();
   }
@@ -107,6 +108,30 @@ class Section {
 
     this.questions.splice(dragIndex, 1);
     this.questions.splice(hoverIndex, 0, dragQuestion);
+
+    this.persistQuestionsOrder();
+  }
+
+  @action persistQuestionsOrder() {
+    let order = {};
+
+    this.questions.forEach((q, i) => {
+      q.order_index = i;
+      order[q.id]   = i;
+    });
+
+    $.ajax({
+      url:         '/test/questions/reorder',
+      type:        'PUT',
+      dataType:    'json',
+      contentType: 'application/json',
+      data:        JSON.stringify({
+        questions_order: order
+      })
+    }).then(
+      null,
+      () => alert('Failed to persist questions order')
+    );
   }
 
   @action edit() {
@@ -131,7 +156,8 @@ class Section {
           description:    this.description,
           time_limit:     this.time_limit,
           required_score: this.required_score,
-          score_units:    this.score_units
+          score_units:    this.score_units,
+          order_index:    this.order_index
         }
       }
     }).then(

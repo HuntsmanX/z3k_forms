@@ -8,6 +8,8 @@ class Test::Question < ApplicationRecord
   validate :fields_count
   validate :fields_validity
 
+  default_scope -> { order(:order_index) }
+
   def fields_count
     return unless fields.reject(&:marked_for_destruction?).count < 1
     errors.add :question, "must contain at least one field"

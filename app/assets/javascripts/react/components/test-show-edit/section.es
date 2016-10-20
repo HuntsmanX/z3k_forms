@@ -106,9 +106,11 @@ class Section extends React.Component {
 
         <div className="clearfix">
           <div className="actions left">
-            {connectDragSource(
-              <i className="material-icons action drag-handle">dehaze</i>
-            )}
+            {section.persisted ? (
+              connectDragSource(
+                <i className="material-icons action drag-handle">dehaze</i>
+              )
+            ) : null}
           </div>
 
           <div className="actions right">

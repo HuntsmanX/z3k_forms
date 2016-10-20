@@ -96,9 +96,11 @@ class Question extends React.Component {
         {question.isBeingSaved ? <Loader /> : null}
 
         <div className="actions left">
-          {connectDragSource(
-            <i className="material-icons action drag-handle">dehaze</i>
-          )}
+          {question.persisted ? (
+            connectDragSource(
+              <i className="material-icons action drag-handle">dehaze</i>
+            )
+          ) : null}
         </div>
 
         <div className="actions right">
