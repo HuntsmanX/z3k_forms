@@ -14,9 +14,8 @@ class DropdownBlock extends React.Component {
   onChange(event) {
     if (this.props.blockProps.question.isBeingEdited) {
       const { field } = this.props.blockProps;
-      field.options.forEach(option => option.change('is_correct', false));
       const selected = field.options.find(option => option.content === event.target.value);
-      selected.change('is_correct', true);
+      field.toggleCorrectOption(selected.uuid);
     }
   }
 

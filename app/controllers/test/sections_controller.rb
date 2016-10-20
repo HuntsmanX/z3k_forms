@@ -29,7 +29,7 @@ class Test::SectionsController < ApplicationController
   private
 
   def section_params
-    params.require(:section).permit(:title, :description, :time_limit, :required_score, :test_id)
+    params.require(:section).permit(:title, :description, :time_limit, :required_score, :score_units, :test_id)
   end
 
 end
