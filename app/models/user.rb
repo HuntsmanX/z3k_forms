@@ -20,8 +20,7 @@ class User < ApplicationRecord
   end
 
   def avatar_url
-    avatar_path ||= ''
-    Rails.application.secrets.staff_app_url + avatar_path
+    Rails.application.secrets.staff_app_url + (avatar_path || "")
   end
 
 end
