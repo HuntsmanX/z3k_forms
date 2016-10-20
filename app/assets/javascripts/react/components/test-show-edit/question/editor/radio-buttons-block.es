@@ -5,11 +5,9 @@ class RadioButtonsBlock extends React.Component {
 
   onChange(optionIndex, event) {
     if (this.props.blockProps.question.isBeingEdited) {
-      this.props.blockProps.field.options.forEach(option => {
-        option.change('is_correct', false);
-      });
-      const option = this.props.blockProps.field.options[optionIndex];
-      option.change('is_correct', true);
+      const { field } = this.props.blockProps;
+      const selected = field.options.find(option => option.content === event.target.value);
+      field.toggleCorrectOption(selected.uuid);
     }
   }
 

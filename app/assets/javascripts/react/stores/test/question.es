@@ -1,6 +1,7 @@
 import { observable, action, computed } from "mobx";
 import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, convertFromRaw, ContentState, Modifier, SelectionState } from "draft-js";
 import uuid from "node-uuid";
+import humanize from "underscore.string/humanize";
 
 import Field from "./field.es";
 
@@ -13,6 +14,8 @@ class Question {
   @observable fieldActive    = false;
   @observable isBeingEdited  = false;
   @observable isBeingSaved   = false;
+  @observable edited         = false;
+  @observable errors         = [];
 
   uuid = uuid.v4();
 
@@ -21,11 +24,23 @@ class Question {
   }
 
   @computed get score() {
-    return this.fields.map(field => {
-      return field.score;
-    }).reduce((prev, curr) => {
-      return (+curr || 0) + prev;
-    }, 0);
+    return this.fields
+      .map(field => field.score)
+      .reduce((prev, curr) => (+curr || 0) + prev, 0);
+  }
+
+  @computed get autoScore() {
+    return this.fields
+      .filter(field => field.autocheck)
+      .map(field => field.score)
+      .reduce((prev, curr) => (+curr || 0) + prev, 0);
+  }
+
+  @computed get manualScore() {
+    return this.fields
+      .filter(field => !field.autocheck)
+      .map(field => field.score)
+      .reduce((prev, curr) => (+curr || 0) + prev, 0);
   }
 
   @action change(attr, val) {
@@ -51,6 +66,8 @@ class Question {
     });
 
     this.isBeingEdited = params.isBeingEdited || this.isBeingEdited;
+
+    this.edited = false;
   }
 
   _parseRawContent(content) {
@@ -75,13 +92,15 @@ class Question {
       const blockKey = value.getSelection().getFocusKey();
       const block    = value.getCurrentContent().getBlockForKey(blockKey);
 
-      if (block.getType() === "atomic" && block.getText() === " ") {
+      if (block.getType() === "atomic") {
         const previousBlockKey = value.getCurrentContent().getKeyBefore(blockKey);
         const previousBlock    = value.getCurrentContent().getBlockForKey(previousBlockKey);
 
         let selection = value.getSelection()
         selection     = selection.set('anchorKey', previousBlockKey);
         selection     = selection.set('anchorOffset', previousBlock.getLength());
+
+        if (block.getText() !== " ") selection = selection.set('focusOffset', 0);
 
         const modifiedContent = Modifier.removeRange(this.editorState.getCurrentContent(), selection, 'backward');
         this.editorState = EditorState.push(this.editorState, modifiedContent, value.getLastChangeType());
@@ -114,10 +133,14 @@ class Question {
   @action edit(value = true) {
     this.isBeingEdited = value;
     this.focus();
+
+    if (value) this.edited = true;
   }
 
   @action save() {
     this.isBeingSaved = true;
+    this.errors = [];
+    this.fields.forEach(field => field.change('errors', []));
 
     const url  = this.id ? `/test/questions/${this.id}` : '/test/questions';
     const type = this.id ? 'PATCH' : 'POST';
@@ -134,8 +157,27 @@ class Question {
         this.isBeingSaved  = false;
         this.isBeingEdited = false;
       },
-      data => console.log(data)
+      data => {
+        if (data.status === 422) {
+          this.setErrors(data.responseJSON.errors);
+        } else {
+          alert(`Server error occured: ${data.status}, ${data.statusText}`);
+        }
+        this.isBeingSaved  = false;
+      }
     );
+  }
+
+  @action setErrors(errors) {
+    this.errors = Object.keys(errors)
+      .filter(attr => !/^fields/.test(attr))
+      .map(attr => `${humanize(attr)} ${errors[attr].join(', ')}`);
+
+    errors.fields && errors.fields.forEach(fieldErrors => {
+      this.fields
+        .find(field => field.blockKey === fieldErrors.block_key)
+        .setErrors(fieldErrors.errors)
+    });
   }
 
   serialize() {
@@ -185,12 +227,14 @@ class Question {
        new Field({ type: type, blockKey: fieldBlockKey })
      );
 
-     this.editorState = newState;
+     this.change('editorState', newState);
    }
 
   @action insertEolBlock() {
     const entityKey  = Entity.create('eol-block', 'IMMUTABLE');
-    this.editorState = AtomicBlockUtils.insertAtomicBlock(this.editorState, entityKey, ' ');
+    this.change(
+      'editorState', AtomicBlockUtils.insertAtomicBlock(this.editorState, entityKey, ' ')
+    );
   }
 
   @action _checkRemovedFields() {

@@ -57,6 +57,10 @@ class FieldControls extends React.Component {
             ) : null}
           </div>
         </div>
+
+        {field.errors.length ? (
+          <div className="errors">{field.errors.join("\n")}</div>
+        ) : null}
       </div>
     );
   }
@@ -84,6 +88,8 @@ class OptionsList extends React.Component {
             deleteOption={field.deleteOption.bind(field, option.uuid)}
             move={field.moveOption.bind(field)}
             onEnterPress={this.addOption.bind(this)}
+            field={field}
+            hasCorrectOptions={field.hasCorrectOptions}
           />
         })}
         <a href="#" onClick={this.addOption.bind(this)}>Add Option</a>
