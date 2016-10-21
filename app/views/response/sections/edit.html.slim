@@ -1,0 +1,4 @@
+- provide :title, @response_section.title
+
+= react_component 'ResponseShowEdit',
+  section: @response_section.as_json(include: { questions: { include: { fields: { include: :options } } } })
