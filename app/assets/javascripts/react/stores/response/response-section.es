@@ -26,7 +26,7 @@ class ResponseSection {
     params.questions.forEach(question => {
       this.questions.push(new ResponseQuestion(question));
     });
-  }  
+  }
 }
 
 export default ResponseSection;

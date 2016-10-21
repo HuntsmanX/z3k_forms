@@ -4,7 +4,7 @@
       h3.center
        | Hello,
        = Testee.find_by_id(@response.testee_id).name
-       |. Your email is 
+       |. Your email is
        = Testee.find_by_id(@response.testee_id).email
   .row
     .small-3.small-centered.columns
