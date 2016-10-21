@@ -78,11 +78,6 @@ class Question extends React.Component {
     this.props.question.edit(value);
   }
 
-  saveQuestion() {
-    event.preventDefault();
-    this.props.question.save();
-  }
-
   render() {
     const { question, deleteQuestion } = this.props;
 
@@ -107,7 +102,7 @@ class Question extends React.Component {
           {question.isBeingEdited ? (
             <i
               className="material-icons action primary"
-              onClick={this.saveQuestion.bind(this)}
+              onClick={question.save}
               title="Save"
             >save</i>
           ) : (

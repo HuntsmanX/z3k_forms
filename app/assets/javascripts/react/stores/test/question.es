@@ -143,7 +143,7 @@ class Question {
     if (value) this.edited = true;
   }
 
-  @action save() {
+  @action save = () => {
     this.isBeingSaved = true;
     this.errors = [];
     this.fields.forEach(field => field.change('errors', []));
