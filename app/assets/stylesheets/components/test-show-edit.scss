@@ -41,6 +41,24 @@
     cursor: move !important;
   }
 
+  .errors {
+    color:        $alert-color;
+    white-space:  pre-wrap;
+    font-size:    0.9rem;
+    padding-left: 2rem;
+    position:     relative;
+    margin-top:   0.5rem;
+
+    &::before {
+      font-family: "Material Icons";
+      content:     "\E001";
+      position:    absolute;
+      top:         -0.5rem;
+      left:        0;
+      font-size:   1.5rem;
+    }
+  }
+
   .sections-list {
 
     .section {
@@ -51,9 +69,36 @@
         border-bottom: 1px solid $light-gray;
       }
 
-      .edit-form {
-        margin-top:   1rem;
-        padding-left: 3rem;
+      .edit-input, .edit-input > input {
+        margin:           0;
+        padding:          0;
+        border:           0;
+        box-shadow:       none;
+        background-color: #ebebeb;
+
+        &.title-input {
+          font-family: 'Nunito', sans-serif;
+          font-size:   1.47059rem;
+          line-height: 1.4;
+          height:      1.4em;
+        }
+
+        &.description-input {
+          font-style:  italic;
+          font-size:   1rem;
+          line-height: 1.5;
+          height:      1.5em;
+        }
+
+        &.time-limit-input, &.time-limit-input > input {
+          line-height: 1.5;
+          height:      1.5em;
+          min-width:   1rem;
+        }
+      }
+
+      .score-units-toggle {
+        cursor: pointer;
       }
 
       .content {
@@ -62,6 +107,10 @@
 
         &:hover {
           background-color: #def0fc;
+        }
+
+        &.edited {
+          background-color: #fce6e2;
         }
 
         &.expanded {
@@ -73,7 +122,8 @@
         }
 
         .description {
-          font-style:    italic;
+          font-style: italic;
+          font-size:  1rem;
         }
 
         .attributes {
@@ -92,12 +142,26 @@
       padding:       1rem 0;
       position:      relative;
 
+      &.edited {
+        background-color: #eef7fd;
+
+        .score-input {
+          background-color: #eef7fd;
+        }
+      }
+
       &:first-child {
         border-top: 1px solid $light-gray;
       }
 
       .main-content {
         padding: 0 3rem;
+
+        .question-stats {
+          margin-top:  0.5rem;
+          padding-top: 0.5rem;
+          border-top:  1px dashed $light-gray;
+        }
 
         .fields-controls {
           margin-top:  0.5rem;

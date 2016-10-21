@@ -2,7 +2,7 @@ $(function() {
 
   $('#response_testee_id').select2({
     ajax: {
-      url: "http://localhost:3000/testees/by_name",
+      url: "/testees/by_name",
       method: 'POST',
       dataType: 'json',
       delay: 1000,
@@ -51,4 +51,3 @@ $(function() {
   }
 
 });
-

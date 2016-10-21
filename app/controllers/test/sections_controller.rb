@@ -26,10 +26,16 @@ class Test::SectionsController < ApplicationController
     render json: {}
   end
 
+  def reorder
+    params[:sections_order].each do |id, index|
+      Test::Section.find(id).update_attribute :order_index, index
+    end
+  end
+
   private
 
   def section_params
-    params.require(:section).permit(:title, :description, :time_limit, :required_score, :test_id)
+    params.require(:section).permit(:title, :description, :time_limit, :required_score, :score_units, :test_id, :order_index)
   end
 
 end

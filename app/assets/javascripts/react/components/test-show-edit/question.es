@@ -8,6 +8,7 @@ import Controls             from "./question/controls.es";
 import FieldsControls       from "./question/fields-controls.es";
 
 import Loader               from "./loader.es";
+import Hash                 from "./hash.es";
 
 const dragSource = {
   beginDrag(props) {
@@ -88,14 +89,18 @@ class Question extends React.Component {
     const { connectDragSource, connectDragPreview, isDragging, connectDropTarget } = this.props;
     const opacity = isDragging ? 0 : 1;
 
+    const className = question.edited ? 'edited' : '';
+
     return connectDropTarget(
-      <div className="question" style={{ opacity, position: 'relative' }}>
+      <div className={`question ${className}`} style={{ opacity, position: 'relative' }}>
         {question.isBeingSaved ? <Loader /> : null}
 
         <div className="actions left">
-          {connectDragSource(
-            <i className="material-icons action drag-handle">dehaze</i>
-          )}
+          {question.persisted ? (
+            connectDragSource(
+              <i className="material-icons action drag-handle">dehaze</i>
+            )
+          ) : null}
         </div>
 
         <div className="actions right">
@@ -122,6 +127,21 @@ class Question extends React.Component {
         {connectDragPreview(
           <div className="main-content">
             <QuestionEditor question={question} ref={(ref) => this.assignEditorRef(ref)} />
+
+            {question.errors.length ? (
+              <div className="errors">{question.errors.join("\n")}</div>
+            ) : null}
+
+            {question.isBeingEdited ? null : (
+              <div className="question-stats">
+                <div className="row">
+                  <Hash k='Max Score' v={question.score} />
+                  <Hash k='Auto' v={question.autoScore} />
+                  <Hash k='Manually' v={question.manualScore} />
+                  <Hash k='' v='' />
+                </div>
+              </div>
+            )}
 
             {question.isBeingEdited ? <Controls question={question} /> : null}
 

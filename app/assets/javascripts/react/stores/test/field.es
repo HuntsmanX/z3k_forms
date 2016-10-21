@@ -1,6 +1,7 @@
 import { observable, action, computed } from "mobx";
 import uuid from "node-uuid";
 import { findIndex } from "lodash/array";
+import humanize from "underscore.string/humanize";
 
 import Option from "./option.es";
 
@@ -8,10 +9,11 @@ class Field {
 
   @observable id        = null;
   @observable content   = '';
-  @observable score     = 0;
-  @observable autocheck = true;
+  @observable score     = 1;
+  @observable autocheck = false;
   @observable _options  = [];
   @observable _destroy  = false;
+  @observable errors    = [];
 
   uuid = uuid.v4();
 
@@ -33,10 +35,11 @@ class Field {
   fromJSON(params) {
     if (params.id) this.id = params.id;
 
-    this.type     = params.type     || params.field_type;
-    this.blockKey = params.blockKey || params.block_key;
-    this.content  = params.content  || this.content;
-    this.score    = params.score    || this.score;
+    this.type      = params.type      || params.field_type;
+    this.blockKey  = params.blockKey  || params.block_key;
+    this.content   = params.content   || this.content;
+    this.score     = params.score     || this.score;
+    this.autocheck = params.autocheck || this.autocheck;
 
     this._options = (params.options || []).map(option => {
       return new Option(option);
@@ -87,6 +90,35 @@ class Field {
 
   @action toggleAutocheck() {
     this.autocheck = !this.autocheck;
+  }
+
+  @action toggleCorrectOption(optionId) {
+    if (this.type === 'dropdown' || this.type === 'radio_buttons') {
+      this._selectSingleCorrectOption(optionId);
+    } else if (this.type === 'checkboxes') {
+      this._selectMultipleCorrectOption(optionId);
+    }
+  }
+
+  @action _selectSingleCorrectOption(optionId) {
+    this.options.forEach(option => option.change('is_correct', false));
+    const correct = this.options.find(option => option.uuid === optionId);
+    correct.change('is_correct', true);
+  }
+
+  @action _selectMultipleCorrectOption(optionId) {
+    const selected = this.options.find(option => option.uuid === optionId);
+    selected.change('is_correct', !selected.is_correct);
+  }
+
+  @computed get hasCorrectOptions() {
+    return !!(['dropdown', 'checkboxes', 'radio_buttons'].indexOf(this.type) + 1);
+  }
+
+  @action setErrors(errors) {
+    this.errors = Object.keys(errors).map(attr => {
+      return `${humanize(attr)} ${errors[attr].join(', ')}`
+    });
   }
 
 }

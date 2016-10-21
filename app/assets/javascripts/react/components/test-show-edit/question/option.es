@@ -80,8 +80,14 @@ class Option extends React.Component {
     this.props.option.assignInputRef(input);
   }
 
+  toggleCorrect() {
+    this.props.field.toggleCorrectOption(
+      this.props.option.uuid
+    );
+  }
+
   render() {
-    const { option, deleteOption, index } = this.props;
+    const { option, deleteOption, index, hasCorrectOptions } = this.props;
     const { connectDragSource, connectDragPreview, isDragging, connectDropTarget } = this.props;
     const opacity = isDragging ? 0 : 1;
 
@@ -109,6 +115,13 @@ class Option extends React.Component {
 
         <div className="large-3 columns">
           <label className="middle">
+            {hasCorrectOptions ? (
+              option.is_correct ? (
+                <i className="material-icons action" onClick={this.toggleCorrect.bind(this)}>done</i>
+              ) : (
+                <i className="material-icons action" onClick={this.toggleCorrect.bind(this)}>block</i>
+              )
+            ) : null}
             <i className="material-icons action" onClick={deleteOption}>delete</i>
           </label>
         </div>

@@ -25,15 +25,21 @@ class Test::QuestionsController < ApplicationController
     render json: {}
   end
 
+  def reorder
+    params[:questions_order].each do |id, index|
+      Test::Question.find(id).update_attribute :order_index, index
+    end
+  end
+
   private
 
   def question_params
     params.require(:question).permit(
-      :section_id, :content,
+      :section_id, :content, :order_index,
       fields_attributes: [
         :id, :field_type, :block_key, :content, :score, :autocheck, :_destroy,
         options_attributes: [
-          :id, :content, :is_correct, :_destroy
+          :id, :content, :is_correct, :_destroy, :order_index
         ]
       ]
     )
