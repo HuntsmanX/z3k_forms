@@ -18,7 +18,7 @@ class Field {
   uuid = uuid.v4();
 
   constructor(params = {}) {
-    this.fromJSON(params);
+    this._fromJSON(params);
 
     const needOptions = ['dropdown', 'checkboxes', 'radio_buttons', 'sequence'];
 
@@ -32,18 +32,12 @@ class Field {
     }
   }
 
-  fromJSON(params) {
-    if (params.id) this.id = params.id;
+  @computed get hasOptions() {
+    return !!(['dropdown', 'checkboxes', 'radio_buttons', 'sequence'].indexOf(this.type) + 1);
+  }
 
-    this.type      = params.type      || params.field_type;
-    this.blockKey  = params.blockKey  || params.block_key;
-    this.content   = params.content   || this.content;
-    this.score     = params.score     || this.score;
-    this.autocheck = params.autocheck || this.autocheck;
-
-    this._options = (params.options || []).map(option => {
-      return new Option(option);
-    });
+  @computed get hasCorrectOptions() {
+    return !!(['dropdown', 'checkboxes', 'radio_buttons'].indexOf(this.type) + 1);
   }
 
   @computed get prettyName() {
@@ -62,23 +56,23 @@ class Field {
     return this._options.filter(option => !option._destroy);
   }
 
-  @action change(attr, val) {
+  @action change = (attr, val) => {
     this[attr] = val;
   }
 
-  @action addOption() {
+  @action addOption = () => {
     this._options.push(
       new Option()
     );
     this._options[this._options.length - 1].focus();
   }
 
-  @action deleteOption(uuid) {
+  @action deleteOption = (uuid) => {
     const deleted = this._options.find(option => option.uuid === uuid);
     deleted.change('_destroy', true);
   }
 
-  @action moveOption(dragId, hoverId) {
+  @action moveOption = (dragId, hoverId) => {
     const dragOption = this._options.find(option => option.uuid === dragId);
 
     const dragIndex  = findIndex(this._options, option => option.uuid === dragId);
@@ -88,11 +82,11 @@ class Field {
     this._options.splice(hoverIndex, 0, dragOption);
   }
 
-  @action toggleAutocheck() {
+  @action toggleAutocheck = () => {
     this.autocheck = !this.autocheck;
   }
 
-  @action toggleCorrectOption(optionId) {
+  @action toggleCorrectOption = (optionId) => {
     if (this.type === 'dropdown' || this.type === 'radio_buttons') {
       this._selectSingleCorrectOption(optionId);
     } else if (this.type === 'checkboxes') {
@@ -100,25 +94,35 @@ class Field {
     }
   }
 
-  @action _selectSingleCorrectOption(optionId) {
+  @action setErrors = (errors) => {
+    this.errors = Object.keys(errors).map(attr => {
+      return `${humanize(attr)} ${errors[attr].join(', ')}`
+    });
+  }
+
+  @action _fromJSON = (params) => {
+    if (params.id) this.id = params.id;
+
+    this.type      = params.type      || params.field_type;
+    this.blockKey  = params.blockKey  || params.block_key;
+    this.content   = params.content   || this.content;
+    this.score     = params.score     || this.score;
+    this.autocheck = params.autocheck || this.autocheck;
+
+    this._options = (params.options || []).map(option => {
+      return new Option(option);
+    });
+  }
+
+  @action _selectSingleCorrectOption = (optionId) => {
     this.options.forEach(option => option.change('is_correct', false));
     const correct = this.options.find(option => option.uuid === optionId);
     correct.change('is_correct', true);
   }
 
-  @action _selectMultipleCorrectOption(optionId) {
+  @action _selectMultipleCorrectOption = (optionId) => {
     const selected = this.options.find(option => option.uuid === optionId);
     selected.change('is_correct', !selected.is_correct);
-  }
-
-  @computed get hasCorrectOptions() {
-    return !!(['dropdown', 'checkboxes', 'radio_buttons'].indexOf(this.type) + 1);
-  }
-
-  @action setErrors(errors) {
-    this.errors = Object.keys(errors).map(attr => {
-      return `${humanize(attr)} ${errors[attr].join(', ')}`
-    });
   }
 
 }

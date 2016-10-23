@@ -22,27 +22,27 @@ ActiveRecord::Schema.define(version: 20161021102459) do
     t.text     "content"
     t.integer  "score"
     t.boolean  "autocheck"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.text     "user_content"
   end
 
   create_table "response_options", force: :cascade do |t|
     t.string   "content"
     t.boolean  "is_correct"
     t.integer  "field_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "order_index"
+    t.boolean  "user_selected"
     t.index ["field_id"], name: "index_response_options_on_field_id", using: :btree
   end
 
   create_table "response_questions", force: :cascade do |t|
     t.string   "content"
-    t.integer  "question_type", default: 1
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "section_id"
-    t.integer  "score"
     t.integer  "order_index"
     t.index ["section_id"], name: "index_response_questions_on_section_id", using: :btree
   end
@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(version: 20161021102459) do
     t.datetime "updated_at",     null: false
     t.text     "description"
     t.integer  "required_score"
-    t.string   "uuid"
     t.integer  "score_units"
+    t.string   "uuid"
     t.integer  "order_index"
     t.index ["response_id"], name: "index_response_sections_on_response_id", using: :btree
   end
@@ -93,11 +93,9 @@ ActiveRecord::Schema.define(version: 20161021102459) do
 
   create_table "test_questions", force: :cascade do |t|
     t.text     "content"
-    t.integer  "question_type", default: 1
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "section_id"
-    t.integer  "score"
     t.integer  "order_index"
     t.index ["section_id"], name: "index_test_questions_on_section_id", using: :btree
   end

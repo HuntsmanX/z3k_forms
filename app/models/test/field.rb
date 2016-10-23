@@ -15,10 +15,11 @@ class Test::Field < ApplicationRecord
 
   accepts_nested_attributes_for :options, allow_destroy: true
 
-  validate :content_presence
-  validate :options_presence
-  validate :options_content_presence
-  validate :options_correctness
+  validates :score, presence: true, numericality: { only_integer: true }
+  validate  :content_presence
+  validate  :options_presence
+  validate  :options_content_presence
+  validate  :options_correctness
 
   def content_presence
     return unless has_content? && autocheck && content.blank?

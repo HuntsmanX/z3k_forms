@@ -3,15 +3,15 @@ import { observer } from "mobx-react";
 @observer
 class DropdownBlock extends React.Component {
 
-  onFocus(event) {
+  onFocus = (event) => {
     this.props.blockProps.onStartEdit();
   }
 
-  onBlur(event) {
+  onBlur = (event) => {
     this.props.blockProps.onStopEdit();
   }
 
-  onChange(event) {
+  onChange = (event) => {
     if (this.props.blockProps.question.isBeingEdited) {
       const { field } = this.props.blockProps;
       const selected = field.options.find(option => option.content === event.target.value);
@@ -23,12 +23,13 @@ class DropdownBlock extends React.Component {
     const { field } = this.props.blockProps;
     const correctOption = field.options.find(option => option.is_correct);
     const value = correctOption ? correctOption.content : "";
+
     return (
       <select
         value={value}
-        onChange={this.onChange.bind(this)}
-        onFocus={this.onFocus.bind(this)}
-        onBlur={this.onBlur.bind(this)}
+        onChange={this.onChange}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
         placeholder="Correct answer"
       >
         {field.options.map(option => {

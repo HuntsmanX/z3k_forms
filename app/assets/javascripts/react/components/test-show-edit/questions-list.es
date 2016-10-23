@@ -5,12 +5,18 @@ import Question from "./question.es";
 @observer
 class QuestionsList extends React.Component {
 
-  addQuestion() {
-    this.props.section.addQuestion();
-  }
+  renderQuestions = () => {
+    const { section } = this.props;
 
-  deleteQuestion(index) {
-    this.props.section.deleteQuestion(index);
+    return section.questions.map((question, index) => {
+      return <Question
+        key={question.uuid}
+        index={index}
+        question={question}
+        deleteQuestion={section.deleteQuestion.bind(null, index)}
+        move={section.moveQuestion.bind(section)}
+      />;
+    });
   }
 
   render() {
@@ -19,21 +25,14 @@ class QuestionsList extends React.Component {
     return (
       <div className="questions-list">
         {section.questions.length ? (
-          section.questions.map((question, index) => {
-            return <Question
-              key={question.uuid}
-              index={index}
-              question={question}
-              deleteQuestion={this.deleteQuestion.bind(this, index)}
-              move={section.moveQuestion.bind(section)}
-            />;
-          })
+          this.renderQuestions()
         ) : (
           <p>No questions yet</p>
         )}
+
         <div className="clearfix">
           <div className="float-right">
-            <a onClick={this.addQuestion.bind(this)}>Add Question</a>
+            <a onClick={section.addQuestion}>Add Question</a>
           </div>
         </div>
       </div>

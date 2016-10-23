@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import { Editor, DefaultDraftBlockRenderMap, Entity } from "draft-js";
-import { Map } from 'immutable';
+import { Map } from "immutable";
 
 import AtomicBlockWrapper from "./editor/atomic-block-wrapper.es";
 import TextInputBlock     from "./editor/text-input-block.es";
@@ -22,6 +22,13 @@ const styleMap = {
   }
 };
 
+const blockRenderMap = DefaultDraftBlockRenderMap.merge(Map({
+  'atomic': {
+    element: 'div',
+    wrapper: <AtomicBlockWrapper />
+  }
+}));
+
 @observer
 class QuestionEditor extends React.Component {
 
@@ -29,7 +36,7 @@ class QuestionEditor extends React.Component {
     this.refs.editor.focus();
   }
 
-  blockRenderer(block) {
+  blockRenderer = (block) => {
     if (block.getType() === 'atomic') {
       const entityType = Entity.get(block.getEntityAt(0)).getType();
 
@@ -76,48 +83,21 @@ class QuestionEditor extends React.Component {
     }
   }
 
-  onChange(value) {
-    this.props.question.change('editorState', value);
-  }
-
-  handleKeyCommand(command) {
-    this.props.question.handleKeyCommand(command);
-  }
-
-  handleReturn(event) {
-    const { editorState } = this.props.question;
-    const blockKey  = editorState.getSelection().getFocusKey();
-    const blockType = editorState.getCurrentContent().getBlockForKey(blockKey).getType();
-
-    if (['code-block', 'unordered-list-item', 'ordered-list-item'].indexOf(blockType) + 1) {
-      return 'not-handled';
-    } else {
-      this.props.question.insertEolBlock();
-      return 'handled';
-    }
-  }
-
   render() {
     const { question } = this.props;
-
-    const blockRenderMap = DefaultDraftBlockRenderMap.merge(Map({
-      'atomic': {
-        element: 'div',
-        wrapper: <AtomicBlockWrapper />
-      }
-    }));
+    const { editor }   = question;
 
     return (
       <div className="draft-editor">
         <Editor
-          blockRendererFn={this.blockRenderer.bind(this)}
+          blockRendererFn={this.blockRenderer}
           blockRenderMap={blockRenderMap}
           customStyleMap={styleMap}
-          editorState={question.editorState}
-          onChange={this.onChange.bind(this)}
-          handleKeyCommand={this.handleKeyCommand.bind(this)}
+          editorState={editor.state}
+          onChange={editor.update}
+          handleKeyCommand={editor.handleKeyCommand}
           readOnly={question.readOnly}
-          handleReturn={this.handleReturn.bind(this)}
+          handleReturn={editor.handleReturn}
           ref="editor"
         />
       </div>
