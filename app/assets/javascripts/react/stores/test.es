@@ -15,19 +15,24 @@ class Test {
     });
   }
 
-  @action addSection() {
+  @action addSection = () => {
     this.sections.push(
       new Section({ test_id: this.id, isBeingEdited: true, order_index: this.sections.length })
     );
+    this.sections[this.sections.length - 1].focus();
   }
 
-  @action deleteSection(index) {
-    this.sections[index].destroy().then(
+  @action deleteSection = (index) => {
+    const section = this.sections[index];
+
+    if (!confirm(`Are you sure you want to delete '${section.title}' section?`)) return;
+
+    section.destroy().then(
       () => this.sections.splice(index, 1)
     );
   }
 
-  @action moveSection(dragIndex, hoverIndex) {
+  @action moveSection = (dragIndex, hoverIndex) => {
     const dragSection = this.sections[dragIndex];
 
     this.sections.splice(dragIndex, 1);
@@ -36,11 +41,11 @@ class Test {
     this.persistSectionsOrder();
   }
 
-  @action persistSectionsOrder() {
+  @action persistSectionsOrder = () => {
     let order = {};
 
     this.sections.forEach((s, i) => {
-      s.order_index = i;
+      s.change('order_index', i);
       order[s.id]   = i;
     });
 

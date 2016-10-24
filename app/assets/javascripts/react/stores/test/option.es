@@ -11,28 +11,28 @@ class Option {
   uuid = uuid.v4();
 
   constructor(params = {}) {
-    this.fromJSON(params);
+    this._fromJSON(params);
   }
 
-  fromJSON(params) {
+  @action change = (attr, val) => {
+    this[attr] = val;
+  }
+
+  @action assignInputRef = (ref) => {
+    this.inputRef = ref;
+  }
+
+  @action focus = () => {
+    setTimeout(() => {
+      this.inputRef && this.inputRef.focus();
+    }, 0);
+  }
+
+  @action _fromJSON = (params) => {
     if (params.id) this.id = params.id;
 
     this.content    = params.content    || this.content;
     this.is_correct = params.is_correct || this.is_correct;
-  }
-
-  @action change(attr, val) {
-    this[attr] = val;
-  }
-
-  @action assignInputRef(ref) {
-    this.inputRef = ref;
-  }
-
-  @action focus() {
-    setTimeout(() => {
-      this.inputRef && this.inputRef.focus();
-    }, 0);
   }
 
 }

@@ -22,26 +22,7 @@ class Section {
   uuid = uuid.v4();
 
   constructor(params = {}) {
-    this.fromJSON(params);
-  }
-
-  fromJSON(params) {
-    if (params.id) this.id = params.id;
-
-    this.test_id     = params.test_id;
-    this.order_index = params.order_index;
-
-    this.title          = params.title          || this.title;
-    this.description    = params.description    || this.description;
-    this.time_limit     = params.time_limit     || this.time_limit;
-    this.required_score = params.required_score || this.required_score;
-    this.score_units    = params.score_units    || this.score_units;
-
-    (params.questions || []).forEach(question => {
-      this.questions.push(new Question(question));
-    });
-
-    this.isBeingEdited  = params.isBeingEdited  || this.isBeingEdited;
+    this._fromJSON(params);
   }
 
   @computed get persisted() {
@@ -82,7 +63,7 @@ class Section {
     return !this.isExpanded && this.questions.find(q => q.edited);
   }
 
-  @action toggle() {
+  @action toggle = () => {
     this.isExpanded = !this.isExpanded;
   }
 
@@ -90,56 +71,36 @@ class Section {
     this[attr] = val;
   }
 
-  @action addQuestion() {
+  @action addQuestion = () => {
     this.questions.push(
-      new Question({ section_id: this.id, isBeingEdited: true, order_index: this.questions.length })
+      new Question({ section_id: this.id, isBeingEdited: true, order_index: this.questions.length, edited: true })
     );
     this.questions[this.questions.length - 1].focus();
   }
 
-  @action deleteQuestion(index) {
+  @action deleteQuestion = (index) => {
+    if (!confirm(`Are you sure you want to delete this question?`)) return;
+
     this.questions[index].destroy().then(
       () => this.questions.splice(index, 1)
     );
   }
 
-  @action moveQuestion(dragIndex, hoverIndex) {
+  @action moveQuestion = (dragIndex, hoverIndex) => {
     const dragQuestion = this.questions[dragIndex];
 
     this.questions.splice(dragIndex, 1);
     this.questions.splice(hoverIndex, 0, dragQuestion);
 
-    this.persistQuestionsOrder();
+    this._persistQuestionsOrder();
   }
 
-  @action persistQuestionsOrder() {
-    let order = {};
-
-    this.questions.forEach((q, i) => {
-      q.order_index = i;
-      order[q.id]   = i;
-    });
-
-    $.ajax({
-      url:         '/test/questions/reorder',
-      type:        'PUT',
-      dataType:    'json',
-      contentType: 'application/json',
-      data:        JSON.stringify({
-        questions_order: order
-      })
-    }).then(
-      null,
-      () => alert('Failed to persist questions order')
-    );
-  }
-
-  @action edit() {
+  @action edit = () => {
     this.isBeingEdited = true;
     this.focus();
   }
 
-  @action save() {
+  @action save = () => {
     this.isBeingSaved = true;
     this.errors = [];
 
@@ -162,13 +123,13 @@ class Section {
       }
     }).then(
       data => {
-        this.fromJSON(data);
+        this._fromJSON(data);
         this.isBeingSaved  = false;
         this.isBeingEdited = false;
       },
       data => {
         if (data.status === 422) {
-          this.setErrors(data.responseJSON.errors);
+          this._setErrors(data.responseJSON.errors);
         } else {
           alert(`Server error occured: ${data.status}, ${data.statusText}`);
         }
@@ -177,13 +138,7 @@ class Section {
     );
   }
 
-  @action setErrors(errors) {
-    this.errors = Object.keys(errors).map(attr => {
-      return `${humanize(attr)} ${errors[attr].join(', ')}`;
-    });
-  }
-
-  @action destroy() {
+  @action destroy = () => {
     if (this.id) {
       this.isBeingSaved = true;
 
@@ -196,22 +151,69 @@ class Section {
     }
   }
 
-  @action assignTitleInputRef(input) {
+  @action assignTitleInputRef = (input) => {
     this.titleInputRef = input;
   }
 
-  @action focus() {
+  @action focus = () => {
     setTimeout(() => {
       this.titleInputRef && this.titleInputRef.focus();
     }, 0);
   }
 
-  @action toggleScoreUnits() {
+  @action toggleScoreUnits = () => {
     if (this.score_units === 'points') {
       this.score_units = 'percent';
     } else {
       this.score_units = 'points';
     }
+  }
+
+  @action _fromJSON = (params) => {
+    if (params.id) this.id = params.id;
+
+    this.test_id     = params.test_id;
+    this.order_index = params.order_index;
+
+    this.title          = params.title          || this.title;
+    this.description    = params.description    || this.description;
+    this.time_limit     = params.time_limit     || this.time_limit;
+    this.required_score = params.required_score || this.required_score;
+    this.score_units    = params.score_units    || this.score_units;
+
+    (params.questions || []).forEach(question => {
+      this.questions.push(new Question(question));
+    });
+
+    this.isBeingEdited  = params.isBeingEdited  || this.isBeingEdited;
+  }
+
+  @action _setErrors = (errors) => {
+    this.errors = Object.keys(errors).map(attr => {
+      return `${humanize(attr)} ${errors[attr].join(', ')}`;
+    });
+  }
+
+  @action _persistQuestionsOrder = () => {
+    let order = {};
+
+    this.questions.forEach((q, i) => {
+      q.change('order_index', i);
+      order[q.id]   = i;
+    });
+
+    $.ajax({
+      url:         '/test/questions/reorder',
+      type:        'PUT',
+      dataType:    'json',
+      contentType: 'application/json',
+      data:        JSON.stringify({
+        questions_order: order
+      })
+    }).then(
+      null,
+      () => alert('Failed to persist questions order')
+    );
   }
 
 }

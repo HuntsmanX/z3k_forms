@@ -3,15 +3,15 @@ import { observer } from "mobx-react";
 @observer
 class TextAreaBlock extends React.Component {
 
-  onFocus(event) {
+  onFocus = (event) => {
     this.props.blockProps.onStartEdit();
   }
 
-  onBlur(event) {
+  onBlur = (event) => {
     this.props.blockProps.onStopEdit();
   }
 
-  onChange(event) {
+  onChange = (event) => {
     if (this.props.blockProps.question.isBeingEdited) {
       this.props.blockProps.field.change(
         'content', event.target.value
@@ -24,9 +24,9 @@ class TextAreaBlock extends React.Component {
     return (
       <textarea
         value={content}
-        onChange={this.onChange.bind(this)}
-        onFocus={this.onFocus.bind(this)}
-        onBlur={this.onBlur.bind(this)}
+        onChange={this.onChange}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
         placeholder="Correct answer"
       />
     );
