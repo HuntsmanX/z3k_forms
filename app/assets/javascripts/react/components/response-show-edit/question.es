@@ -1,4 +1,5 @@
 import { observer } from "mobx-react";
+import QuestionEditor from "./question-editor.es";
 
 @observer
 class Question extends React.Component {
@@ -7,7 +8,9 @@ render() {
   const { question } = this.props;
 
   return (
-    <h1>{question.id}</h1>
+    <div className="main-content">
+        <QuestionEditor question={question}/>
+    </div>
   )
 
 }

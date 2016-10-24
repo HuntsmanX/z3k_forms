@@ -26,5 +26,28 @@ class ResponseField {
     });
   }
 
+  @action change = (attr, val) => {
+    this[attr] = val;
+  }
+
+  @action toggleCorrectOption = (optionId) => {
+    if (this.field_type === 'dropdown' || this.field_type === 'radio_buttons') {
+      this._selectSingleCorrectOption(optionId);
+    } else if (this.field_type === 'checkboxes') {
+      this._selectMultipleCorrectOption(optionId);
+    }
+  }
+
+  @action _selectMultipleCorrectOption = (optionId) => {
+    const selected = this.options.find(option => option.uuid === optionId);
+    selected.change('user_selected', !selected.is_correct);
+  }
+
+  @action _selectSingleCorrectOption = (optionId) => {
+    this.options.forEach(option => option.change('user_selected', false));
+    const correct = this.options.find(option => option.uuid === optionId);
+    correct.change('user_selected', true);
+  }
+
 }
 export default ResponseField;
