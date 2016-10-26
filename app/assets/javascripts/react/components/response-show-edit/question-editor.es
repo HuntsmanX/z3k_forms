@@ -9,10 +9,8 @@ import CheckboxesBlock    from "./question-editor/checkboxes-block.es";
 import RadioButtonsBlock  from "./question-editor/radio-buttons-block.es";
 import DropdownBlock      from "./question-editor/dropdown-block.es";
 import TextAreaBlock      from "./question-editor/text-area-block.es";
-
-
-import SequenceBlock      from "../test-show-edit/question/editor/sequence-block.es";
-import TextEditorBlock    from "../test-show-edit/question/editor/text-editor-block.es";
+import SequenceBlock      from "./question-editor/sequence-block.es";
+import TextEditorBlock    from "./question-editor/text-editor-block.es";
 
 const styleMap = {
   'CODE': {
@@ -70,6 +68,7 @@ class QuestionEditor extends React.Component {
             atomicBlockType: entityType,
             field:           field,
             question:        this.props.question,
+            editor:          field.editor,
           }
         }
       }
