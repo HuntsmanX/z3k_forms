@@ -43,7 +43,7 @@ class ResponseField {
 
   @action _selectMultipleCorrectOption = (optionId) => {
     const selected = this.options.find(option => option.uuid === optionId);
-    selected.change('user_selected', !selected.is_correct);
+    selected.change('user_selected', !selected.user_selected);
   }
 
   @action _selectSingleCorrectOption = (optionId) => {

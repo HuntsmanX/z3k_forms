@@ -47,5 +47,11 @@ class ResponseFieldEditor {
     return EditorState.push(this.state, modifiedContent, value.getLastChangeType());
   }
 
+  serialize = () => {
+    return JSON.stringify(
+      convertToRaw(this.state.getCurrentContent())
+    );
+  }
+
 }
 export default ResponseFieldEditor;

@@ -12,8 +12,13 @@ class StyleButton extends React.Component {
   }
 
   render() {
+    const { active, icon, iconTitle } = this.props;
+    let className = 'styleButton';
+    if (active) className += '-active';
+  
     return (
-      <span className='styleButton' onMouseDown={this.onToggle}>
+      <span className={className} onMouseDown={this.onToggle}>
+        <i className="material-icons" title={iconTitle}>{icon}</i>
         {this.props.label}
       </span>
     );

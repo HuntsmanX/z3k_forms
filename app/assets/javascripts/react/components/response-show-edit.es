@@ -15,6 +15,7 @@ class ResponseShowEdit extends React.Component{
     return(
       <div id="test-show-edit">
         <Section section={this.section}/>
+        <a href="#" className="button" onClick={this.section.update}>Send Answers</a>
       </div>
     )
   }

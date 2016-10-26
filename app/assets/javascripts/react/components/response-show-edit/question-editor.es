@@ -80,10 +80,11 @@ class QuestionEditor extends React.Component {
     const { editor }   = question;
 
   return(
-    <div className="draft-editor">
+    <div className="draft-editor content">
       <Editor
         blockRendererFn={this.blockRenderer}
         customStyleMap={styleMap}
+        blockRenderMap={blockRenderMap}
         editorState={editor.state}
         readOnly
         ref="editor"
@@ -91,5 +92,13 @@ class QuestionEditor extends React.Component {
     </div>
   )
   }
+}
+
+class EolBlock extends React.Component {
+
+  render() {
+    return <br />;
+  }
+
 }
 export default QuestionEditor;
