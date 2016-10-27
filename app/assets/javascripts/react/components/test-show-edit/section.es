@@ -11,6 +11,8 @@ import { dragSource, dropTarget } from "./section-dnd.es";
 @observer
 class Section extends React.Component {
 
+  // TODO Refactor this component, looks extremly ugly :(
+
   change(attr, event) {
     this.props.section.change(attr, event.target.value);
   }
@@ -105,17 +107,23 @@ class Section extends React.Component {
                         className="edit-input time-limit-input"
                         placeholder="minutes"
                       /> :
-                      section.timeLabel
+                      section.timeLimitLabel
                     }
                   />
                   <Hash k='Max Score' v={`${section.maxScore} (${section.maxAutoScore} auto/${section.maxManualScore} manually)`} />
                   <Hash
                     k='Show Next Section'
-                    v={
-                      <select className="edit-input select">
-                        <option value="always">Regardless of score</option>
-                        <option value="score">Score is acceptable</option>
-                      </select>
+                    v={section.isBeingEdited ?
+                      <select
+                        className="edit-input select"
+                        value={section.show_next_section}
+                        onChange={this.change.bind(this, 'show_next_section')}
+                      >
+                        {Object.keys(section.showNextSectionMap).map(key => {
+                          return <option key={key} value={key}>{section.showNextSectionMap[key]}</option>
+                        })}
+                      </select> :
+                      section.showNextSectionLabel
                     }
                   />
                 </div>
@@ -129,9 +137,8 @@ class Section extends React.Component {
                         onChange={this.change.bind(this, 'questions_to_show')}
                         value={section.questions_to_show}
                         className="edit-input time-limit-input"
-                        placeholder="minutes"
                       /> :
-                      section.questions_to_show
+                      section.questionsToShowLabel
                     }
                   />
                   {section.time_limit > 0 ? (
@@ -163,7 +170,22 @@ class Section extends React.Component {
                       section.requiredScoreLabel
                     }
                   />
-                  <Hash k='Acceptable Autoscore' v='' />
+                  {section.show_next_section === 'score' ? (
+                    <Hash
+                      k='Acceptable Autoscore'
+                      v={section.isBeingEdited ?
+                        <input
+                          type="text"
+                          onChange={this.change.bind(this, 'acceptable_score')}
+                          value={section.acceptable_score}
+                          className="edit-input time-limit-input"
+                        /> :
+                        section.acceptable_score
+                      }
+                    />
+                  ) : (
+                    <Hash k='' v='' />
+                  )}
                 </div>
 
                 <div className="row">
@@ -177,15 +199,39 @@ class Section extends React.Component {
                   />
                   <Hash k='' v='' />
                   <Hash
-                    k='Required Score Units'
+                    k='Score Units'
                     v={section.isBeingEdited ?
-                      <a onClick={section.toggleScoreUnits} style={{ textDecoration: 'underline' }}>
-                        {section.score_units}
-                      </a> :
-                      section.score_units
+                      <select
+                        className="edit-input select"
+                        value={section.required_score_units}
+                        onChange={this.change.bind(this, 'required_score_units')}
+                      >
+                        {Object.keys(section.scoreUnitsMap).map(key => {
+                          return <option key={key} value={key}>{section.scoreUnitsMap[key]}</option>
+                        })}
+                      </select> :
+                      section.requiredScoreUnitsLabel
                     }
                   />
-                  <Hash k='' v='' />
+                  {section.show_next_section === 'score' ? (
+                    <Hash
+                      k='Score Units'
+                      v={section.isBeingEdited ?
+                        <select
+                          className="edit-input select"
+                          value={section.acceptable_score_units}
+                          onChange={this.change.bind(this, 'acceptable_score_units')}
+                        >
+                          {Object.keys(section.scoreUnitsMap).map(key => {
+                            return <option key={key} value={key}>{section.scoreUnitsMap[key]}</option>
+                          })}
+                        </select> :
+                        section.acceptableScoreUnitsLabel
+                      }
+                    />
+                  ) : (
+                    <Hash k='' v='' />
+                  )}
                 </div>
               </div>
 

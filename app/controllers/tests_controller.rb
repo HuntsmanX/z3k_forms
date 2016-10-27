@@ -1,7 +1,7 @@
 class TestsController < ApplicationController
 
   def index
-    @tests = Test.all
+    @tests = Test.with_data.page(params[:page])
   end
 
   def edit
@@ -11,7 +11,7 @@ class TestsController < ApplicationController
   def create
     @test = Test.new(test_params)
     if @test.save
-      redirect_to tests_path, flash: { notice: "Test Created Successfully" }
+      redirect_to edit_test_path(@test), flash: { notice: "Test Created Successfully" }
     else
       redirect_to :back , flash: { error: @test.errors.full_messages.first }
     end

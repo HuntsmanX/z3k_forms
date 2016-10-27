@@ -2,12 +2,12 @@
 
 .entities-list-panel.clearfix
   .float-right
-    button.button.small data-open="new-test-modal" New Test
+    button.button.small data-open="new-test-modal"
+      = icon 'add'
 
-- if @tests.present?
-  ul.entities-list
-    = render @tests
-- else
-  p No entries found
+ul.entities-list
+  = render @tests
+    
+= paginator @tests
 
 = render 'new_test'
