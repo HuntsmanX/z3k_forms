@@ -1,11 +1,10 @@
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import Section from "./response-show-edit/section.es";
-import ResponseSection from "./../stores/response/response-section.es";
+import ResponseSection from './../stores/response/response-section.es';
+import Section from './response-show-edit/section.es'
+import { DragDropContext } from "react-dnd";
+import HTML5Backend        from "react-dnd-html5-backend";
 
 @DragDropContext(HTML5Backend)
-
-class ResponseShowEdit extends React.Component {
+class ResponseShowEdit extends React.Component{
 
   constructor(props) {
     super(props);
@@ -13,13 +12,12 @@ class ResponseShowEdit extends React.Component {
   }
 
   render() {
-    return (
-      <div id="response-show-edit">
-          <Section section={this.section}/>
+    return(
+      <div id="test-show-edit">
+        <Section section={this.section}/>
+        <a href="#" className="button" onClick={this.section.update}>Send Answers</a>
       </div>
-    );
+    )
   }
-
 }
-
 export default ResponseShowEdit;
