@@ -85,6 +85,7 @@ class Question {
         this._fromJSON(data);
         this.isBeingSaved  = false;
         this.isBeingEdited = false;
+        this.edited        = false;
       },
       data => {
         if (data.status === 422) {
@@ -92,7 +93,7 @@ class Question {
         } else {
           alert(`Server error occured: ${data.status}, ${data.statusText}`);
         }
-        this.isBeingSaved  = false;
+        this.isBeingSaved = false;
       }
     );
   }

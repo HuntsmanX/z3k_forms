@@ -6,20 +6,36 @@ import Question from "./question.es";
 
 class Section {
 
-  @observable id             = null;
-  @observable title          = 'Untitled Section';
-  @observable description    = 'Section description';
-  @observable time_limit     = 0;
-  @observable required_score = 0;
-  @observable score_units    = 'points';
-  @observable questions      = [];
+  @observable id                     = null;
+  @observable title                  = 'Untitled Section';
+  @observable description            = 'Section description';
+  @observable time_limit             = 0;
+  @observable bonus_time             = 0;
+  @observable required_score         = 0;
+  @observable required_score_units   = 'points';
+  @observable shuffle_questions      = true;
+  @observable questions_to_show      = 0;
+  @observable show_next_section      = 'always';
+  @observable acceptable_score       = 0;
+  @observable acceptable_score_units = 'points';
+  @observable questions              = [];
 
-  @observable isExpanded     = false;
-  @observable isBeingEdited  = false;
-  @observable isBeingSaved   = false;
-  @observable errors         = [];
+  @observable isExpanded             = false;
+  @observable isBeingEdited          = false;
+  @observable isBeingSaved           = false;
+  @observable errors                 = [];
 
   uuid = uuid.v4();
+
+  showNextSectionMap = {
+    always: 'Regardless of Score',
+    score:  'Score is Acceptable'
+  }
+
+  scoreUnitsMap = {
+    points:  'Points',
+    percent: 'Percent'
+  }
 
   constructor(params = {}) {
     this._fromJSON(params);
@@ -29,16 +45,40 @@ class Section {
     return !!this.id;
   }
 
-  @computed get timeLabel() {
+  @computed get timeLimitLabel() {
     if (this.time_limit == 0) return 'None';
     return this.time_limit.length || typeof this.time_limit === "number" ?
       this.time_limit + ' minutes' :
       'None'
   }
 
+  @computed get bonusTimeLabel() {
+    if (this.bonus_time == 0) return 'None';
+    return this.bonus_time.length || typeof this.bonus_time === "number" ?
+      this.bonus_time + ' minutes' :
+      'None'
+  }
+
   @computed get requiredScoreLabel() {
     if (typeof this.required_score === "string" && !this.required_score.length) return 0;
     return this.required_score;
+  }
+
+  @computed get showNextSectionLabel() {
+    return this.showNextSectionMap[this.show_next_section];
+  }
+
+  @computed get requiredScoreUnitsLabel() {
+    return this.scoreUnitsMap[this.required_score_units];
+  }
+
+  @computed get acceptableScoreUnitsLabel() {
+    return this.scoreUnitsMap[this.acceptable_score_units];
+  }
+
+  @computed get questionsToShowLabel() {
+    if (this.questions_to_show == 0 || this.questions_to_show == '') return 'All';
+    return this.questions_to_show;
   }
 
   @computed get maxScore() {
@@ -61,6 +101,20 @@ class Section {
 
   @computed get edited() {
     return !this.isExpanded && this.questions.find(q => q.edited);
+  }
+
+  @computed get warnings() {
+    var ret = [];
+    if (!this.isExpanded && this.questions.find(q => q.edited)) {
+      ret.push('This section has unsaved questions');
+    }
+    if (this.required_score > this.maxScore && this.required_score_units === 'points') {
+      ret.push('Required score is larger than max score');
+    }
+    if (this.acceptable_score > this.maxManualScore && this.acceptable_score_units === 'points') {
+      ret.push('Acceptable autoscore is larger than max autoscore');
+    }
+    return ret;
   }
 
   @action toggle = () => {
@@ -110,17 +164,7 @@ class Section {
     $.ajax({
       url:  url,
       type: type,
-      data: {
-        section: {
-          test_id:        this.test_id,
-          title:          this.title,
-          description:    this.description,
-          time_limit:     this.time_limit,
-          required_score: this.required_score,
-          score_units:    this.score_units,
-          order_index:    this.order_index
-        }
-      }
+      data: this.serialize()
     }).then(
       data => {
         this._fromJSON(data);
@@ -161,31 +205,53 @@ class Section {
     }, 0);
   }
 
-  @action toggleScoreUnits = () => {
-    if (this.score_units === 'points') {
-      this.score_units = 'percent';
-    } else {
-      this.score_units = 'points';
-    }
-  }
-
   @action _fromJSON = (params) => {
     if (params.id) this.id = params.id;
 
     this.test_id     = params.test_id;
     this.order_index = params.order_index;
 
-    this.title          = params.title          || this.title;
-    this.description    = params.description    || this.description;
-    this.time_limit     = params.time_limit     || this.time_limit;
-    this.required_score = params.required_score || this.required_score;
-    this.score_units    = params.score_units    || this.score_units;
+    const attrs = [
+      'title',
+      'description',
+      'time_limit',
+      'bonus_time',
+      'required_score',
+      'required_score_units',
+      'shuffle_questions',
+      'questions_to_show',
+      'show_next_section',
+      'acceptable_score',
+      'acceptable_score_units'
+    ];
+
+    attrs.forEach(attr => this[attr] = params[attr] || this[attr]);
 
     (params.questions || []).forEach(question => {
       this.questions.push(new Question(question));
     });
 
     this.isBeingEdited  = params.isBeingEdited  || this.isBeingEdited;
+  }
+
+  @action serialize = () => {
+    return {
+      section: {
+        test_id:                 this.test_id,
+        title:                   this.title,
+        description:             this.description,
+        time_limit:              this.time_limit,
+        bonus_time:              this.bonus_time,
+        required_score:          this.required_score,
+        required_score_units:    this.required_score_units,
+        shuffle_questions:       this.shuffle_questions,
+        questions_to_show:       this.questions_to_show,
+        show_next_section:       this.show_next_section,
+        acceptable_score:        this.acceptable_score,
+        acceptable_score_units:  this.acceptable_score_units,
+        order_index:             this.order_index
+      }
+    };
   }
 
   @action _setErrors = (errors) => {

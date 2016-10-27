@@ -1,20 +1,17 @@
 li: .row
   .large-4.columns
-    .row.hash
-      .key Name
-      .value = test.name
+    = hash 'Name', test.name
+    = hash 'Time Limit', test.total_time_limit
 
   .large-3.columns
-    .row.hash
-      .key Sections count
-      .value = test.sections.length
+    = hash 'Sections', test.sections.length
+    = hash 'Max Score', test.max_score
 
   .large-3.columns
-    .row.hash
-      .key Questions count
-      .value = show_questions_in_test(test)
+    = hash 'Total Questions', test.questions_count
+    = hash 'Shuffle Questions', test.shuffle_questions
 
   .large-2.columns
     .button-group.small.float-right
-      = link_to 'Edit', edit_test_path(test), class: 'button'
-      = link_to 'Delete', test, method: :delete, class: 'button alert', data: { confirm: 'Are you sure?' }
+      = link_to icon('mode_edit'), edit_test_path(test), class: 'button'
+      = link_to icon('delete'), test, method: :delete, class: 'button alert', data: { confirm: 'Are you sure?' }

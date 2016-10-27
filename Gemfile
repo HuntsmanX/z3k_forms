@@ -46,6 +46,9 @@ gem 'react-rails'
 gem 'responders'
 gem 'rest-client', '~> 2.0'
 
+gem 'active_decorator'
+gem 'kaminari'
+
 group :development, :test do
   gem 'byebug', platform: :mri
 end

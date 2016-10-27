@@ -35,7 +35,21 @@ class Test::SectionsController < ApplicationController
   private
 
   def section_params
-    params.require(:section).permit(:title, :description, :time_limit, :required_score, :score_units, :test_id, :order_index)
+    params.require(:section).permit(
+      :title,
+      :description,
+      :time_limit,
+      :bonus_time,
+      :required_score,
+      :required_score_units,
+      :shuffle_questions,
+      :questions_to_show,
+      :show_next_section,
+      :acceptable_score,
+      :acceptable_score_units,
+      :test_id,
+      :order_index
+    )
   end
 
 end

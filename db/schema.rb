@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161021102459) do
+ActiveRecord::Schema.define(version: 20161027172846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,12 +104,18 @@ ActiveRecord::Schema.define(version: 20161021102459) do
     t.string   "title"
     t.integer  "time_limit"
     t.integer  "test_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.text     "description"
     t.integer  "required_score"
-    t.integer  "score_units"
+    t.integer  "required_score_units"
     t.integer  "order_index"
+    t.integer  "bonus_time"
+    t.boolean  "shuffle_questions"
+    t.integer  "questions_to_show"
+    t.integer  "acceptable_score"
+    t.integer  "acceptable_score_units"
+    t.integer  "show_next_section"
     t.index ["test_id"], name: "index_test_sections_on_test_id", using: :btree
   end
 

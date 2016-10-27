@@ -26,6 +26,14 @@ class FieldControls extends React.Component {
     this.props.field.change(attr, event.target.value)
   }
 
+  componentDidMount() {
+    new Foundation.Tooltip($(`[data-uuid='${this.props.field.uuid}']`));
+  }
+
+  componentWillUnmount() {
+    $(`[data-uuid='${this.props.field.uuid}']`).foundation('destroy');
+  }
+
   render() {
     const { index, field } = this.props;
     const autocheckIcon = field.autocheck ? 'done' : 'block';
@@ -35,7 +43,16 @@ class FieldControls extends React.Component {
         <div className="row">
 
           <div className="large-2 columns">
-            {`${index + 1}. ${field.prettyName}`}
+            {`${index + 1}. `}
+            <span
+              data-uuid={field.uuid}
+              data-tooltip
+              className="has-tip"
+              tabIndex={field.uuid}
+              title={field.tooltip}
+            >
+              {field.prettyName}
+            </span>
           </div>
 
           <div className="large-2 columns">
