@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
 
+@observer
 class Hash extends React.Component {
 
   render() {
@@ -8,8 +9,8 @@ class Hash extends React.Component {
     return (
       <div className={`columns large-${width}`}>
         <div className="hash">
-          <div className="key">{k}</div>
-          <div className="value">{v}</div>
+          <div className="key w-45">{k}</div>
+          <div className="value w-55">{v}</div>
         </div>
       </div>
     );

@@ -41,8 +41,7 @@
     cursor: move !important;
   }
 
-  .errors {
-    color:        $alert-color;
+  .errors, .warnings {
     white-space:  pre-wrap;
     font-size:    0.9rem;
     padding-left: 2rem;
@@ -51,11 +50,26 @@
 
     &::before {
       font-family: "Material Icons";
-      content:     "\E001";
       position:    absolute;
       top:         -0.5rem;
       left:        0;
       font-size:   1.5rem;
+    }
+  }
+
+  .errors {
+    color: $alert-color;
+
+    &::before {
+      content: "\E000";
+    }
+  }
+
+  .warnings {
+    color: $warning-color;
+
+    &::before {
+      content: "\E002";
     }
   }
 
@@ -69,12 +83,13 @@
         border-bottom: 1px solid $light-gray;
       }
 
-      .edit-input, .edit-input > input {
+      .edit-input, .edit-input > input, {
         margin:           0;
         padding:          0;
         border:           0;
         box-shadow:       none;
         background-color: #ebebeb;
+        text-decoration:  underline;
 
         &.title-input {
           font-family: 'Nunito', sans-serif;
@@ -95,6 +110,12 @@
           height:      1.5em;
           min-width:   1rem;
         }
+
+        &.select {
+          line-height: 1.5;
+          height:      1.5em;
+          cursor:      context-menu;
+        }
       }
 
       .score-units-toggle {
@@ -107,10 +128,6 @@
 
         &:hover {
           background-color: #def0fc;
-        }
-
-        &.edited {
-          background-color: #fce6e2;
         }
 
         &.expanded {

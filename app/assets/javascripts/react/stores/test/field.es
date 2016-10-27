@@ -52,6 +52,18 @@ class Field {
     }
   }
 
+  @computed get tooltip() {
+    switch(this.type) {
+      case 'text_input':    return 'Text input field for short answers';
+      case 'text_area':     return 'Text area for longer answers';
+      case 'dropdown':      return 'Regular dropdown for single-choice questions';
+      case 'checkboxes':    return 'Allows selecting multiple options';
+      case 'radio_buttons': return 'Regular radio buttons for single-choice questions';
+      case 'sequence':      return 'A list of sortable options, for \'reorder\' kind of questions';
+      case 'text_editor':   return 'A rich text editor for large answers, allows using styles etc.';
+    }
+  }
+
   @computed get options() {
     return this._options.filter(option => !option._destroy);
   }

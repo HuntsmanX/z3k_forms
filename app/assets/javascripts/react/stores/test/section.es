@@ -6,18 +6,21 @@ import Question from "./question.es";
 
 class Section {
 
-  @observable id             = null;
-  @observable title          = 'Untitled Section';
-  @observable description    = 'Section description';
-  @observable time_limit     = 0;
-  @observable required_score = 0;
-  @observable score_units    = 'points';
-  @observable questions      = [];
+  @observable id                = null;
+  @observable title             = 'Untitled Section';
+  @observable description       = 'Section description';
+  @observable time_limit        = 0;
+  @observable bonus_time        = 0;
+  @observable required_score    = 0;
+  @observable score_units       = 'points';
+  @observable shuffle_questions = true;
+  @observable questions_to_show = 0;
+  @observable questions         = [];
 
-  @observable isExpanded     = false;
-  @observable isBeingEdited  = false;
-  @observable isBeingSaved   = false;
-  @observable errors         = [];
+  @observable isExpanded        = false;
+  @observable isBeingEdited     = false;
+  @observable isBeingSaved      = false;
+  @observable errors            = [];
 
   uuid = uuid.v4();
 
@@ -33,6 +36,13 @@ class Section {
     if (this.time_limit == 0) return 'None';
     return this.time_limit.length || typeof this.time_limit === "number" ?
       this.time_limit + ' minutes' :
+      'None'
+  }
+
+  @computed get bonusTimeLabel() {
+    if (this.bonus_time == 0) return 'None';
+    return this.bonus_time.length || typeof this.bonus_time === "number" ?
+      this.bonus_time + ' minutes' :
       'None'
   }
 
@@ -61,6 +71,17 @@ class Section {
 
   @computed get edited() {
     return !this.isExpanded && this.questions.find(q => q.edited);
+  }
+
+  @computed get warnings() {
+    var ret = [];
+    if (!this.isExpanded && this.questions.find(q => q.edited)) {
+      ret.push('This section has unsaved questions');
+    }
+    if (this.required_score > this.maxScore) {
+      ret.push('Required score is larger than max score');
+    }
+    return ret;
   }
 
   @action toggle = () => {
