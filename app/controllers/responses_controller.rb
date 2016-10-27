@@ -25,6 +25,9 @@ class ResponsesController < ApplicationController
     @response = Response.find_by_id(params[:id])
   end
 
+  def finish
+  end  
+
   private
   def response_params
     params.require(:response).permit(:test_id, :testee_id, testee: [:name, :email, :phone])
