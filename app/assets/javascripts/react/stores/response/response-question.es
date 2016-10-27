@@ -19,6 +19,7 @@ class ResponseQuestion{
 
   fromJSON(params){
     this.id          = params.id;
+    this.section_id  = params.section_id;
     this.editorState = this._parseRawContent(params.content);
     this.editor      = new Editor(params.content);
     this.fields      = params.fields.map(field => {

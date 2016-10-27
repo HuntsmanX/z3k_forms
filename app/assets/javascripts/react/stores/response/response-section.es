@@ -44,7 +44,7 @@ class ResponseSection{
   @action serialize = () => {
     return {
       section: {
-        section_id:           this.id,
+        id:                   this.id,
         title:                this.title,
         time_limit:           this.time_limit,
         questions_attributes: this.questions.map(this.serializeQuestion)
@@ -54,12 +54,11 @@ class ResponseSection{
 
   @action serializeQuestion = (question, index) => {
     return {
-      question: {
+        id:                question.id,
         section_id:        question.section_id,
         content:           question.editor.serialize(),
         order_index:       question.order_index,
         fields_attributes: question.fields.map(this.serializeField)
-      }
     }
   }
 
