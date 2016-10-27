@@ -38,7 +38,9 @@ class ResponseSection{
       dataType:    'json',
       contentType: 'application/json',
       data:        JSON.stringify(this.serialize())
-    })
+    }).done(function( data ) {
+      window.location.href = data
+    });
   }
 
   @action serialize = () => {

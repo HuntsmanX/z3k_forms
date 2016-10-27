@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   end
 
   get 'start/:id', to: 'responses#start', as: :start
+  get 'finish', to: 'responses#finish', as: :finish
 
   resources :testees do
     post '/by_name', to: 'testees#by_name', on: :collection
