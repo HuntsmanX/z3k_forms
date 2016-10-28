@@ -20,6 +20,10 @@ class ResponsesController < ApplicationController
     redirect_to start_path(@response)
   end
 
+  def edit
+    @response = Response.find_by_id(params[:id])
+  end
+
   def start
     @response = Response.find_by_id(params[:id])
   end

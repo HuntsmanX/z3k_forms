@@ -16,10 +16,11 @@ class ResponseDup
 
   def duplicate_sections(response, sections)
     sections.each do |section|
-    response_section = response.sections.create(title:          section.title,
-                                                time_limit:     section.time_limit,
-                                                description:    section.description,
-                                                required_score: section.required_score)
+    response_section = response.sections.create(title:            section.title,
+                                                time_limit:       section.time_limit,
+                                                description:      section.description,
+                                                required_score:   section.required_score,
+                                                acceptable_score: section.acceptable_score)
 
     section_questions = get_section_questions(section)
     duplicate_questions(response_section, section_questions) if section.questions.any?
