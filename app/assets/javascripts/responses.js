@@ -16,7 +16,8 @@ $(function() {
           results: $.map(data.employees, function (item) {
             return {
               text: item.full_name,
-              id: item.id
+              id: item.id,
+              contacts: item.email ? item.email : item.phone
             }
           })
         };
@@ -24,7 +25,8 @@ $(function() {
       cache: true
     },
     minimumInputLength: 2,
-    width: '100%'
+    width: '100%',
+    templateResult: formatResults
   });
 
   showActiveBlock();
@@ -41,6 +43,11 @@ $(function() {
     showActiveBlock()
   });
 
+
+  function formatResults(result) {
+    if (!result.id && !result.contacts) { return result.text; }
+    return $('<span class="employee-item"><p>' + result.text + '</p><p><small>'+ result.contacts +'<small></p></span>');
+  }
 
   function showActiveBlock() {
     var active = $('input:radio:checked', '#new_response').val();
