@@ -5,7 +5,7 @@ $(function() {
       url: "/testees/by_name",
       method: 'POST',
       dataType: 'json',
-      delay: 1000,
+      delay: 300,
       data: function (params) {
         return {
           name: params.term,

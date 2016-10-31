@@ -12,13 +12,16 @@ class ResponsesController < ApplicationController
       testee_params = response_params[:testee]
     end
 
-    testee = Testee.new testee_params
+    testee = Testee.find_or_initialize_by(testee_params)
 
     if testee.save
       @response = testee.responses.new
       @response.duplicate_test(response_params[:test_id])
+      path = start_path(@response.id)
+    else
+      path = redirect_to responses_path, alert: testee.errors.full_messages.join(', ')
     end
-    redirect_to start_path(@response)
+    redirect_to path
   end
 
   def start
