@@ -17,7 +17,8 @@ $(function() {
             return {
               text: item.full_name,
               id: item.id,
-              contacts: item.email ? item.email : item.phone
+              contacts: item.email ? item.email : item.phone,
+              firstCallDate: item.first_called_on
             }
           })
         };
@@ -45,8 +46,16 @@ $(function() {
 
 
   function formatResults(result) {
-    if (!result.id && !result.contacts) { return result.text; }
-    return $('<span class="employee-item"><p>' + result.text + '</p><p><small>'+ result.contacts +'<small></p></span>');
+    var contacts = result.contacts;
+    var firstCallDate = result.firstCallDate;
+    var contactsHtml, firstCallDateHtml;
+
+    if (!result.id) { return result.text; }
+
+    if(contacts) { contactsHtml = '<span class="contacts-container"><small>'+ result.contacts +'</small></span>' }
+    if(firstCallDate) { firstCallDateHtml = '<span class="first-call-date success label float-right"><i class="material-icons">call</i><small>'+ result.firstCallDate +'</small></span>' }
+
+    return $('<span class="employee-item"><p>' + result.text + '</p><p>'+ contactsHtml + firstCallDateHtml +'</p></span>');
   }
 
   function showActiveBlock() {
