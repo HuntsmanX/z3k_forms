@@ -17,11 +17,11 @@ class ResponsesController < ApplicationController
     if testee.save
       @response = testee.responses.new
       @response.duplicate_test(response_params[:test_id])
-      path = start_path(@response.id)
+      redirect_to start_path(@response.id) and return
     else
-      path = redirect_to responses_path, alert: testee.errors.full_messages.join(', ')
+      redirect_to responses_path, alert: testee.errors.full_messages.join(', ') and return
     end
-    redirect_to path
+
   end
 
   def start
