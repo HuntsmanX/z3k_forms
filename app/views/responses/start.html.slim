@@ -3,9 +3,9 @@
     .small-6.large-centered.columns
       h3.center
        | Hello,
-       = Testee.find_by_id(@response.testee_id).name
+       = @response.testee.name
        |. Your email is
-       = Testee.find_by_id(@response.testee_id).email
+       = @response.testee.email
   .row
     .small-3.small-centered.columns
       h3.center

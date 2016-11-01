@@ -1,5 +1,8 @@
 class Response::SectionsController < ApplicationController
 
+	before_action :authenticate_user!, except: [:edit, :update]
+	layout 'testee', only: [:edit, :update]
+
 	def edit
 		@response_section = Response::Section.includes({questions: [{fields: :options}]}).friendly.find(params[:id])
 	end
