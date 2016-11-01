@@ -27,13 +27,13 @@
       .small-4.columns.right
         h3 Total Questions count:
       .small-4.columns
-        h3 = show_questions_in_test(@response)
+        h3 = @response.show_questions_in_response
   .row
     .small-8.large-centered.columns
       .small-4.columns.right
         h3 Total Time:
       .small-4.columns
-        h3 = show_total_time(@response)
+        h3 = @response.show_total_time
           minutes
   .row
     .small-3.large-centered.columns

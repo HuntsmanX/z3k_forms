@@ -15,6 +15,7 @@
 //= require foundation
 //= require react_ujs
 //= require select2.full
+//= require toastr
 //= require_tree .
 
 $(function() {

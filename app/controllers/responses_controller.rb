@@ -15,10 +15,13 @@ class ResponsesController < ApplicationController
     testee = Testee.new testee_params
 
     if testee.save
-      @response = testee.responses.new
-      @response.duplicate_test(response_params[:test_id])
+      @response = ResponseDup.new(testee, Test.find_by_id(response_params[:test_id])).response
     end
     redirect_to start_path(@response)
+  end
+
+  def edit
+    @response = Response.find_by_id(params[:id])
   end
 
   def start
@@ -26,7 +29,7 @@ class ResponsesController < ApplicationController
   end
 
   def finish
-  end  
+  end
 
   private
   def response_params
