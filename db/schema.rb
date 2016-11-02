@@ -15,16 +15,6 @@ ActiveRecord::Schema.define(version: 20161028143448) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "permissions", force: :cascade do |t|
-    t.integer  "role_id"
-    t.string   "key"
-    t.boolean  "allowed"
-    t.jsonb    "conditions"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["role_id"], name: "index_permissions_on_role_id", using: :btree
-  end
-
   create_table "response_fields", force: :cascade do |t|
     t.integer  "question_id"
     t.integer  "field_type"
@@ -65,8 +55,8 @@ ActiveRecord::Schema.define(version: 20161028143448) do
     t.datetime "updated_at",       null: false
     t.text     "description"
     t.integer  "required_score"
-    t.string   "uuid"
     t.integer  "score_units"
+    t.string   "uuid"
     t.integer  "order_index"
     t.integer  "acceptable_score"
     t.index ["response_id"], name: "index_response_sections_on_response_id", using: :btree
@@ -79,21 +69,6 @@ ActiveRecord::Schema.define(version: 20161028143448) do
     t.integer  "testee_id"
     t.integer  "test_id"
     t.index ["testee_id"], name: "index_responses_on_testee_id", using: :btree
-  end
-
-  create_table "role_assignments", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["role_id"], name: "index_role_assignments_on_role_id", using: :btree
-    t.index ["user_id"], name: "index_role_assignments_on_user_id", using: :btree
-  end
-
-  create_table "roles", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "test_fields", force: :cascade do |t|
@@ -175,7 +150,5 @@ ActiveRecord::Schema.define(version: 20161028143448) do
   end
 
   add_foreign_key "responses", "testees"
-  add_foreign_key "role_assignments", "roles"
-  add_foreign_key "role_assignments", "users"
   add_foreign_key "test_questions", "test_sections", column: "section_id"
 end

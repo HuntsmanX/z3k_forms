@@ -17,7 +17,7 @@ class Testee < ApplicationRecord
   def self.show(id, resource)
     return unless RESOURCES.include?(resource.to_s)
     credentials = get_credentials(resource)
-    response = RestClient.get(credentials[:url] + '/' + id, { params: { auth_token: credentials[:auth_token] } })
+    response = RestClient.get(credentials[:url] + '/' + id.to_s, { params: { auth_token: credentials[:auth_token] } })
     JSON.parse(response.body)
   end
 
@@ -36,7 +36,7 @@ class Testee < ApplicationRecord
     credentials = Rails.application.secrets&.[](resource)
     api = credentials&.[]('employees_api')
     result = {}
-
+    
     if credentials && api
       result.merge!(url: credentials['url'] + api["#{method_name}_path"], auth_token: credentials['auth_token'])
     end

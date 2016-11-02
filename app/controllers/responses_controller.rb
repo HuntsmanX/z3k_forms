@@ -9,25 +9,18 @@ class ResponsesController < ApplicationController
 
   def new
     @response = Response.new
+    @response.build_testee source_type: 'recruitment'
   end
 
   def create
-    if response_params[:testee_id] && params[:testee_type] != 'local'
-      testee_params = Testee.show(response_params[:testee_id], params[:testee_type])
-      testee_params = { name: testee_params['full_name'], email: testee_params['email'], phone: testee_params['phone'] }
-    else
-      testee_params = response_params[:testee]
-    end
-
-    testee = Testee.find_or_initialize_by(testee_params)
+    testee = FindOrInitTestee.new(response_params[:testee]).testee
 
     if testee.save
-      @response = ResponseDup.new(testee, Test.find_by_id(response_params[:test_id])).response
+      @response = ResponseDup.new(testee, response_params[:test_id]).response
       redirect_to start_path(@response.id) and return
     else
       redirect_to responses_path, alert: testee.errors.full_messages.join(', ') and return
     end
-
   end
 
   def edit
@@ -46,7 +39,7 @@ class ResponsesController < ApplicationController
   private
 
   def response_params
-    params.require(:response).permit(:test_id, :testee_id, testee: [:name, :email, :phone])
+    params.require(:response).permit(:test_id, testee: [:source_type, :user_id, :name, :email, :phone])
   end
 
 end

@@ -42,6 +42,10 @@
   content: "\E000";
 }
 
+#toast-container > .toast-success::before {
+  content: "\E88E";
+}
+
 #toast-container > :hover {
   box-shadow: none;
 }

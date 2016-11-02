@@ -1,19 +1,19 @@
 $(function() {
 
-  $('#response_testee_id').select2({
+  $('#response_testee_user_id').select2({
     ajax: {
       url: "/testees/by_name",
       method: 'POST',
       dataType: 'json',
       delay: 300,
-      data: function (params) {
+      data: function(params) {
         return {
           name: params.term,
         };
       },
-      processResults: function (data, params) {
+      processResults: function(data, params) {
         return {
-          results: $.map(data.employees, function (item) {
+          results: $.map(data.employees, function(item) {
             return {
               text: item.full_name,
               id: item.id,
@@ -30,21 +30,6 @@ $(function() {
     templateResult: formatResults
   });
 
-  showActiveBlock();
-
-  $('#testee_type_local').change(function (){
-    showActiveBlock()
-  });
-
-  $('#testee_type_recruitment').change(function (){
-    showActiveBlock()
-  });
-
-  $('#testee_type_staff').change(function (){
-    showActiveBlock()
-  });
-
-
   function formatResults(result) {
     var contacts = result.contacts;
     var firstCallDate = result.firstCallDate;
@@ -58,12 +43,16 @@ $(function() {
     return $('<span class="employee-item"><p>' + result.text + '</p><p>'+ contactsHtml + firstCallDateHtml +'</p></span>');
   }
 
-  function showActiveBlock() {
-    var active = $('input:radio:checked', '#new_response').val();
+  toggleTesteeFields();
 
-    $('.testee-block').hide();
-    $('#response_testee_id').val('');
-    $('.' + active + '-testee').show();
+  $('[name="response[testee][source_type]"]').change(function() {
+    toggleTesteeFields();
+  });
+
+  function toggleTesteeFields() {
+    var active = $('[name="response[testee][source_type]"]:checked').val();
+    $('.testee-fields').hide();
+    $('.testee-fields#' + active).show();
   }
 
 });
