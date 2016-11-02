@@ -17,13 +17,19 @@ class ResponseSectionChecker
 
   methods_names_for_select.each do |method_name|
     ResponseSectionChecker.define_singleton_method(method_name) do |field|
-      return field.score if field.options.where(is_correct: true).pluck(:user_selected).uniq.all? {|correct| correct.present?}
+       if field.options.where(is_correct: true).pluck(:user_selected).uniq.all? {|correct| correct.present?}
+         field.update(user_score: field.score)
+       end
+       field.score
     end
   end
 
   method_names_for_text.each do |method_name|
     ResponseSectionChecker.define_singleton_method(method_name) do |field|
-      return field.score if field.content == field.user_content
+      if field.content == field.user_content
+        field.update(user_score: field.score)
+      end
+      field.score
     end
   end
 

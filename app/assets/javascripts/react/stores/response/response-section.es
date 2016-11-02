@@ -1,13 +1,14 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import uuid from "node-uuid";
 import ResponseQuestion from './response-question.es'
 
 class ResponseSection{
-  @observable title       = '';
-  @observable time_limit  = null;
-  @observable description = '';
-  @observable questions   = [];
-  @observable id          = null;
+  @observable title          = '';
+  @observable time_limit     = null;
+  @observable description    = '';
+  @observable questions      = [];
+  @observable id             = null;
+  @observable required_score = 0;
 
   uuid = uuid.v4();
 
@@ -16,11 +17,12 @@ class ResponseSection{
   }
 
   fromJSON(params) {
-    this.id          = params.id;
-    this.title       = params.title;
-    this.time_limit  = params.time_limit;
-    this.description = params.description;
-    this.questions   = params.questions.map(field => {
+    this.id             = params.id;
+    this.title          = params.title;
+    this.time_limit     = params.time_limit;
+    this.description    = params.description;
+    this.required_score = params.required_score;
+    this.questions      = params.questions.map(field => {
       return new ResponseQuestion(field)
     });
   }
@@ -73,6 +75,10 @@ class ResponseSection{
       field_type:         field.type,
       options_attributes: field.options.map(this.serializeOption)
     };
+  }
+
+  @computed get persisted() {
+    return !!this.id;
   }
 
   @action serializeOption = (option, index) => {
