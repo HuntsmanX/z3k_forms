@@ -1,8 +1,10 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import uuid from "node-uuid";
 import ResponseQuestion from './response-question.es'
 
 class ResponseSection{
+
+  @observable isExpanded = false;
 
   constructor(params={}) {
     this.fromJSON(params)
@@ -66,6 +68,14 @@ class ResponseSection{
       user_selected:  option.user_selected,
       order_index:    index
     };
+  }
+
+  @action toggle = () => {
+    this.isExpanded = !this.isExpanded;
+  }
+
+  @computed get persisted() {
+    return !!this.id;
   }
 
 }

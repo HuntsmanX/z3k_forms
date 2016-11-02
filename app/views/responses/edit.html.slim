@@ -1,1 +1,4 @@
 - provide :title, @response.name
+
+= react_component 'Responsecheck',
+  test: @response.as_json(include: { sections: { include: { questions: { include: { fields: { include: :options } } } } } })
