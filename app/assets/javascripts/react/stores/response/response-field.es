@@ -1,14 +1,13 @@
 import { observable, action, computed } from "mobx";
 import { findIndex } from "lodash/array";
-import Editor from "./response-field-editor.es";
 import uuid from "node-uuid";
 
+import Editor from "./response-field-editor.es";
 import ResponseOption from "./response-option.es";
 
 class ResponseField {
-  @observable id             = null;
+
   @observable user_content   = '';
-  @observable autocheck      = true;
   @observable options        = [];
   @observable editor         = null;
 
@@ -19,13 +18,14 @@ class ResponseField {
   }
 
   fromJSON(params) {
-    if (params.id) this.id  = params.id;
+    this.id                 = params.id;
     this.field_type         = params.field_type;
-    this.blockKey           = params.blockKey || params.block_key;
-    this.user_content       = params.user_content;
-    this.editor = new Editor();
-    this.options = params.options.map(option => {
-      return new ResponseOption(option);
+    this.blockKey           = params.blockKey     || params.block_key;
+    this.user_content       = params.user_content || this.user_content;
+    this.editor             = new Editor(this.user_content);
+
+    params.options.forEach(option => {
+      this.options.push(new ResponseOption(option));
     });
   }
 
@@ -34,7 +34,7 @@ class ResponseField {
   }
 
   @action toggleCorrectOption = (optionId) => {
-    if (this.field_type === 'dropdown' || this.field_type === 'radio_buttons') {
+    if (this.field_type === 'dropdown' || this.field_type === 'radio_buttons' || this.field_type === 'inline_dropdown') {
       this._selectSingleCorrectOption(optionId);
     } else if (this.field_type === 'checkboxes') {
       this._selectMultipleCorrectOption(optionId);
@@ -63,4 +63,5 @@ class ResponseField {
   }
 
 }
+
 export default ResponseField;

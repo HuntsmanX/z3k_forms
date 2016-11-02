@@ -1,48 +1,31 @@
 import StyleButton from "./style-button.es";
 
-const INSERT_TYPES = [
-  {
-    icon:  'short_text',
-    value: 'text_input',
-    title: 'Text Input'
-  }, {
-    icon:  'subject',
-    value: 'text_area',
-    title: 'Text Area'
-  }, {
-    icon:  'arrow_drop_down_circle',
-    value: 'dropdown',
-    title: 'Dropdown'
-  }, {
-    icon:  'check_box',
-    value: 'checkboxes',
-    title: 'Checkboxes'
-  }, {
-    icon:  'radio_button_checked',
-    value: 'radio_buttons',
-    title: 'Radio Buttons'
-  }, {
-    icon:  'sort',
-    value: 'sequence',
-    title: 'Sequence'
-  }, {
-    icon:  'format_color_text',
-    value: 'text_editor',
-    title: 'Text Editor'
-  }
-]
+import { FIELD_TYPES } from "./../../../../shared/field-types.es";
 
 const InsertControls = (props) => {
+  const block  = FIELD_TYPES.filter(f => f.type === 'block');
+  const inline = FIELD_TYPES.filter(f => f.type === 'inline');
+
   return (
     <div className="editor-control-group">
       <span className="group-title">Insert</span>
-      {INSERT_TYPES.map(type =>
+      {block.map(type =>
         <StyleButton
           key={type.icon}
           icon={type.icon}
-          iconTitle={type.title}
+          iconTitle={type.label}
           onToggle={props.onToggle}
-          value={type.value}
+          value={type.name}
+        />
+      )}
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      {inline.map(type =>
+        <StyleButton
+          key={type.icon}
+          icon={type.icon}
+          iconTitle={type.label}
+          onToggle={props.onToggle}
+          value={type.name}
         />
       )}
     </div>

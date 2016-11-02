@@ -113,7 +113,7 @@ class Question {
     return {
       id:                 field.id,
       block_key:          field.blockKey,
-      content:            field.content,
+      content:            field.type === 'text_editor' ? field.editor.serialize() : field.content,
       score:              field.score,
       autocheck:          field.autocheck,
       field_type:         field.type,

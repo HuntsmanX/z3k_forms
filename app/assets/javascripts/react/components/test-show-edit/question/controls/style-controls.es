@@ -38,7 +38,7 @@ const StyleControls = (props) => {
           value={type.value}
         />
       )}
-      &nbsp;|&nbsp;
+      &nbsp;&nbsp;|&nbsp;&nbsp;
       {INLINE_STYLES.map(type =>
         <StyleButton
           key={type.icon}

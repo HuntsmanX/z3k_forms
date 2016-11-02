@@ -1,11 +1,13 @@
 import { observer } from "mobx-react";
-import SequenceOption from "./sequence-option.es";
+
+import SequenceOption from "./sequence-block/sequence-option.es";
 
 @observer
 class SequenceBlock extends React.Component {
 
   render() {
-    const { field } = this.props.blockProps;
+    const { field, onChange, onFocus, onBlur } = this.props.blockProps;
+
     return (
       <div>
         {field.options.map((option, index) => {
@@ -14,7 +16,9 @@ class SequenceBlock extends React.Component {
               key={option.uuid}
               uuid={option.uuid}
               content={option.content}
-              move={field.moveOption}
+              move={onChange}
+              onBeginDrag={onFocus}
+              onEndDrag={onBlur}
               index={index}
             />
           );

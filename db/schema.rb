@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(version: 20161028143448) do
     t.datetime "updated_at",       null: false
     t.text     "description"
     t.integer  "required_score"
-    t.string   "uuid"
     t.integer  "score_units"
+    t.string   "uuid"
     t.integer  "order_index"
     t.integer  "acceptable_score"
     t.index ["response_id"], name: "index_response_sections_on_response_id", using: :btree
