@@ -1,5 +1,7 @@
 import { observable, action, computed } from "mobx";
-import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, convertFromRaw, ContentState, Modifier, SelectionState } from "draft-js";
+import { EditorState, RichUtils, Entity, AtomicBlockUtils, convertToRaw, ContentState, Modifier, SelectionState } from "draft-js";
+
+import { parseRawDraftContent } from "./../../shared/draft.es";
 
 class QuestionEditor {
 
@@ -85,20 +87,15 @@ class QuestionEditor {
   }
 
   _parseRawContent = (content) => {
-    try {
-      return EditorState.moveSelectionToEnd(
-        EditorState.createWithContent(
-          convertFromRaw(JSON.parse(content))
-        )
-      );
-    }
-    catch(error) {
-      return EditorState.moveSelectionToEnd(
-        EditorState.createWithContent(
-          ContentState.createFromText('Untitled question')
-        )
-      );
-    }
+    const state = parseRawDraftContent(content);
+
+    if (state) return state;
+
+    return EditorState.moveSelectionToEnd(
+      EditorState.createWithContent(
+        ContentState.createFromText('Untitled question')
+      )
+    );
   }
 
   _handleDelete(value) {
@@ -113,7 +110,6 @@ class QuestionEditor {
     let selection = value.getSelection();
     selection     = selection.set('anchorKey', previousBlockKey);
     selection     = selection.set('anchorOffset', previousBlock.getLength());
-
 
     const modifiedContent = Modifier.removeRange(value.getCurrentContent(), selection, 'backward');
     return EditorState.push(this.state, modifiedContent, value.getLastChangeType());

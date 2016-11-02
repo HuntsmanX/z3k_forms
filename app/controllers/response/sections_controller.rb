@@ -1,11 +1,14 @@
 class Response::SectionsController < ApplicationController
 
+	before_action :authenticate_user!, except: [:edit, :update]
+	layout 'testee', only: [:edit, :update]
+
 	def edit
 		@response_section = Response::Section.includes({questions: [{fields: :options}]}).friendly.find(params[:id])
 	end
 
 	def update
-		response_section = Response::Section.find_by_id(params[:section][:id])
+		response_section = Response::Section.find_by_id(params[:id])
 		response_section.update section_params
 		response = response_section.response
 		sections_ids = response.sections.pluck(:id)

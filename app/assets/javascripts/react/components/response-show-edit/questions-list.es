@@ -7,6 +7,7 @@ class QuestionsList extends React.Component {
 
   render() {
     const { section } = this.props;
+    
     return (
       <div className="questions-list">
         {section.questions.length ? (

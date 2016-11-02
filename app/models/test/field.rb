@@ -10,7 +10,9 @@ class Test::Field < ApplicationRecord
     :checkboxes,
     :radio_buttons,
     :sequence,
-    :text_editor
+    :text_editor,
+    :inline_text_input,
+    :inline_dropdown
   ]
 
   accepts_nested_attributes_for :options, allow_destroy: true
@@ -49,11 +51,11 @@ class Test::Field < ApplicationRecord
   private
 
   def has_content?
-    text_input? || text_area?
+    text_input? || text_area? || inline_text_input?
   end
 
   def has_options?
-    dropdown? || checkboxes? || radio_buttons? || sequence?
+    dropdown? || checkboxes? || radio_buttons? || sequence? || inline_dropdown?
   end
 
 end

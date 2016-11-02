@@ -2,25 +2,10 @@ import { observer } from "mobx-react";
 import { Editor, DefaultDraftBlockRenderMap, Entity } from "draft-js";
 import { Map } from "immutable";
 
-import AtomicBlockWrapper from "./editor/atomic-block-wrapper.es";
-import TextInputBlock     from "./editor/text-input-block.es";
-import TextAreaBlock      from "./editor/text-area-block.es";
-import DropdownBlock      from "./editor/dropdown-block.es";
-import CheckboxesBlock    from "./editor/checkboxes-block.es";
-import RadioButtonsBlock  from "./editor/radio-buttons-block.es";
-import SequenceBlock      from "./editor/sequence-block.es";
-import TextEditorBlock    from "./editor/text-editor-block.es";
+import { FIELD_TYPES } from "./../../../shared/field-types.es";
+import { styleMap }    from "./../../../shared/draft.es";
 
-const styleMap = {
-  'CODE': {
-    color:      '#0a0a0a',
-    fontFamily: 'Consolas, "Liberation Mono", Courier, monospace',
-    fontWeight: 'normal',
-    background: '#e6e6e6',
-    border:     '1px solid #cacaca',
-    padding:    '0.14706rem 0.36765rem 0.07353rem'
-  }
-};
+import AtomicBlockWrapper from "./editor/atomic-block-wrapper.es";
 
 const blockRenderMap = DefaultDraftBlockRenderMap.merge(Map({
   'atomic': {
@@ -39,16 +24,9 @@ class QuestionEditor extends React.Component {
   blockRenderer = (block) => {
     if (block.getType() === 'atomic') {
       const entityType = Entity.get(block.getEntityAt(0)).getType();
+      const fieldType  = FIELD_TYPES.find(f => entityType === f.name);
 
-      const blockTypes = {
-        'text_input':    TextInputBlock,
-        'text_area':     TextAreaBlock,
-        'dropdown':      DropdownBlock,
-        'checkboxes':    CheckboxesBlock,
-        'radio_buttons': RadioButtonsBlock,
-        'sequence':      SequenceBlock,
-        'text_editor':   TextEditorBlock
-      }
+      const { question } = this.props;
 
       if (entityType === 'eol-block') {
         return {
@@ -59,27 +37,62 @@ class QuestionEditor extends React.Component {
           }
         };
 
-      } else if (Object.keys(blockTypes).indexOf(entityType) + 1) {
-        const field = this.props.question.fields.find(field => {
-          return field.blockKey === block.getKey();
-        });
+      } else if (fieldType) {
+        const field = question.fields.find(field => field.blockKey === block.getKey());
 
         return {
-          component: blockTypes[entityType],
+          component: fieldType.component,
           editable:  false,
           props: {
             atomicBlockType: entityType,
             field:           field,
-            question:        this.props.question,
-            onStartEdit:     () => {
-              this.props.question.change('fieldActive', true);
-            },
-            onStopEdit:      () => {
-              this.props.question.change('fieldActive', false);
-            }
+            onFocus:         question.change.bind(null, 'fieldActive', true),
+            onBlur:          question.change.bind(null, 'fieldActive', false),
+            onChange:        this.getOnChangeFunc(entityType, question, field),
+            valueKey:        this.getValueKey(entityType, question, field),
+            placeholder:     'Correct Answer',
+            readOnly:        true
           }
         }
       }
+    }
+  }
+
+  getOnChangeFunc = (entityType, question, field) => {
+    switch(entityType) {
+      case 'text_input':
+      case 'text_area':
+      case 'inline_text_input':
+        return (e) => {
+          if (question.isBeingEdited) field.change('content', e.target.value);
+        };
+        break;
+      case 'dropdown':
+      case 'checkboxes':
+      case 'radio_buttons':
+      case 'inline_dropdown':
+        return (e) => {
+          if (question.isBeingEdited) field.toggleCorrectOption(e.target.value);
+        };
+        break;
+      case 'sequence':
+        return (dragId, hoverId) => {
+          if (question.isBeingEdited) field.moveOption(dragId, hoverId);
+        };
+        break;
+    }
+  }
+
+  getValueKey = (entityType, question, field) => {
+    switch(entityType) {
+      case 'dropdown':
+      case 'checkboxes':
+      case 'radio_buttons':
+      case 'inline_dropdown':
+        return 'is_correct';
+        break;
+      default:
+        return 'content';
     }
   }
 
@@ -88,7 +101,7 @@ class QuestionEditor extends React.Component {
     const { editor }   = question;
 
     return (
-      <div className="draft-editor">
+      <div className="question-editor">
         <Editor
           blockRendererFn={this.blockRenderer}
           blockRenderMap={blockRenderMap}

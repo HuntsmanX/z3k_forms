@@ -3,10 +3,16 @@ import { findDOMNode } from 'react-dom';
 
 const _dragSource = {
   beginDrag(props) {
+    props.onBeginDrag && props.onBeginDrag();
+
     return {
       index: props.index,
       uuid:  props.uuid
     };
+  },
+
+  endDrag(props) {
+    props.onEndDrag && props.onEndDrag();
   }
 };
 

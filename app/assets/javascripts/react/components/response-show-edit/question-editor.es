@@ -4,13 +4,7 @@ import { Map } from "immutable";
 
 import AtomicBlockWrapper from "../test-show-edit/question/editor/atomic-block-wrapper.es";
 
-import TextInputBlock     from "./question-editor/text-input-block.es";
-import CheckboxesBlock    from "./question-editor/checkboxes-block.es";
-import RadioButtonsBlock  from "./question-editor/radio-buttons-block.es";
-import DropdownBlock      from "./question-editor/dropdown-block.es";
-import TextAreaBlock      from "./question-editor/text-area-block.es";
-import SequenceBlock      from "./question-editor/sequence-block.es";
-import TextEditorBlock    from "./question-editor/text-editor-block.es";
+import { FIELD_TYPES } from "./../../shared/field-types.es";
 
 const styleMap = {
   'CODE': {
@@ -36,16 +30,9 @@ class QuestionEditor extends React.Component {
   blockRenderer = (block) => {
     if (block.getType() === 'atomic') {
       const entityType = Entity.get(block.getEntityAt(0)).getType();
+      const fieldType  = FIELD_TYPES.find(f => entityType === f.name);
 
-      const blockTypes = {
-        'text_input':    TextInputBlock,
-        'text_area':     TextAreaBlock,
-        'dropdown':      DropdownBlock,
-        'checkboxes':    CheckboxesBlock,
-        'radio_buttons': RadioButtonsBlock,
-        'sequence':      SequenceBlock,
-        'text_editor':   TextEditorBlock
-      }
+      const { question } = this.props;
 
       if (entityType === 'eol-block') {
         return {
@@ -56,38 +43,68 @@ class QuestionEditor extends React.Component {
           }
         };
 
-      } else if (Object.keys(blockTypes).indexOf(entityType) + 1) {
-        const field = this.props.question.fields.find(field => {
-          return field.blockKey === block.getKey();
-        });
+      } else if (fieldType) {
+        const field = question.fields.find(field => field.blockKey === block.getKey());
 
         return {
-          component: blockTypes[entityType],
+          component: fieldType.component,
           editable:  false,
           props: {
             atomicBlockType: entityType,
             field:           field,
-            question:        this.props.question,
-            editor:          field.editor,
+            onChange:        this.getOnChangeFunc(entityType, question, field),
+            valueKey:        this.getValueKey(entityType, question, field),
+            placeholder:     'Answer',
+            readOnly:        false
           }
         }
       }
     }
   }
 
+  getOnChangeFunc = (entityType, question, field) => {
+    switch(entityType) {
+      case 'text_input':
+      case 'text_area':
+      case 'inline_text_input':
+        return (e) => field.change('user_content', e.target.value)
+        break;
+      case 'dropdown':
+      case 'checkboxes':
+      case 'radio_buttons':
+      case 'inline_dropdown':
+        return (e) => field.toggleCorrectOption(e.target.value)
+        break;
+      case 'sequence':
+        return field.moveOption;
+        break;
+    }
+  }
+
+  getValueKey = (entityType, question, field) => {
+    switch(entityType) {
+      case 'dropdown':
+      case 'checkboxes':
+      case 'radio_buttons':
+      case 'inline_dropdown':
+        return 'user_selected';
+        break;
+      default:
+        return 'user_content';
+    }
+  }
+
   render() {
     const { question } = this.props;
-    const { editor }   = question;
 
   return(
-    <div className="draft-editor content">
+    <div className="question-editor">
       <Editor
         blockRendererFn={this.blockRenderer}
         customStyleMap={styleMap}
         blockRenderMap={blockRenderMap}
-        editorState={editor.state}
+        editorState={question.editorState}
         readOnly
-        ref="editor"
       />
     </div>
   )

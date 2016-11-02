@@ -1,0 +1,47 @@
+.toast {
+  background-color: $secondary-color;
+}
+
+.toast-success {
+  background-color: $success-color;
+}
+
+.toast-error {
+  background-color: $alert-color;
+}
+
+.toast-info {
+  background-color: $primary-color;
+}
+
+.toast-warning {
+  background-color: $warning-color;
+}
+
+#toast-container > .toast {
+  opacity:          1;
+  border-radius:    0;
+  box-shadow:       none;
+  background-image: none !important;
+  position:         relative;
+}
+
+#toast-container > .toast::before {
+  font-family: "Material Icons";
+  position:    absolute;
+  top:         0.4rem;
+  left:        0.75rem;
+  font-size:   2rem;
+}
+
+#toast-container > .toast-info::before {
+  content: "\E88E";
+}
+
+#toast-container > .toast-error::before {
+  content: "\E000";
+}
+
+#toast-container > :hover {
+  box-shadow: none;
+}

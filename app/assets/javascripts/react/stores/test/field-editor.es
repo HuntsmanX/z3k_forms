@@ -1,9 +1,9 @@
-import { observable, action, computed } from "mobx";
+import { observable, action } from "mobx";
 import { EditorState, RichUtils, convertToRaw } from "draft-js";
 
 import { parseRawDraftContent } from "./../../shared/draft.es";
 
-class ResponseFieldEditor {
+class FieldEditor {
 
   @observable state = null;
 
@@ -52,4 +52,5 @@ class ResponseFieldEditor {
   }
 
 }
-export default ResponseFieldEditor;
+
+export default FieldEditor;

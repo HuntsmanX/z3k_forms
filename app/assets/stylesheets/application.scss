@@ -27,9 +27,11 @@
 
 @import 'components/form';
 @import 'components/select2';
+@import 'components/employees';
 @import 'components/header';
 @import 'components/test-show-edit';
 @import 'components/response-show-edit';
 @import "components/entities-list";
-@import "components/draft";
+@import "components/question-editor";
 @import "components/pagination";
+@import "components/toastr";
