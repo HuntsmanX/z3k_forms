@@ -9,6 +9,7 @@ class ResponseSection{
   @observable questions      = [];
   @observable id             = null;
   @observable required_score = 0;
+  @observable isExpanded     = false;
 
   uuid = uuid.v4();
 
@@ -79,6 +80,10 @@ class ResponseSection{
 
   @computed get persisted() {
     return !!this.id;
+  }
+
+  @action toggle = () => {
+    this.isExpanded = !this.isExpanded;
   }
 
   @action serializeOption = (option, index) => {

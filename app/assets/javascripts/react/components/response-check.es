@@ -1,6 +1,9 @@
 import Response         from "./../stores/response.es";
 import SectionsList from "./response-check/section-list.es";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend        from "react-dnd-html5-backend";
 
+@DragDropContext(HTML5Backend)
 class Responsecheck extends React.Component {
 
   constructor(props) {

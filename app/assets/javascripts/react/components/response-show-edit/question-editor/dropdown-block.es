@@ -17,7 +17,7 @@ class DropdownBlock extends React.Component {
         placeholder="Correct answer"
       >
         {field.options.map(option => {
-          return <option key={option.uuid} value={option.content}>{option.content}</option>;
+          return <option key={option.uuid} value={option.content} selected={option.user_selected}>{option.content}</option>;
         })}
       </select>
     );

@@ -19,8 +19,11 @@ class ResponseSectionChecker
     ResponseSectionChecker.define_singleton_method(method_name) do |field|
        if field.options.where(is_correct: true).pluck(:user_selected).uniq.all? {|correct| correct.present?}
          field.update(user_score: field.score)
+         score = field.score
+       else
+        score = 0
        end
-       field.score
+       score
     end
   end
 
@@ -28,8 +31,11 @@ class ResponseSectionChecker
     ResponseSectionChecker.define_singleton_method(method_name) do |field|
       if field.content == field.user_content
         field.update(user_score: field.score)
+        score = field.score
+      else
+       score = 0
       end
-      field.score
+      score
     end
   end
 

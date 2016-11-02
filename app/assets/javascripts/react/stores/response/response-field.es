@@ -11,7 +11,7 @@ class ResponseField {
   @observable autocheck      = true;
   @observable options        = [];
   @observable editor         = null;
-
+  @observable user_score     = null;
   uuid = uuid.v4();
 
   constructor(params = {}) {
@@ -23,6 +23,7 @@ class ResponseField {
     this.field_type         = params.field_type;
     this.blockKey           = params.blockKey || params.block_key;
     this.user_content       = params.user_content;
+    this.user_score         = params.user_score;
     this.editor = new Editor();
     this.options = params.options.map(option => {
       return new ResponseOption(option);

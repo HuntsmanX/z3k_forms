@@ -10,11 +10,11 @@ class TextInputBlock extends React.Component {
   }
 
   render() {
-    const { content } = this.props.blockProps.field;
+    const { user_content } = this.props.blockProps.field;
     return (
       <input
         type="text"
-        value={content}
+        value={user_content}
         onChange={this.onChange}
         placeholder="Input answer"
       />
