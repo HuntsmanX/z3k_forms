@@ -4,5 +4,7 @@ class Response::Question < ApplicationRecord
   has_many   :fields,  class_name: 'Response::Field',   inverse_of: :question,  dependent: :destroy
 
   accepts_nested_attributes_for :fields, allow_destroy: true
-  
+
+  default_scope -> { order(:order_index) }
+
 end
