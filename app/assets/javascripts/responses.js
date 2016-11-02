@@ -5,7 +5,7 @@ $(function() {
       url: "/testees/by_name",
       method: 'POST',
       dataType: 'json',
-      delay: 1000,
+      delay: 300,
       data: function (params) {
         return {
           name: params.term,
@@ -16,7 +16,9 @@ $(function() {
           results: $.map(data.employees, function (item) {
             return {
               text: item.full_name,
-              id: item.id
+              id: item.id,
+              contacts: item.email ? item.email : item.phone,
+              firstCallDate: item.first_called_on
             }
           })
         };
@@ -24,7 +26,8 @@ $(function() {
       cache: true
     },
     minimumInputLength: 2,
-    width: '100%'
+    width: '100%',
+    templateResult: formatResults
   });
 
   showActiveBlock();
@@ -41,6 +44,19 @@ $(function() {
     showActiveBlock()
   });
 
+
+  function formatResults(result) {
+    var contacts = result.contacts;
+    var firstCallDate = result.firstCallDate;
+    var contactsHtml, firstCallDateHtml;
+
+    if (!result.id) { return result.text; }
+
+    if(contacts) { contactsHtml = '<span class="contacts-container"><small>'+ result.contacts +'</small></span>' }
+    if(firstCallDate) { firstCallDateHtml = '<span class="first-call-date success label float-right"><i class="material-icons">call</i><small>'+ result.firstCallDate +'</small></span>' }
+
+    return $('<span class="employee-item"><p>' + result.text + '</p><p>'+ contactsHtml + firstCallDateHtml +'</p></span>');
+  }
 
   function showActiveBlock() {
     var active = $('input:radio:checked', '#new_response').val();

@@ -12,12 +12,15 @@ class ResponsesController < ApplicationController
       testee_params = response_params[:testee]
     end
 
-    testee = Testee.new testee_params
+    testee = Testee.find_or_initialize_by(testee_params)
 
     if testee.save
       @response = ResponseDup.new(testee, Test.find_by_id(response_params[:test_id])).response
+      redirect_to start_path(@response.id) and return
+    else
+      redirect_to responses_path, alert: testee.errors.full_messages.join(', ') and return
     end
-    redirect_to start_path(@response)
+
   end
 
   def edit
