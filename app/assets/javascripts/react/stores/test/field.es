@@ -3,7 +3,10 @@ import uuid from "node-uuid";
 import { findIndex } from "lodash/array";
 import humanize from "underscore.string/humanize";
 
-import Option from "./option.es";
+import Option      from "./option.es";
+import FieldEditor from "./field-editor.es";
+
+import { FIELD_TYPES } from "./../../shared/field-types.es";
 
 class Field {
 
@@ -14,54 +17,33 @@ class Field {
   @observable _options  = [];
   @observable _destroy  = false;
   @observable errors    = [];
+  @observable editor    = null;
 
   uuid = uuid.v4();
 
   constructor(params = {}) {
     this._fromJSON(params);
 
-    const needOptions = ['dropdown', 'checkboxes', 'radio_buttons', 'sequence'];
-
-    if (!this.id && needOptions.indexOf(this.type) + 1) {
-      this._options.push(
-        new Option({ content: 'Option 1', is_correct: true })
-      );
-      this._options.push(
-        new Option({ content: 'Option 2', is_correct: false })
-      );
+    if (!this.id && FIELD_TYPES.find(f => f.name === this.type).hasOptions) {
+      this._options.push(new Option({ content: 'Option 1', is_correct: true }));
+      this._options.push(new Option({ content: 'Option 2', is_correct: false }));
     }
   }
 
   @computed get hasOptions() {
-    return !!(['dropdown', 'checkboxes', 'radio_buttons', 'sequence'].indexOf(this.type) + 1);
+    return FIELD_TYPES.find(f => f.name === this.type).hasOptions;
   }
 
   @computed get hasCorrectOptions() {
-    return !!(['dropdown', 'checkboxes', 'radio_buttons'].indexOf(this.type) + 1);
+    return FIELD_TYPES.find(f => f.name === this.type).hasCorrectOptions;
   }
 
   @computed get prettyName() {
-    switch(this.type) {
-      case 'text_input':    return 'Text Input';
-      case 'text_area':     return 'Text Area';
-      case 'dropdown':      return 'Dropdown';
-      case 'checkboxes':    return 'Checkboxes';
-      case 'radio_buttons': return 'Radio Buttons';
-      case 'sequence':      return 'Sequence';
-      case 'text_editor':   return 'Text Editor';
-    }
+    return FIELD_TYPES.find(f => f.name === this.type).label;
   }
 
   @computed get tooltip() {
-    switch(this.type) {
-      case 'text_input':    return 'Text input field for short answers';
-      case 'text_area':     return 'Text area for longer answers';
-      case 'dropdown':      return 'Regular dropdown for single-choice questions';
-      case 'checkboxes':    return 'Allows selecting multiple options';
-      case 'radio_buttons': return 'Regular radio buttons for single-choice questions';
-      case 'sequence':      return 'A list of sortable options, for \'reorder\' kind of questions';
-      case 'text_editor':   return 'A rich text editor for large answers, allows using styles etc.';
-    }
+    return FIELD_TYPES.find(f => f.name === this.type).tooltip;
   }
 
   @computed get options() {
@@ -99,7 +81,7 @@ class Field {
   }
 
   @action toggleCorrectOption = (optionId) => {
-    if (this.type === 'dropdown' || this.type === 'radio_buttons') {
+    if (this.type === 'dropdown' || this.type === 'radio_buttons' || this.type === 'inline_dropdown') {
       this._selectSingleCorrectOption(optionId);
     } else if (this.type === 'checkboxes') {
       this._selectMultipleCorrectOption(optionId);
@@ -121,9 +103,13 @@ class Field {
     this.score     = params.score     || this.score;
     this.autocheck = params.autocheck || this.autocheck;
 
-    this._options = (params.options || []).map(option => {
+    this._options = (params.options || []).sort((a, b) => {
+      return a.order_index - b.order_index;
+    }).map(option => {
       return new Option(option);
     });
+
+    this.editor = new FieldEditor(this.content);
   }
 
   @action _selectSingleCorrectOption = (optionId) => {

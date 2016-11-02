@@ -4,16 +4,16 @@ import QuestionEditor from "./question-editor.es";
 @observer
 class Question extends React.Component {
 
-render() {
-  const { question } = this.props;
+  render() {
+    const { question, index } = this.props;
 
-  return (
-    <div className="main-content">
+    return (
+      <div className="question">
+        <div className="index">{index + 1}</div>
         <QuestionEditor question={question}/>
-    </div>
-  )
-
-}
+      </div>
+    );
+  }
 
 }
 

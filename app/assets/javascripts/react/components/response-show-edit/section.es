@@ -4,15 +4,18 @@ import QuestionsList from "../response-show-edit/questions-list.es";
 
 @observer
 class Section extends React.Component {
+
   render() {
+    const { section } = this.props;
+
     return (
-      <div className="section">
-        <div>
-          <QuestionsList section={this.props.section}/>
-        </div>
+      <div>
+        <div className="section-description">{section.description}</div>
+        <QuestionsList section={section} />
       </div>
     );
   }
+
 }
 
 export default Section;

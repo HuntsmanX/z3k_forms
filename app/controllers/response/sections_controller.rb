@@ -5,7 +5,7 @@ class Response::SectionsController < ApplicationController
 	end
 
 	def update
-		response_section = Response::Section.find_by_id(params[:section][:id])
+		response_section = Response::Section.find_by_id(params[:id])
 		response_section.update section_params
 		response = response_section.response
 		sections_ids = response.sections.pluck(:id)

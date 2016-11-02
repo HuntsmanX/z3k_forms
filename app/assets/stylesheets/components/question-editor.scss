@@ -1,0 +1,107 @@
+.question-editor {
+
+  div[data-block] {
+    display: inline-block;
+  }
+
+  input, select, textarea {
+    margin-bottom: 0;
+  }
+
+  .block-input {
+    display: block;
+    margin: 0.75rem 0;
+
+    input[type='text'], select, textarea {
+      width:     25rem;
+      max-width: 25rem;
+    }
+  }
+
+  .inline-input {
+    display: inline-block;
+
+    input[type='text'], select {
+      padding:          0 0.25rem;
+      border:           0;
+      line-height:      1.5;
+      box-shadow:       inherit;
+      border-bottom:    1px solid $dark-gray;
+      height:           1.5rem;
+      width:            10rem;
+      background:       transparent;
+      font-size:        90%;
+    }
+
+    .inline-dropdown-wrapper {
+      background: url('data:image/svg+xml;utf-8,<svg fill="#888888" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>') no-repeat right center;
+    }
+  }
+
+  .text-editor-field {
+    border:           $input-border;
+    width:            50rem;
+    padding:          $form-spacing / 2;
+    color:            $input-color;
+    background-color: $input-background;
+    box-shadow:       $input-shadow;
+    font-size:        90%;
+    position:         relative;
+
+    &:focus {
+      border:           $input-border-focus;
+      background-color: $input-background-focus;
+      box-shadow:       $input-shadow-focus;
+    }
+
+    div[data-block] {
+      display: block;
+    }
+
+    .blocker {
+      position: absolute;
+      top:      -1px;
+      bottom:   -1px;
+      left:     -1px;
+      right:    -1px;
+      opacity:  0;
+    }
+
+    .controls {
+      border-bottom:  1px solid $medium-gray;
+      padding-bottom: $form-spacing / 2;
+      margin-bottom:  $form-spacing / 2;
+      color:          $dark-gray;
+
+      .style-button {
+        cursor: pointer;
+
+        &.active {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  .sequence-option i {
+    cursor:       move;
+    font-size:    140%;
+    margin-right: 0.5rem;
+    color:        $dark-gray;
+  }
+
+  pre {
+    color:       $code-color;
+    font-family: $code-font-family;
+    font-weight: $code-font-weight;
+    background:  $code-background;
+    border:      $code-border;
+    padding:     $code-padding;
+  }
+
+  pre > pre {
+    border:  0;
+    padding: 0;
+  }
+
+}
