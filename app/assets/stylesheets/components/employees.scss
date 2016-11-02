@@ -1,0 +1,20 @@
+.select2-results {
+  .employee-item {
+    p {
+      margin: 2px 0 2px 0 !important;
+
+      .contacts-container {
+        margin-right: 5px;
+      }
+
+      .first-call-date {
+        font-size: 0.8rem;
+        padding: 2px;
+
+        i {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
