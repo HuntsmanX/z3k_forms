@@ -38,8 +38,8 @@ class ResponseDup
     shuffle   = section.shuffle_questions
     show      = section.questions_to_show
 
-    questions = questions.order('random()') if     shuffle
-    questions = questions.limit(show)       unless show.nil? || show.zero?
+    questions = questions.shuffle    if     shuffle
+    questions = questions.take(show) unless show.nil? || show.zero?
 
     questions
   end

@@ -26,6 +26,15 @@ module ApplicationHelper
     end
   end
 
+  def custom_search_form_for object, *args, &block
+    options   = args.extract_options!
+    form_args = args << options.merge(builder: SearchForm)
+
+    content_tag :div, class: 'callout secondary ' do
+      search_form_for object, *form_args, &block
+    end
+  end
+
   def paginator collection
     content_tag :div, class: 'clearfix paginator' do
       concat(

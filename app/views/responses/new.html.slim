@@ -3,20 +3,20 @@
 = horizontal_form_for @response do |f|
 
   = f.collection_select :test_id, Test.all, :id, :name
-  
+
   = f.fields_for :testee, @response.testee do |ff|
-    
+
     = ff.collection_radio_buttons :source_type,
       [{ id: 'recruitment', name: 'Recruitment' }, { id: 'local', name: 'Local' }],
       :id, :name, label: 'Testee Source', layout: :horizontal
-      
+
     #recruitment.testee-fields
       = ff.select :user_id, [], label: 'Name', include_blank: true
-    
+
     #local.testee-fields
       = ff.text_field :name
       = ff.text_field :email
       = ff.text_field :phone
-  
+          
   = f.footer do
     = f.submit 'Save'

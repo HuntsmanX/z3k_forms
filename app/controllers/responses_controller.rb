@@ -4,7 +4,8 @@ class ResponsesController < ApplicationController
   layout 'testee', only: [:start, :finish]
 
   def index
-    @responses = Response.all
+    @search = Response.ransack(params[:q])
+    @responses = @search.result.page(params[:page])
   end
 
   def new
