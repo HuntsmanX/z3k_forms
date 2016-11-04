@@ -1,11 +1,5 @@
 class SearchForm < ActionView::Helpers::FormBuilder
 
-  def initialize *args
-    super
-    options = args.extract_options!
-    @hints  = options[:hints] != false
-  end
-
   %w{ text_field select collection_select }.each do |method_name|
     define_method method_name do |name, *args|
       options      = args.extract_options!
@@ -13,7 +7,7 @@ class SearchForm < ActionView::Helpers::FormBuilder
 
       content_tag :div, class: 'form-field column' do
         concat field_label(name, options[:label])
-        concat field_input(render_input, options[:hint])
+        concat field_input(render_input)
       end
     end
   end
@@ -25,7 +19,7 @@ class SearchForm < ActionView::Helpers::FormBuilder
     end
   end
 
-  def footer float = :right, &block
+  def footer float = :left, &block
     content_tag :footer, class: 'clearfix' do
       content_tag :div, class: "float-#{float}" do
         yield
@@ -53,27 +47,10 @@ class SearchForm < ActionView::Helpers::FormBuilder
     end
   end
 
-  def field_input render_input, hint
+  def field_input render_input
     content_tag :div do
-      if @hints
-        field_input_with_hint render_input, hint
-      else
-        render_input.call
-      end
+      render_input.call
     end
-  end
-
-  def field_input_with_hint render_input, hint
-    concat(
-      content_tag(:div) do
-        render_input.call
-      end
-    )
-    concat(
-      content_tag(:div, class: '') do
-        content_tag :label, hint, class: 'middle hint'
-      end
-    )
   end
 
 end
