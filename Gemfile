@@ -50,6 +50,7 @@ gem 'rest-client', '~> 2.0'
 
 gem 'active_decorator'
 gem 'kaminari'
+gem 'ransack'
 
 group :development, :test do
   gem 'byebug', platform: :mri
