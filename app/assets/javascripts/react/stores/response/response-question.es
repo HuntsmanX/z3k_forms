@@ -10,6 +10,7 @@ class ResponseQuestion {
   @observable fields      = [];
   @observable isBeingEdited = false;
   @observable isBeingSaved  = false;
+  @observable edited        = false;
 
   uuid = uuid.v4();
 
@@ -88,7 +89,7 @@ class ResponseQuestion {
       data:        JSON.stringify(this.serialize())
     }).then(
       data => {
-        this._fromJSON(data);
+        this.fromJSON(data);
         this.isBeingSaved  = false;
         this.isBeingEdited = false;
         this.edited        = false;
@@ -118,6 +119,18 @@ class ResponseQuestion {
       id:                 field.id,
       user_score:         field.user_score,
     };
+  }
+
+  @action _setErrors = (errors) => {
+    this.errors = Object.keys(errors)
+      .filter(attr => !/^fields/.test(attr))
+      .map(attr => `${humanize(attr)} ${errors[attr].join(', ')}`);
+
+    errors.fields && errors.fields.forEach(fieldErrors => {
+      this.fields
+        .find(field => field.blockKey === fieldErrors.block_key)
+        .setErrors(fieldErrors.errors)
+    });
   }
 }
 
