@@ -5,6 +5,7 @@ import ResponseQuestion from './response-question.es'
 class ResponseSection{
 
   @observable isExpanded = false;
+  uuid = uuid.v4();
 
   constructor(params={}) {
     this.fromJSON(params)

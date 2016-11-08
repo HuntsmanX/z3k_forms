@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 
-import QuestionsList from "../response-show-edit/questions-list.es";
+import QuestionsList from "./question-list.es";
 import Hash          from "../test-show-edit/hash.es";
 
 @observer

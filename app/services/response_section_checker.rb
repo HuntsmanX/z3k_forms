@@ -23,6 +23,7 @@ class ResponseSectionChecker
        else
         score = 0
        end
+       field.update(checked: true)
        score
     end
   end
@@ -35,6 +36,7 @@ class ResponseSectionChecker
       else
        score = 0
       end
+      field.update(checked: true)
       score
     end
   end

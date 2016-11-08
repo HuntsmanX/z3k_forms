@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102105139) do
+ActiveRecord::Schema.define(version: 20161104111447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,10 +22,11 @@ ActiveRecord::Schema.define(version: 20161102105139) do
     t.text     "content"
     t.integer  "score"
     t.boolean  "autocheck"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.text     "user_content"
     t.integer  "user_score"
+    t.boolean  "checked",      default: false
   end
 
   create_table "response_options", force: :cascade do |t|
@@ -56,8 +57,8 @@ ActiveRecord::Schema.define(version: 20161102105139) do
     t.datetime "updated_at",       null: false
     t.text     "description"
     t.integer  "required_score"
-    t.integer  "score_units"
     t.string   "uuid"
+    t.integer  "score_units"
     t.integer  "order_index"
     t.integer  "acceptable_score"
     t.index ["response_id"], name: "index_response_sections_on_response_id", using: :btree

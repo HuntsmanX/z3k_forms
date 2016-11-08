@@ -3,9 +3,6 @@
 .entities-list-panel.clearfix
 
 = render 'search_form'
-- if @responses.present?
-  ul.entities-list
-    = render @responses
-    = paginator @responses
-- else
-  p No entries found
+ul.entities-list
+  = render @responses
+= paginator @responses
