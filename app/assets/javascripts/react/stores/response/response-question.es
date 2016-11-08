@@ -6,8 +6,8 @@ import ResponseField from './response-field.es'
 
 class ResponseQuestion {
 
-  @observable editorState = null;
-  @observable fields      = [];
+  @observable editorState   = null;
+  @observable fields        = [];
   @observable isBeingEdited = false;
   @observable isBeingSaved  = false;
   @observable edited        = false;
@@ -36,12 +36,6 @@ class ResponseQuestion {
       .includes(false);
   }
 
-  @computed get checked(){
-    return !this.fields
-      .map(field => field.checked)
-      .includes(false);
-  }
-
   fromJSON(params){
     this.id            = params.id;
     this.section_id    = params.section_id;
@@ -62,7 +56,7 @@ class ResponseQuestion {
   }
 
   @action edit = (value = true) => {
-    this.isBeingEdited = value;
+    this.isBeingEdited  = value;
     this.focus();
 
     if (value) this.edited = true;

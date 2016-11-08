@@ -28,6 +28,11 @@ class FieldControls extends React.Component {
     this.props.field.change(attr, event.target.value)
   }
 
+  toggleCheckk = () => {
+    const { field } = this.props;
+    field.change('checked', !field.checked);
+  }
+
   render() {
     const { index, field } = this.props;
     const autocheckIcon = field.autocheck ? 'done' : 'block';
@@ -61,6 +66,13 @@ class FieldControls extends React.Component {
             <span className="control-label">User Score</span>
             <input type="text" className="score-input" value={field.user_score} onChange={this.onChange.bind(null, 'user_score')} />
           </div>
+
+          <Hash k='Checked'
+            v={field.checked ? (
+              <i className="material-icons action" onClick={this.toggleCheckk}>done</i>
+              ) : (
+              <i className="material-icons action" onClick={this.toggleCheckk}>block</i>
+            )} />
 
           <div className="large-6 columns">
             {field.hasOptions ? <OptionsList field={field} key={field.uuid} /> : null}

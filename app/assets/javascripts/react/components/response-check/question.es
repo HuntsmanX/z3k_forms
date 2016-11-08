@@ -9,6 +9,7 @@ class Question extends React.Component {
   render(){
     const { question, index } = this.props;
     const className = question.edited ? 'edited' : '';
+
     return (
         <div className={`question ${className}`}>
         <div className="index">{index + 1}</div>
@@ -30,15 +31,16 @@ class Question extends React.Component {
             )}
           </div>
 
+        {question.isBeingEdited ? null : (
           <div className="question-stats">
             <div className="row">
               <Hash k='Max Score'  v={question.score} />
               <Hash k='Autocheck'  v={String(question.autocheck)} />
               <Hash k='User Score' v={question.user_score} />
-              <Hash k='Checked'    v={String(question.checked)} />
               <Hash k='' v='' />
             </div>
           </div>
+        )}
 
           {question.isBeingEdited && question.fields.length ? <FieldsControls question={question} /> : null}
       </div>
