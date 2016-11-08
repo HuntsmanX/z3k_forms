@@ -10,7 +10,7 @@ class Question extends React.Component {
     const { question, index } = this.props;
     const className = question.edited ? 'edited' : '';
     return (
-      <div className="question">
+        <div className={`question ${className}`}>
         <div className="index">{index + 1}</div>
         <QuestionEditor question={question}/>
 

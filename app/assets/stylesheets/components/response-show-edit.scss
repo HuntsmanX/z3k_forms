@@ -26,5 +26,43 @@
       }
     }
   }
+}
 
+.fields-controls {
+  margin-top:  0.5rem;
+  font-size:   0.875rem;
+
+  .field-controls {
+    border-top: 1px dashed $light-gray;
+    padding:    0.5rem 0;
+
+    .control-label {
+      font-style:   italic;
+      font-size:    0.9rem;
+      margin-right: 0.5rem;
+      display:      inline-block;
+      color:        $secondary-color;
+    }
+
+    .control-icon {
+      font-size: 1.35rem;
+      color:     $secondary-color;
+      cursor:    pointer;
+    }
+
+    input, label, textarea {
+      margin-bottom: 0;
+    }
+
+    .score-input {
+      border:      none;
+      padding:     0;
+      margin:      0;
+      display:     inline-block;
+      box-shadow:  initial;
+      width:       5rem;
+      height:      1.35rem;
+      line-height: 1.35rem;
+    }
+  }
 }
