@@ -35,6 +35,12 @@ class ResponseQuestion {
       .includes(false);
   }
 
+  @computed get checked(){
+    return !this.fields
+      .map(field => field.checked)
+      .includes(false);
+  }
+
   fromJSON(params){
     this.id            = params.id;
     this.section_id    = params.section_id;

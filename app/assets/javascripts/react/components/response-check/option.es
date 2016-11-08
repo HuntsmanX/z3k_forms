@@ -7,12 +7,6 @@ class Option extends React.Component {
     this.props.option.change(attr, event.target.value);
   }
 
-  handleKeyDown = (event) => {
-    if (event.which === 13 || event.keyCode === 13) {
-      this.props.onEnterPress();
-    }
-  }
-
   render() {
     const { option, deleteOption, index, hasCorrectOptions, toggleCorrect } = this.props;
 

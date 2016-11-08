@@ -32,9 +32,10 @@ class Question extends React.Component {
 
           <div className="question-stats">
             <div className="row">
-              <Hash k='Max Score' v={question.score} />
-              <Hash k='Autocheck' v={String(question.autocheck)} />
+              <Hash k='Max Score'  v={question.score} />
+              <Hash k='Autocheck'  v={String(question.autocheck)} />
               <Hash k='User Score' v={question.user_score} />
+              <Hash k='Checked'    v={String(question.checked)} />
               <Hash k='' v='' />
             </div>
           </div>

@@ -48,17 +48,11 @@ class FieldControls extends React.Component {
             </span>
           </div>
 
-          {field.user_content.length ? (
-            <div>
-            <div className="large-2 columns">
-              <span className="control-label">User Answer: </span>
-              <span> {field.user_content} </span>
-            </div>
+          {field.field_type == 'text_input' || field.field_type == 'text_area' || field.field_type == 'inline_text_input' ? (
             <div className="large-2 columns">
               <span className="control-label">Correct Answer: </span>
               <span> {field.content} </span>
             </div>
-          </div>
           ) : (
               null
           )}

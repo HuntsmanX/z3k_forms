@@ -59,7 +59,7 @@ class ResponseDup
   end
 
   def duplicate_options(field, options)
-    options.each do |option|
+    options.shuffle.each do |option|
       field.options.create option.attributes.except!('id', 'field_id', 'created_at', 'updated_at')
     end
   end
